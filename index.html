@@ -314,12 +314,6 @@
                   <li>
                     <a href="#positions" class="toc-h2 toc-link" data-title="Positions">Positions</a>
                   </li>
-                  <li>
-                    <a href="#returns-position-for-map-location-x-y-z" class="toc-h2 toc-link" data-title="Returns position for map location (x, y, z).">Returns position for map location (x, y, z).</a>
-                  </li>
-                  <li>
-                    <a href="#false-otherwise" class="toc-h2 toc-link" data-title="* false otherwise">* <code>false</code> otherwise</a>
-                  </li>
               </ul>
           </li>
           <li>
@@ -375,15 +369,21 @@
 </tr>
 </tbody></table>
 <h3 id='functions'>Functions</h3>
-<p><strong><code>position(number x, number y, number z)</code></strong>  </p>
-<h2 id='returns-position-for-map-location-x-y-z'>Returns position for map location (x, y, z).</h2>
+<p><strong><code>position(number x, number y, number z)</code></strong><br>
+Returns position for map location (x, y, z).</p>
+
+<hr>
+
 <p><strong><code>position p1 == position p2</code></strong><br>
 Compares two positions <code>p1</code> and <code>p2</code>. Returns</p>
 
 <ul>
 <li><code>true</code> if <code>p1.x == p2.x and p1.y == p2.y and p1.z == p2.z</code></li>
+<li><code>false</code> otherwise</li>
 </ul>
-<h2 id='false-otherwise'>* <code>false</code> otherwise</h2>
+
+<hr>
+
 <p><strong><code>tostring(position p)</code></strong><br>
 Returns <code>&quot;(&quot; .. p.x .. &quot;, &quot; .. p.y .. &quot;, &quot; .. p.z .. &quot;)&quot;</code>.</p>
 
