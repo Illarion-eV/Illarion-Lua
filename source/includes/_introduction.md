@@ -1,6 +1,6 @@
 # Introduction
 
-Illarion game content like items, npcs, quests, etc. is defined in scripts written in
+Illarion game content like items, NPCs, quests, etc. is defined in scripts written in
 <a target="_blank" rel="noopener noreferrer" href='https://www.lua.org/manual/5.2/'>Lua 5.2</a>
 with Illarion specific extensions. This document describes these extensions. Those scripts can be found in the
 <a target="_blank" rel="noopener noreferrer" href='https://github.com/Illarion-eV/Illarion-Content'>
@@ -14,11 +14,11 @@ The recommended editor for Illarion scripting is
 <a target="_blank" rel="noopener noreferrer" href='https://code.visualstudio.com/'>
 Visual Studio Code</a>, which is available for Linux, Windows and macOS. You can use the extension `rog2.luacheck` to
 automatically perform some code checks ahead of pull requests. If you are using Visual Studio Code and open the
-repository directory as a folder, the required ISO-8859-1 encoding will be used automatically. A more detailed
+repository directory as a folder, the required ISO 8859-1 encoding will be used automatically. A more detailed
 description of setting up and using a development environment is available in the [tutorial](#tutorial).
 
 <aside class="notice">
-Scripts need to be encoded in ISO-8859-1.
+Scripts need to be encoded in ISO 8859-1.
 </aside>
 
 > `item/apple.lua`
