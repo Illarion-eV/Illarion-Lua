@@ -309,15 +309,24 @@
             <a href="#introduction" class="toc-h1 toc-link" data-title="Introduction">Introduction</a>
           </li>
           <li>
+            <a href="#entry-points" class="toc-h1 toc-link" data-title="Entry Points">Entry Points</a>
+          </li>
+          <li>
             <a href="#classes" class="toc-h1 toc-link" data-title="Classes">Classes</a>
               <ul class="toc-list-h2">
                   <li>
-                    <a href="#positions" class="toc-h2 toc-link" data-title="Positions">Positions</a>
+                    <a href="#position" class="toc-h2 toc-link" data-title="position">position</a>
+                  </li>
+                  <li>
+                    <a href="#colour" class="toc-h2 toc-link" data-title="colour">colour</a>
+                  </li>
+                  <li>
+                    <a href="#character" class="toc-h2 toc-link" data-title="Character">Character</a>
                   </li>
               </ul>
           </li>
           <li>
-            <a href="#entry-points" class="toc-h1 toc-link" data-title="Entry Points">Entry Points</a>
+            <a href="#common-bugs" class="toc-h1 toc-link" data-title="Common Bugs">Common Bugs</a>
           </li>
           <li>
             <a href="#changelog" class="toc-h1 toc-link" data-title="Changelog">Changelog</a>
@@ -330,17 +339,66 @@
     <div class="page-wrapper">
       <div class="dark-box"></div>
       <div class="content">
-        <h1 id='introduction'>Introduction</h1><h1 id='classes'>Classes</h1><h2 id='positions'>Positions</h2>
-<p>Positions represent a location on the world map.</p>
-<div class="highlight"><pre class="highlight lua tab-lua"><code><span class="n">user</span><span class="p">:</span><span class="n">forceWarp</span><span class="p">(</span><span class="n">position</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
-<span class="n">pos</span> <span class="o">=</span> <span class="n">user</span><span class="p">.</span><span class="n">pos</span> <span class="c1">-- testPos is (0, 0, 0)</span>
-<span class="n">user</span><span class="p">:</span><span class="n">forceWarp</span><span class="p">(</span><span class="n">position</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span> <span class="c1">-- now user.pos AND testPos are (1, 1, 1)</span>
-</code></pre></div>
+        <aside class="warning">                                                                                                  
+This documentation is still in development, but will eventually replace the current version. See changelog for details.
+</aside>
+<h1 id='introduction'>Introduction</h1>
+<p>Illarion game content like items, npcs, quests, etc. is defined in scripts written in
+<a href="https://www.lua.org/manual/5.2/">Lua 5.2</a> with Illarion specific extensions. This document describes these extensions.
+Those scripts can be found in the <a href="https://github.com/Illarion-eV/Illarion-Content">official repository</a>, which has two
+branches. The <code>master</code> branch reflects the scripts used by the live game, while the <code>develop</code> branch is used to prepare
+the next release. You can fork that repository on GitHub and clone it to your hard drive for development or testing
+using the <a href="https://github.com/Illarion-eV/Illarion-Dev">local development server</a>.</p>
+
+<p>The recommended editor for Illarion scripting is <a href="https://code.visualstudio.com/">Visual Studio Code</a>, which is
+available for Linux, Windows and macOS. You can use the extension <code>rog2.luacheck</code> to automatically perform some code
+checks ahead of pull requests. If you are using Visual Studio Code and open the repository directory as a folder,
+the required ISO-8859-1 encoding will be used automatically.</p>
+
+<aside class="notice">
+Scripts need to be encoded in ISO-8859-1.
+</aside>
+
 <blockquote>
-<p>Avoid this by creating a new position from individual coordinates.</p>
+<p><code>item/apple.lua</code></p>
 </blockquote>
-<div class="highlight"><pre class="highlight lua tab-lua"><code><span class="n">pos</span> <span class="o">=</span> <span class="n">position</span><span class="p">(</span><span class="n">user</span><span class="p">.</span><span class="n">pos</span><span class="p">.</span><span class="n">x</span><span class="p">,</span> <span class="n">user</span><span class="p">.</span><span class="n">pos</span><span class="p">.</span><span class="n">y</span><span class="p">,</span> <span class="n">user</span><span class="p">.</span><span class="n">pos</span><span class="p">.</span><span class="n">z</span><span class="p">)</span>
-</code></pre></div><h3 id='variables'>Variables</h3>
+<div class="highlight"><pre class="highlight lua tab-lua"><code><span class="c1">-- mandatory license header omitted for the sake of brevity</span>
+
+<span class="kd">local</span> <span class="n">M</span> <span class="o">=</span> <span class="p">{}</span>
+
+<span class="k">function</span> <span class="nc">M</span><span class="p">.</span><span class="nf">UseItem</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="n">item</span><span class="p">)</span>
+    <span class="c1">-- code handling items being used</span>
+<span class="k">end</span>
+
+<span class="k">function</span> <span class="nc">M</span><span class="p">.</span><span class="nf">LookAtItem</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="n">item</span><span class="p">)</span>
+    <span class="c1">-- code handling items being looked at</span>
+<span class="k">end</span>
+
+<span class="c1">-- more entry points can follow</span>
+
+<span class="k">return</span> <span class="n">M</span>
+</code></pre></div>
+<p>Every time a certain event happens (e.g someone using an item, a monster dying, someone logging into the game, etc.) a
+script function is called. The name of that script is usually defined in the database, except for <em>server
+scripts</em> which have a fixed name and implement very specific server behaviour not tied to a particular game object.</p>
+
+<aside class="notice">
+Scripts are defined inside the database using the following format:
+<ul>
+<li>Paths are relative to the repository base directory.</li>
+<li>Directory/file names are seperated by a full stop (<code>.</code>).</li>
+<li>The <code>.lua</code> extension is omitted.</li>
+</ul>
+E.g. a script <code>item/apple.lua</code> would be entered as <code>item.apple</code>.
+</aside>
+
+<p>The executed function is called an <a href="#entry-points"><em>entry point</em></a>, since it is run directly by the server. Scripts
+defined in the database, as well as server scripts, return a table containing expected entry points.
+A script does not need to include <em>all</em> possible entry points. For example, if an item has no <code>LookAtItem</code> entry point,
+nothing special happens when a player inspects the item.</p>
+<h1 id='entry-points'>Entry Points</h1><h1 id='classes'>Classes</h1><h2 id='position'>position</h2>
+<p>Positions represent a location on the world map.</p>
+<h3 id='variables'>Variables</h3>
 <table><thead>
 <tr>
 <th>Name</th>
@@ -368,22 +426,149 @@
 <td>z coordinate, increases as levels go up</td>
 </tr>
 </tbody></table>
-<h3 id='functions'>Functions</h3><h4 id='position-number-x-number-y-number-z'><code>position(number x, number y, number z)</code></h4>
+<h3 id='functions'>Functions</h3><h4 id='position-number-x-number-y-number-z'><code>position(number x, number y, number z)</code></h4><div class="highlight"><pre class="highlight lua tab-lua"><code><span class="kd">local</span> <span class="n">pos</span> <span class="o">=</span> <span class="n">position</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+</code></pre></div>
 <p>Returns position for map location (x, y, z).</p>
-<h4 id='position-p1-position-p2'><code>position p1 == position p2</code></h4>
+<h4 id='position-p1-position-p2'><code>position p1 == position p2</code></h4><div class="highlight"><pre class="highlight lua tab-lua"><code><span class="kd">local</span> <span class="n">equal</span> <span class="o">=</span> <span class="n">position</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">==</span> <span class="n">position</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="c1">-- equal == true</span>
+</code></pre></div>
 <p>Compares two positions <code>p1</code> and <code>p2</code>. Returns</p>
 
 <ul>
 <li><code>true</code> if <code>p1.x == p2.x and p1.y == p2.y and p1.z == p2.z</code></li>
 <li><code>false</code> otherwise</li>
 </ul>
-<h4 id='tostring-position-p'><code>tostring(position p)</code></h4>
+<h3 id='free-functions'>Free Functions</h3><h4 id='tostring-position-p'><code>tostring(position p)</code></h4><div class="highlight"><pre class="highlight lua tab-lua"><code><span class="kd">local</span> <span class="n">text</span> <span class="o">=</span> <span class="nb">tostring</span><span class="p">(</span><span class="n">position</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span> <span class="c1">-- text == "(3, 4, 0)"</span>
+</code></pre></div>
 <p>Returns <code>&quot;(&quot; .. p.x .. &quot;, &quot; .. p.y .. &quot;, &quot; .. p.z .. &quot;)&quot;</code>.</p>
 
 <aside class="warning">
 A position obtained from a character is still linked to that character and will change when the character moves.
 </aside>
-<h1 id='entry-points'>Entry Points</h1><h1 id='changelog'>Changelog</h1>
+<div class="highlight"><pre class="highlight lua tab-lua"><code><span class="n">user</span><span class="p">:</span><span class="n">forceWarp</span><span class="p">(</span><span class="n">position</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+<span class="kd">local</span> <span class="n">pos</span> <span class="o">=</span> <span class="n">user</span><span class="p">.</span><span class="n">pos</span>              <span class="c1">-- pos is (0, 0, 0)</span>
+<span class="n">user</span><span class="p">:</span><span class="n">forceWarp</span><span class="p">(</span><span class="n">position</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span> <span class="c1">-- now user.pos AND pos are (1, 1, 0)</span>
+</code></pre></div>
+<blockquote>
+<p>Avoid this by creating a new position from individual coordinates.</p>
+</blockquote>
+<div class="highlight"><pre class="highlight lua tab-lua"><code><span class="kd">local</span> <span class="n">pos</span> <span class="o">=</span> <span class="n">position</span><span class="p">(</span><span class="n">user</span><span class="p">.</span><span class="n">pos</span><span class="p">.</span><span class="n">x</span><span class="p">,</span> <span class="n">user</span><span class="p">.</span><span class="n">pos</span><span class="p">.</span><span class="n">y</span><span class="p">,</span> <span class="n">user</span><span class="p">.</span><span class="n">pos</span><span class="p">.</span><span class="n">z</span><span class="p">)</span>
+</code></pre></div><h2 id='colour'>colour</h2>
+<p>Colours are used to represent a characters skin or hair colour.</p>
+<h3 id='variables'>Variables</h3>
+<table><thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Writable</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>red</td>
+<td>number</td>
+<td>yes</td>
+<td>From 0 (no red) to 255 (full red)</td>
+</tr>
+<tr>
+<td>green</td>
+<td>number</td>
+<td>yes</td>
+<td>From 0 (no green) to 255 (full green)</td>
+</tr>
+<tr>
+<td>blue</td>
+<td>number</td>
+<td>yes</td>
+<td>From 0 (no blue) to 255 (full blue)</td>
+</tr>
+<tr>
+<td>alpha</td>
+<td>number</td>
+<td>yes</td>
+<td>From 0 (transparent) to 255 (opaque)</td>
+</tr>
+</tbody></table>
+<h3 id='functions'>Functions</h3><h4 id='colour-number-red-number-green-number-blue-number-alpha-255'><code>colour(number red, number green, number blue [, number alpha = 255])</code></h4><div class="highlight"><pre class="highlight lua tab-lua"><code><span class="kd">local</span> <span class="n">black</span> <span class="o">=</span> <span class="n">colour</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+</code></pre></div>
+<p>Creates colour for given RGBA values.</p>
+<h2 id='character'>Character</h2>
+<p>Players, NPCs and monsters are the three types of characters in Illarion.</p>
+
+<p><img src="images/directions-a05aa5a6.png" alt="directions" /></p>
+<h3 id='variables'>Variables</h3>
+<table><thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Writable</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>id</td>
+<td>number</td>
+<td>no</td>
+<td>character id</td>
+</tr>
+<tr>
+<td>name</td>
+<td>text</td>
+<td>no</td>
+<td>character name</td>
+</tr>
+<tr>
+<td>pos</td>
+<td>position</td>
+<td>no</td>
+<td>character position on world map</td>
+</tr>
+<tr>
+<td>lastSpokenText</td>
+<td>text</td>
+<td>no</td>
+<td>character&#39;s last spoken line of text</td>
+</tr>
+<tr>
+<td>attackmode</td>
+<td>boolean</td>
+<td>no</td>
+<td><code>true</code> if character currently attacks, <code>false</code> otherwise</td>
+</tr>
+<tr>
+<td>activeLanguage</td>
+<td>number</td>
+<td>yes</td>
+<td>0: common, 1: human, 2: dwarf, 3: elf, 4: lizard, 5: orc, 6: halfling, 7: fairy, 8: gnome, 9: goblin, 10: ancient</td>
+</tr>
+<tr>
+<td>movepoints</td>
+<td>number</td>
+<td>yes</td>
+<td>A character has a maximum of 21 movepoints. Every action like talking, fighting, using etc. needs at least 7 movepoints. The reduction of movepoints depends on the character&#39;s agility. A character gains one movepoint per decisecond.</td>
+</tr>
+</tbody></table>
+<h3 id='text-speech-functions'>Text/Speech Functions</h3><h4 id='talk-number-mode-text-message'><code>talk(number mode, text message)</code></h4><div class="highlight"><pre class="highlight lua tab-lua"><code><span class="n">user</span><span class="p">:</span><span class="n">talk</span><span class="p">(</span><span class="n">Character</span><span class="p">.</span><span class="n">say</span><span class="p">,</span> <span class="s2">"Hello World!"</span><span class="p">)</span>
+</code></pre></div>
+<p>Lets a character say/whisper/yell a <code>message</code>. <code>mode</code> can be <code>Character.say</code>, <code>Character.whisper</code> or <code>Character.yell</code>.</p>
+<h1 id='common-bugs'>Common Bugs</h1>
+<ul>
+<li>Missing <code>end</code>, missing <code>(</code> or <code>)</code></li>
+<li>Script name and db entry do not match (be careful of invisible characters!).<br>
+Try to query the db like this: <code>SELECT FROM illarionserver.items WHERE itm_script=&#39;item.doors&#39;)</code>.<br>
+<code>.</code> is used to seperate directory/file names and the <code>.lua</code> extension is omitted.</li>
+<li>Mixing up seperators <code>.</code> (fields) and <code>:</code> (member functions).</li>
+<li>Missing <code>()</code> for functions without parameters.</li>
+<li>Incorrect number of parameters for functions.</li>
+<li>Mispelled function names (use syntax highlighting!).</li>
+<li>Forgot !fr in game to reload tables and scripts.</li>
+<li><code>=</code> instead of <code>==</code> or vice versa.</li>
+<li><code>!=</code> instead of <code>~=</code> (not equal).</li>
+<li>Missing conversion of a string to a number (<code>local ten = tonumber(&quot;10&quot;)</code>).</li>
+<li>Beware of endless loops, they freeze the server. Always ensure that the script terminates.</li>
+<li>Instructions after <code>return</code>.</li>
+<li>Missing <code>then</code> in <code>if</code>-blocks, missing <code>end</code> in inline-<code>if</code>.</li>
+</ul>
+<h1 id='changelog'>Changelog</h1>
 <table><thead>
 <tr>
 <th>Version</th>
@@ -395,6 +580,11 @@ A position obtained from a character is still linked to that character and will 
 <td>6.0</td>
 <td>11/12/2020</td>
 <td>Illarion Lua is now documented with Slate</td>
+</tr>
+<tr>
+<td>5.24</td>
+<td>12/09/2020</td>
+<td><a href="https://github.com/Illarion-eV/Illarion-Server/blob/0.11.0/doc/luadoc.pdf">Last version in LaTex format</a></td>
 </tr>
 </tbody></table>
 
