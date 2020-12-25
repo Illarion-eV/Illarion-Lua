@@ -405,8 +405,8 @@ E.g. a script <code>item/apple.lua</code> would be entered as <code>item.apple</
 
 <p>The executed function is called an <a href="#entry-points"><em>entry point</em></a>, since it is run directly by the server. Scripts
 defined in the database, as well as server scripts, return a table containing expected entry points.
-A script does not need to include <em>all</em> possible entry points. For example, if an item has no <code>LookAtItem</code> entry point,
-nothing special happens when a player inspects the item.</p>
+A script does not need to include <em>all</em> possible entry points. For example, if an item has no <code>UseItem</code> entry point,
+nothing happens when a player uses the item.</p>
 
 <aside class="notice">
 The available set of entry points describes all game behaviour scripts can handle.
