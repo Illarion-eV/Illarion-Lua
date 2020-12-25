@@ -60,3 +60,6 @@ defined in the database, as well as server scripts, return a table containing ex
 A script does not need to include _all_ possible entry points. For example, if an item has no `LookAtItem` entry point,
 nothing special happens when a player inspects the item.
 
+<aside class="notice">
+The available set of entry points describes all game behaviour scripts can handle.
+</aside>
