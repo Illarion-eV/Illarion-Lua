@@ -1,17 +1,21 @@
 # Introduction
 
 Illarion game content like items, npcs, quests, etc. is defined in scripts written in
-[Lua 5.2](https://www.lua.org/manual/5.2/) with Illarion specific extensions. This document describes these extensions.
-Those scripts can be found in the [official repository](https://github.com/Illarion-eV/Illarion-Content), which has two
-branches. The `master` branch reflects the scripts used by the live game, while the `develop` branch is used to prepare
-the next release. You can fork that repository on GitHub and clone it to your hard drive for development or testing
-using the [local development server](https://github.com/Illarion-eV/Illarion-Dev).
+<a target="_blank" rel="noopener noreferrer" href='https://www.lua.org/manual/5.2/'>Lua 5.2</a>
+with Illarion specific extensions. This document describes these extensions. Those scripts can be found in the
+<a target="_blank" rel="noopener noreferrer" href='https://github.com/Illarion-eV/Illarion-Content'>
+official repository</a>, which has two branches. The `master` branch reflects the scripts used by the live game, while
+the `develop` branch is used to prepare the next release. You can fork that repository on GitHub and clone it to your
+hard drive for development or testing using the
+<a target="_blank" rel="noopener noreferrer" href='https://github.com/Illarion-eV/Illarion-Dev'>
+local development server</a>.
 
-The recommended editor for Illarion scripting is [Visual Studio Code](https://code.visualstudio.com/), which is
-available for Linux, Windows and macOS. You can use the extension `rog2.luacheck` to automatically perform some code
-checks ahead of pull requests. If you are using Visual Studio Code and open the repository directory as a folder,
-the required ISO-8859-1 encoding will be used automatically. A more detailed description of setting up and using a
-development environment is available in the [tutorial](#tutorial).
+The recommended editor for Illarion scripting is
+<a target="_blank" rel="noopener noreferrer" href='https://code.visualstudio.com/'>
+Visual Studio Code</a>, which is available for Linux, Windows and macOS. You can use the extension `rog2.luacheck` to
+automatically perform some code checks ahead of pull requests. If you are using Visual Studio Code and open the
+repository directory as a folder, the required ISO-8859-1 encoding will be used automatically. A more detailed
+description of setting up and using a development environment is available in the [tutorial](#tutorial).
 
 <aside class="notice">
 Scripts need to be encoded in ISO-8859-1.
