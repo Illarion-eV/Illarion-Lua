@@ -57,8 +57,8 @@ E.g. a script <code>item/apple.lua</code> would be entered as <code>item.apple</
 
 The executed function is called an [_entry point_](#entry-points), since it is run directly by the server. Scripts
 defined in the database, as well as server scripts, return a table containing expected entry points.
-A script does not need to include _all_ possible entry points. For example, if an item has no `LookAtItem` entry point,
-nothing special happens when a player inspects the item.
+A script does not need to include _all_ possible entry points. For example, if an item has no `UseItem` entry point,
+nothing happens when a player uses the item.
 
 <aside class="notice">
 The available set of entry points describes all game behaviour scripts can handle.
