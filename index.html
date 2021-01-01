@@ -313,6 +313,32 @@
           </li>
           <li>
             <a href="#entry-points" class="toc-h1 toc-link" data-title="Entry Points">Entry Points</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#items" class="toc-h2 toc-link" data-title="Items">Items</a>
+                  </li>
+                  <li>
+                    <a href="#npcs" class="toc-h2 toc-link" data-title="NPCs">NPCs</a>
+                  </li>
+                  <li>
+                    <a href="#magic" class="toc-h2 toc-link" data-title="Magic">Magic</a>
+                  </li>
+                  <li>
+                    <a href="#monsters" class="toc-h2 toc-link" data-title="Monsters">Monsters</a>
+                  </li>
+                  <li>
+                    <a href="#fields" class="toc-h2 toc-link" data-title="Fields">Fields</a>
+                  </li>
+                  <li>
+                    <a href="#quests" class="toc-h2 toc-link" data-title="Quests">Quests</a>
+                  </li>
+                  <li>
+                    <a href="#scheduled" class="toc-h2 toc-link" data-title="Scheduled">Scheduled</a>
+                  </li>
+                  <li>
+                    <a href="#server" class="toc-h2 toc-link" data-title="Server">Server</a>
+                  </li>
+              </ul>
           </li>
           <li>
             <a href="#classes" class="toc-h1 toc-link" data-title="Classes">Classes</a>
@@ -411,7 +437,34 @@ nothing happens when a player uses the item.</p>
 <aside class="notice">
 The available set of entry points describes all game behaviour scripts can handle.
 </aside>
-<h1 id='tutorial'>Tutorial</h1><h1 id='entry-points'>Entry Points</h1><h1 id='classes'>Classes</h1><h2 id='position'>position</h2>
+<h1 id='tutorial'>Tutorial</h1><h1 id='entry-points'>Entry Points</h1>
+<p>As described in the <a href="#introduction">introduction</a>, entry points are the interface between server and scripts. The server
+calls entry points on a variety of events to perform the implemented game mechanics. This allows the server to remain
+unchanged and running, while scripts are updated at run-time.</p>
+
+<p>Entry points are expected to be functions with pre-defined names, which the server will call. For the server to be able
+to find the script these functions are in, the script is named in the db entry of the appropriate game entity. The only
+exception are server scripts, which just have one exact name.</p>
+
+<p>The server expects scripts to return a table, which contains all implemented entry points. In the following definitions
+only the function signature is given for clarity.</p>
+
+<p>Those scripts which are entered into the database, need to be named in the following format:</p>
+
+<ul>
+<li>Paths are relative to the repository base directory.</li>
+<li>Directory/file names are seperated by a full stop (<code>.</code>).</li>
+<li>The <code>.lua</code> extension is omitted.</li>
+</ul>
+
+<p>E.g. a script <code>item/apple.lua</code> would be entered as <code>item.apple</code>.</p>
+<h2 id='items'>Items</h2>
+<p><strong>Database field:</strong> <code>items.itm_script</code></p>
+<h3 id='function-useitem-character-character-item-item-number-actionstate'><code>function UseItem(Character character, Item item, number actionState)</code></h3>
+<p>A <code>character</code> uses an <code>item</code>.</p>
+<h3 id='function-itemlookat-lookatitem-character-character-item-item'><code>function ItemLookAt LookAtItem(Character character, Item item)</code></h3>
+<p>A <code>character</code> looks at an <code>item</code>. Needs to return an ItemLookAt.</p>
+<h3 id='function-moveitembeforemove-character-user-item-source-item-target'><code>function MoveItemBeforeMove(Character user, Item source, Item target)</code></h3><h3 id='function-moveitemaftermove-character-user-item-source-item-target'><code>function MoveItemAfterMove(Character user, Item source, Item target)</code></h3><h3 id='function-nextcycle'><code>function NextCycle()</code></h3><h3 id='function-characteronfield-character-user'><code>function CharacterOnField(Character user)</code></h3><h2 id='npcs'>NPCs</h2><h2 id='magic'>Magic</h2><h2 id='monsters'>Monsters</h2><h2 id='fields'>Fields</h2><h2 id='quests'>Quests</h2><h2 id='scheduled'>Scheduled</h2><h2 id='server'>Server</h2><h3 id='combat'>Combat</h3><h3 id='death'>Death</h3><h3 id='depot'>Depot</h3><h3 id='item-inspection'>Item Inspection</h3><h3 id='learning'>Learning</h3><h3 id='login'>Login</h3><h3 id='logout'>Logout</h3><h3 id='player-inspection'>Player Inspection</h3><h3 id='reloading-scripts'>Reloading Scripts</h3><h1 id='classes'>Classes</h1><h2 id='position'>position</h2>
 <p>Positions represent a location on the world map.</p>
 <h3 id='variables'>Variables</h3>
 <table><thead>
@@ -593,7 +646,7 @@ Try to query the db like this: <code>SELECT FROM illarionserver.items WHERE itm_
 </thead><tbody>
 <tr>
 <td>6.0</td>
-<td>11/12/2020</td>
+<td>xx/xx/202x</td>
 <td>Illarion Lua is now documented with Slate</td>
 </tr>
 <tr>
