@@ -14,6 +14,14 @@ includes:
   - introduction
   - tutorial
   - entrypoints
+  - entrypoints/items
+  - entrypoints/npcs
+  - entrypoints/magic
+  - entrypoints/monsters
+  - entrypoints/fields
+  - entrypoints/quests
+  - entrypoints/scheduled
+  - entrypoints/server
   - classes
   - classes/position
   - classes/colour
