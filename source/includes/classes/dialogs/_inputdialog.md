@@ -29,7 +29,7 @@ Returns the user's input if the dialog was successful. The return value is undef
 
 #### Construction
 
-##### `InputDialog InputDialog(string title, string description, boolean multiline, number maxChars, function callback)`
+##### `InputDialog(string title, string description, boolean multiline, number maxChars, function callback)`
 
 Creates an InputDialog with `title` and `description`. It allows line breaks iff `multiline` is set to `true`.
 The input can be up to `maxChars` characters long.

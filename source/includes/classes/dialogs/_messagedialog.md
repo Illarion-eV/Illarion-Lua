@@ -25,7 +25,7 @@ want to react to the dialog being closed.
 
 #### Construction
 
-##### `MessageDialog MessageDialog(string title, string message, function callback)`
+##### `MessageDialog(string title, string message, function callback)`
 
 Creates a MessageDialog with a specific `title` and `message`.
 
