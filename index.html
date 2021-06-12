@@ -352,6 +352,9 @@
                   <li>
                     <a href="#character" class="toc-h2 toc-link" data-title="Character">Character</a>
                   </li>
+                  <li>
+                    <a href="#itemlookat" class="toc-h2 toc-link" data-title="ItemLookAt">ItemLookAt</a>
+                  </li>
               </ul>
           </li>
           <li>
@@ -463,7 +466,7 @@ only the function signature is given for clarity.</p>
 <h3 id='function-useitem-character-character-item-item-number-actionstate'><code>function UseItem(Character character, Item item, number actionState)</code></h3>
 <p>A <code>character</code> uses an <code>item</code>.</p>
 <h3 id='function-itemlookat-lookatitem-character-character-item-item'><code>function ItemLookAt LookAtItem(Character character, Item item)</code></h3>
-<p>A <code>character</code> looks at an <code>item</code>. Needs to return an ItemLookAt.</p>
+<p>A <code>character</code> looks at an <code>item</code>. Needs to return an <a href="#itemlookat">ItemLookAt</a>.</p>
 <h3 id='function-moveitembeforemove-character-user-item-source-item-target'><code>function MoveItemBeforeMove(Character user, Item source, Item target)</code></h3><h3 id='function-moveitemaftermove-character-user-item-source-item-target'><code>function MoveItemAfterMove(Character user, Item source, Item target)</code></h3><h3 id='function-nextcycle'><code>function NextCycle()</code></h3><h3 id='function-characteronfield-character-user'><code>function CharacterOnField(Character user)</code></h3><h2 id='npcs'>NPCs</h2><h2 id='magic'>Magic</h2><h2 id='monsters'>Monsters</h2><h2 id='fields'>Fields</h2><h2 id='quests'>Quests</h2><h2 id='scheduled'>Scheduled</h2><h2 id='server'>Server</h2><h3 id='combat'>Combat</h3><h3 id='death'>Death</h3><h3 id='depot'>Depot</h3><h3 id='item-inspection'>Item Inspection</h3><h3 id='learning'>Learning</h3><h3 id='login'>Login</h3><h3 id='logout'>Logout</h3><h3 id='player-inspection'>Player Inspection</h3><h3 id='reloading-scripts'>Reloading Scripts</h3><h1 id='classes'>Classes</h1><h2 id='position'>position</h2>
 <p>Positions represent a location on the world map.</p>
 <h3 id='variables'>Variables</h3>
@@ -618,6 +621,146 @@ A position obtained from a character is still linked to that character and will 
 <h3 id='text-speech-functions'>Text/Speech Functions</h3><h4 id='talk-number-mode-text-message'><code>talk(number mode, text message)</code></h4><div class="highlight"><pre class="highlight lua tab-lua"><code><span class="n">user</span><span class="p">:</span><span class="n">talk</span><span class="p">(</span><span class="n">Character</span><span class="p">.</span><span class="n">say</span><span class="p">,</span> <span class="s2">"Hello World!"</span><span class="p">)</span>
 </code></pre></div>
 <p>Lets a character say/whisper/yell a <code>message</code>. <code>mode</code> can be <code>Character.say</code>, <code>Character.whisper</code> or <code>Character.yell</code>.</p>
+<h2 id='itemlookat'>ItemLookAt</h2>
+<p>Holds information about an item which is used by the client to display item inspection pop-ups. It is mainly used in the
+<a href="#server">server entry point</a> <code>lookAtItem</code> and the <a href="#items">Item entry point</a> <code>LookAtItem</code>.</p>
+<h3 id='variables'>Variables</h3><div class="highlight"><pre class="highlight lua tab-lua"><code><span class="kd">local</span> <span class="n">itemLookAt</span> <span class="o">=</span> <span class="n">ItemLookAt</span><span class="p">()</span>
+<span class="n">itemLookAt</span><span class="p">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">"Sword"</span>
+<span class="n">itemLookAt</span><span class="p">.</span><span class="n">rareness</span> <span class="o">=</span> <span class="n">ItemLookAt</span><span class="p">.</span><span class="n">uncommonItem</span>
+</code></pre></div>
+<p>All variables are writable.</p>
+
+<table><thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>name</td>
+<td>text</td>
+<td><code>&quot;&quot;</code></td>
+<td>item name, <em>must</em> be set</td>
+</tr>
+<tr>
+<td>rareness</td>
+<td>number</td>
+<td><code>ItemLookAt.commonItem</code></td>
+<td>has to be one of ItemLookAt.commonItem, ItemLookAt.uncommonItem, ItemLookAt.rareItem, ItemLookAt.epicItem</td>
+</tr>
+<tr>
+<td>description</td>
+<td>text</td>
+<td><code>&quot;&quot;</code></td>
+<td>item description</td>
+</tr>
+<tr>
+<td>craftedBy</td>
+<td>text</td>
+<td><code>&quot;&quot;</code></td>
+<td>who crafted the item</td>
+</tr>
+<tr>
+<td>type</td>
+<td>text</td>
+<td><code>&quot;&quot;</code></td>
+<td>states what kind of item this is</td>
+</tr>
+<tr>
+<td>level</td>
+<td>number</td>
+<td><code>0</code></td>
+<td>item level from 0 to 100</td>
+</tr>
+<tr>
+<td>usable</td>
+<td>boolean</td>
+<td><code>true</code></td>
+<td>can the item be used by players?</td>
+</tr>
+<tr>
+<td>weight</td>
+<td>number</td>
+<td><code>0</code></td>
+<td>item weight</td>
+</tr>
+<tr>
+<td>worth</td>
+<td>number</td>
+<td><code>0</code></td>
+<td>selling price (to NPCs) in copper coins</td>
+</tr>
+<tr>
+<td>qualityText</td>
+<td>text</td>
+<td><code>&quot;&quot;</code></td>
+<td>describing item quality</td>
+</tr>
+<tr>
+<td>durabilityText</td>
+<td>text</td>
+<td><code>&quot;&quot;</code></td>
+<td>describing item durability</td>
+</tr>
+<tr>
+<td>durabilityValue</td>
+<td>number</td>
+<td><code>0</code></td>
+<td>from 0 to 100 in percent</td>
+</tr>
+<tr>
+<td>diamondLevel</td>
+<td>number</td>
+<td><code>0</code></td>
+<td>magic gem level from 0 to 10</td>
+</tr>
+<tr>
+<td>emeraldLevel</td>
+<td>number</td>
+<td><code>0</code></td>
+<td>magic gem level from 0 to 10</td>
+</tr>
+<tr>
+<td>rubyLevel</td>
+<td>number</td>
+<td><code>0</code></td>
+<td>magic gem level from 0 to 10</td>
+</tr>
+<tr>
+<td>sapphireLevel</td>
+<td>number</td>
+<td><code>0</code></td>
+<td>magic gem level from 0 to 10</td>
+</tr>
+<tr>
+<td>amethystLevel</td>
+<td>number</td>
+<td><code>0</code></td>
+<td>magic gem level from 0 to 10</td>
+</tr>
+<tr>
+<td>obsidianLevel</td>
+<td>number</td>
+<td><code>0</code></td>
+<td>magic gem level from 0 to 10</td>
+</tr>
+<tr>
+<td>topazLevel</td>
+<td>number</td>
+<td><code>0</code></td>
+<td>magic gem level from 0 to 10</td>
+</tr>
+<tr>
+<td>bonus</td>
+<td>number</td>
+<td><code>0</code></td>
+<td>gem bonus from 0 to 255</td>
+</tr>
+</tbody></table>
+<h3 id='functions'>Functions</h3><h4 id='itemlookat-2'><code>ItemLookAt()</code></h4>
+<p>Returns new ItemLookAt with default values.</p>
 <h1 id='common-bugs'>Common Bugs</h1>
 <ul>
 <li>Missing <code>end</code>, missing <code>(</code> or <code>)</code></li>
