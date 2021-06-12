@@ -15,17 +15,17 @@ All variables are writable.
 
 Name            | Type    | Default                 | Description
 --------------- | ------- | ----------------------- | -----------
-name            | text    | `""`                    | item name, _must_ be set
+name            | string  | `""`                    | item name, _must_ be set
 rareness        | number  | `ItemLookAt.commonItem` | has to be one of ItemLookAt.commonItem, ItemLookAt.uncommonItem, ItemLookAt.rareItem, ItemLookAt.epicItem
-description     | text    | `""`                    | item description
-craftedBy       | text    | `""`                    | who crafted the item
-type            | text    | `""`                    | states what kind of item this is
+description     | string  | `""`                    | item description
+craftedBy       | string  | `""`                    | who crafted the item
+type            | string  | `""`                    | states what kind of item this is
 level           | number  | `0`                     | item level from 0 to 100
 usable          | boolean | `true`                  | can the item be used by players?
 weight          | number  | `0`                     | item weight
 worth           | number  | `0`                     | selling price (to NPCs) in copper coins
-qualityText     | text    | `""`                    | describing item quality
-durabilityText  | text    | `""`                    | describing item durability
+qualityText     | string  | `""`                    | describing item quality
+durabilityText  | string  | `""`                    | describing item durability
 durabilityValue | number  | `0`                     | from 0 to 100 in percent
 diamondLevel    | number  | `0`                     | magic gem level from 0 to 10
 emeraldLevel    | number  | `0`                     | magic gem level from 0 to 10
