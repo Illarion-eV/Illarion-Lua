@@ -3,7 +3,7 @@ title: Illarion Lua Reference
 
 language_tabs: # must be one of https://git.io/vQNgJ
   - lua: Lua
-  
+
 toc_footers:
   - <a target="_blank" rel="noopener noreferrer" href='https://github.com/Illarion-eV/Illarion-Dev'>Local Illarion Development Server</a>
   - <a target="_blank" rel="noopener noreferrer" href='https://github.com/vilarion/Illarion-Coding-Style'>Illarion Coding Style</a>
@@ -26,6 +26,7 @@ includes:
   - classes/position
   - classes/colour
   - classes/character
+  - classes/character/movement
   - classes/dialogs
   - classes/dialogs/messagedialog
   - classes/dialogs/inputdialog
@@ -40,4 +41,3 @@ code_clipboard: true
 <aside class="warning">                                                                                                  
 This documentation is still in development, but will eventually replace the current version. See changelog for details.
 </aside>
-
