@@ -661,7 +661,7 @@ Statu variabilis
 </code></pre></div><h4 id='results'>Results</h4>
 <p>This type of dialog by it&#39;s very nature has no results to be accessed. Still a callback makes sense, because you might
 want to react to the dialog being closed.</p>
-<h4 id='construction'>Construction</h4><h5 id='messagedialog-messagedialog-string-title-string-message-function-callback'><code>MessageDialog MessageDialog(string title, string message, function callback)</code></h5>
+<h4 id='construction'>Construction</h4><h5 id='messagedialog-string-title-string-message-function-callback'><code>MessageDialog(string title, string message, function callback)</code></h5>
 <p>Creates a MessageDialog with a specific <code>title</code> and <code>message</code>.</p>
 <h4 id='request'>Request</h4><h5 id='user-requestmessagedialog-messagedialog-dialog'><code>user:requestMessageDialog(MessageDialog dialog)</code></h5><h3 id='inputdialog'>InputDialog</h3>
 <p>This dialog requests text input from the user. If you want to further restrict the input, make that clear to the user
@@ -681,7 +681,7 @@ development of a different type of dialog.</p>
 <p>The result is <code>true</code> if the dialog was confirmed and <code>false</code> if it was aborted.</p>
 <h5 id='string-getinput'><code>string getInput()</code></h5>
 <p>Returns the user&#39;s input if the dialog was successful. The return value is undefined if the dialog was aborted.</p>
-<h4 id='construction'>Construction</h4><h5 id='inputdialog-inputdialog-string-title-string-description-boolean-multiline-number-maxchars-function-callback'><code>InputDialog InputDialog(string title, string description, boolean multiline, number maxChars, function callback)</code></h5>
+<h4 id='construction'>Construction</h4><h5 id='inputdialog-string-title-string-description-boolean-multiline-number-maxchars-function-callback'><code>InputDialog(string title, string description, boolean multiline, number maxChars, function callback)</code></h5>
 <p>Creates an InputDialog with <code>title</code> and <code>description</code>. It allows line breaks iff <code>multiline</code> is set to <code>true</code>.
 The input can be up to <code>maxChars</code> characters long.</p>
 <h4 id='request'>Request</h4><h5 id='user-requestinputdialog-inputdialog-dialog'><code>user:requestInputDialog(InputDialog dialog)</code></h5><h2 id='itemlookat'>ItemLookAt</h2>
