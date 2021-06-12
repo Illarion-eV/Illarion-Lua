@@ -353,6 +353,9 @@
                     <a href="#character" class="toc-h2 toc-link" data-title="Character">Character</a>
                   </li>
                   <li>
+                    <a href="#dialogs" class="toc-h2 toc-link" data-title="Dialogs">Dialogs</a>
+                  </li>
+                  <li>
                     <a href="#itemlookat" class="toc-h2 toc-link" data-title="ItemLookAt">ItemLookAt</a>
                   </li>
               </ul>
@@ -621,7 +624,67 @@ A position obtained from a character is still linked to that character and will 
 <h3 id='text-speech-functions'>Text/Speech Functions</h3><h4 id='talk-number-mode-text-message'><code>talk(number mode, text message)</code></h4><div class="highlight"><pre class="highlight lua tab-lua"><code><span class="n">user</span><span class="p">:</span><span class="n">talk</span><span class="p">(</span><span class="n">Character</span><span class="p">.</span><span class="n">say</span><span class="p">,</span> <span class="s2">"Hello World!"</span><span class="p">)</span>
 </code></pre></div>
 <p>Lets a character say/whisper/yell a <code>message</code>. <code>mode</code> can be <code>Character.say</code>, <code>Character.whisper</code> or <code>Character.yell</code>.</p>
-<h2 id='itemlookat'>ItemLookAt</h2>
+<h2 id='dialogs'>Dialogs</h2>
+<p>Dialogs are a more sophisticated approach to aquire user input than e.g. <code>user.lastSpokenText</code>. Each dialog serves a
+specific purpose like displaying bulk text, interfacing with a merchant or with the crafting system. Dialogs should be
+the preferred method for handling user input. If necessary new types should be implemented rather than abusing old
+variants or falling back to <code>lastSpokenText</code>. Please note, that as with many functions dialogs work with all types of
+characters (players, monsters, npcs) but only make sense with players. Using the other two types will work but do
+nothing at all. Using a dialog always consists of three descrete steps:</p>
+
+<ol>
+<li>Create a callback function to be triggered automatically when the user closes the dialog. This function has to have a
+single parameter to which the dialog will be passed with obtained results.</li>
+<li>Invoke the constructor of a specific dialog to create a dialog instance, passing required parameters and callback.</li>
+<li>Have a player object request the dialog in the user&#39;s client. Script execution does not stop after this request. The
+callback with results is called whenever the user closes the dialog.</li>
+</ol>
+
+<p>Usually, creating an object would be described before talking about results. However, here we chose a different order to
+follow the three steps mentioned above, which reflect the order in which you would write a dialog, and to review the
+most interesting details first, namely what each dialog actually contributes to a particular script.</p>
+<h3 id='messagedialog'>MessageDialog</h3>
+<p>Use this dialog to display bulk text in an on-screen window. The user can close the window at any time.</p>
+<div class="highlight"><pre class="highlight lua tab-lua"><code><span class="kd">local</span> <span class="n">callback</span> <span class="o">=</span> <span class="k">function</span><span class="p">(</span><span class="n">dialog</span><span class="p">)</span>
+    <span class="n">user</span><span class="p">:</span><span class="n">inform</span><span class="p">(</span><span class="s2">"Dialog closed"</span><span class="p">)</span>
+<span class="k">end</span>
+
+<span class="kd">local</span> <span class="n">lyrics</span> <span class="o">=</span> <span class="s">[[
+O Fortuna
+Velut luna
+Statu variabilis
+...
+]]</span>
+
+<span class="kd">local</span> <span class="n">dialog</span> <span class="o">=</span> <span class="n">MessageDialog</span><span class="p">(</span><span class="s2">"O Fortuna"</span><span class="p">,</span> <span class="n">lyrics</span><span class="p">,</span> <span class="n">callback</span><span class="p">)</span>
+<span class="n">user</span><span class="p">:</span><span class="n">requestMessageDialog</span><span class="p">(</span><span class="n">dialog</span><span class="p">)</span>
+</code></pre></div><h4 id='results'>Results</h4>
+<p>This type of dialog by it&#39;s very nature has no results to be accessed. Still a callback makes sense, because you might
+want to react to the dialog being closed.</p>
+<h4 id='construction'>Construction</h4><h5 id='messagedialog-messagedialog-string-title-string-message-function-callback'><code>MessageDialog MessageDialog(string title, string message, function callback)</code></h5>
+<p>Creates a MessageDialog with a specific <code>title</code> and <code>message</code>.</p>
+<h4 id='request'>Request</h4><h5 id='user-requestmessagedialog-messagedialog-dialog'><code>user:requestMessageDialog(MessageDialog dialog)</code></h5><h3 id='inputdialog'>InputDialog</h3>
+<p>This dialog requests text input from the user. If you want to further restrict the input, make that clear to the user
+using the description and enforce it inside the callback. For different kinds of input (e.g. items) use or request
+development of a different type of dialog.</p>
+<div class="highlight"><pre class="highlight lua tab-lua"><code><span class="kd">local</span> <span class="n">callback</span> <span class="o">=</span> <span class="k">function</span><span class="p">(</span><span class="n">dialog</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">dialog</span><span class="p">:</span><span class="n">getSuccess</span><span class="p">()</span> <span class="k">then</span>
+        <span class="n">user</span><span class="p">:</span><span class="n">inform</span><span class="p">(</span><span class="s2">"You canceled! How dare you?"</span><span class="p">)</span>
+    <span class="k">else</span>
+        <span class="n">user</span><span class="p">:</span><span class="n">inform</span><span class="p">(</span><span class="s2">"You wrote: "</span> <span class="o">..</span> <span class="n">dialog</span><span class="p">:</span><span class="n">getInput</span><span class="p">())</span>
+    <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="kd">local</span> <span class="n">dialog</span> <span class="o">=</span> <span class="n">InputDialog</span><span class="p">(</span><span class="s2">"Insert some text!"</span><span class="p">,</span> <span class="kc">false</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="n">callback</span><span class="p">)</span>
+<span class="n">user</span><span class="p">:</span><span class="n">requestInputDialog</span><span class="p">(</span><span class="n">dialog</span><span class="p">)</span>
+</code></pre></div><h4 id='results'>Results</h4><h5 id='boolean-getsuccess'><code>boolean getSuccess()</code></h5>
+<p>The result is <code>true</code> if the dialog was confirmed and <code>false</code> if it was aborted.</p>
+<h5 id='string-getinput'><code>string getInput()</code></h5>
+<p>Returns the user&#39;s input if the dialog was successful. The return value is undefined if the dialog was aborted.</p>
+<h4 id='construction'>Construction</h4><h5 id='inputdialog-inputdialog-string-title-string-description-boolean-multiline-number-maxchars-function-callback'><code>InputDialog InputDialog(string title, string description, boolean multiline, number maxChars, function callback)</code></h5>
+<p>Creates an InputDialog with <code>title</code> and <code>description</code>. It allows line breaks iff <code>multiline</code> is set to <code>true</code>.
+The input can be up to <code>maxChars</code> characters long.</p>
+<h4 id='request'>Request</h4><h5 id='user-requestinputdialog-inputdialog-dialog'><code>user:requestInputDialog(InputDialog dialog)</code></h5><h2 id='itemlookat'>ItemLookAt</h2>
 <p>Holds information about an item which is used by the client to display item inspection pop-ups. It is mainly used in the
 <a href="#server">server entry point</a> <code>lookAtItem</code> and the <a href="#items">Item entry point</a> <code>LookAtItem</code>.</p>
 <h3 id='variables'>Variables</h3><div class="highlight"><pre class="highlight lua tab-lua"><code><span class="kd">local</span> <span class="n">itemLookAt</span> <span class="o">=</span> <span class="n">ItemLookAt</span><span class="p">()</span>
@@ -640,7 +703,7 @@ A position obtained from a character is still linked to that character and will 
 </thead><tbody>
 <tr>
 <td>name</td>
-<td>text</td>
+<td>string</td>
 <td><code>&quot;&quot;</code></td>
 <td>item name, <em>must</em> be set</td>
 </tr>
@@ -652,19 +715,19 @@ A position obtained from a character is still linked to that character and will 
 </tr>
 <tr>
 <td>description</td>
-<td>text</td>
+<td>string</td>
 <td><code>&quot;&quot;</code></td>
 <td>item description</td>
 </tr>
 <tr>
 <td>craftedBy</td>
-<td>text</td>
+<td>string</td>
 <td><code>&quot;&quot;</code></td>
 <td>who crafted the item</td>
 </tr>
 <tr>
 <td>type</td>
-<td>text</td>
+<td>string</td>
 <td><code>&quot;&quot;</code></td>
 <td>states what kind of item this is</td>
 </tr>
@@ -694,13 +757,13 @@ A position obtained from a character is still linked to that character and will 
 </tr>
 <tr>
 <td>qualityText</td>
-<td>text</td>
+<td>string</td>
 <td><code>&quot;&quot;</code></td>
 <td>describing item quality</td>
 </tr>
 <tr>
 <td>durabilityText</td>
-<td>text</td>
+<td>string</td>
 <td><code>&quot;&quot;</code></td>
 <td>describing item durability</td>
 </tr>
