@@ -26,6 +26,9 @@ includes:
   - classes/position
   - classes/colour
   - classes/character
+  - classes/dialogs
+  - classes/dialogs/messagedialog
+  - classes/dialogs/inputdialog
   - classes/itemlookat
   - bugs
   - changelog
