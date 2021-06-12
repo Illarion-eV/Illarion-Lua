@@ -26,6 +26,7 @@ includes:
   - classes/position
   - classes/colour
   - classes/character
+  - classes/itemlookat
   - bugs
   - changelog
 
