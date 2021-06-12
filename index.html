@@ -356,6 +356,9 @@
                     <a href="#dialogs" class="toc-h2 toc-link" data-title="Dialogs">Dialogs</a>
                   </li>
                   <li>
+                    <a href="#field" class="toc-h2 toc-link" data-title="Field">Field</a>
+                  </li>
+                  <li>
                     <a href="#itemlookat" class="toc-h2 toc-link" data-title="ItemLookAt">ItemLookAt</a>
                   </li>
               </ul>
@@ -684,7 +687,29 @@ development of a different type of dialog.</p>
 <h4 id='construction'>Construction</h4><h5 id='inputdialog-string-title-string-description-boolean-multiline-number-maxchars-function-callback'><code>InputDialog(string title, string description, boolean multiline, number maxChars, function callback)</code></h5>
 <p>Creates an InputDialog with <code>title</code> and <code>description</code>. It allows line breaks iff <code>multiline</code> is set to <code>true</code>.
 The input can be up to <code>maxChars</code> characters long.</p>
-<h4 id='request'>Request</h4><h5 id='user-requestinputdialog-inputdialog-dialog'><code>user:requestInputDialog(InputDialog dialog)</code></h5><h2 id='itemlookat'>ItemLookAt</h2>
+<h4 id='request'>Request</h4><h5 id='user-requestinputdialog-inputdialog-dialog'><code>user:requestInputDialog(InputDialog dialog)</code></h5><h2 id='field'>Field</h2>
+<p><code>Field</code>s make up the game map. <code>Character</code>s stand on <code>Field</code>s, <code>Item</code>s are on <code>Field</code>s, warps make <code>Player</code>s jump from
+one Field to another. Each Field is on a different logical <code>position</code>.</p>
+<h3 id='functions'>Functions</h3>
+<p>Most of the time these functions will be used on a <code>Field</code> received from <code>world:getField(position)</code>.</p>
+<div class="highlight"><pre class="highlight lua tab-lua"><code><span class="kd">local</span> <span class="n">field</span> <span class="o">=</span> <span class="n">world</span><span class="p">:</span><span class="n">getField</span><span class="p">(</span><span class="n">user</span><span class="p">.</span><span class="n">pos</span><span class="p">)</span>
+<span class="kd">local</span> <span class="n">id</span> <span class="o">=</span> <span class="n">field</span><span class="p">:</span><span class="n">tile</span><span class="p">()</span>
+</code></pre></div><h4 id='number-tile'><code>number tile()</code></h4>
+<p>Returns the tile id of that <code>Field</code>, meaning the number for &quot;water&quot;, &quot;grass&quot;, etc.</p>
+<h4 id='number-countitems'><code>number countItems()</code></h4>
+<p>Returns the number of <code>Item</code>s on top of that <code>Field</code>.</p>
+<h4 id='item-getstackitem-number-stackposition'><code>Item getStackItem(number stackPosition)</code></h4>
+<p>Returns the <code>Item</code> at <code>stackPosition</code> on a given <code>Field</code>. <code>stackPosition == 0</code> will return the bottom <code>Item</code>.
+If <code>stackPosition</code> is equal or greater than the number of <code>Item</code>s on that field, an <code>Item</code> with id <code>0</code> will be returned.</p>
+<h4 id='boolean-ispassable'><code>boolean isPassable()</code></h4>
+<p>Determines whether or not a <code>Field</code> allows a <code>Character</code> to pass over it or having <code>Item</code>s dropped on it.</p>
+<h4 id='boolean-position-iswarp'><code>boolean, position isWarp()</code></h4>
+<p>Returns whether or not a <code>Field</code> is a warp as well as the warp destination.</p>
+<h4 id='setwarp-position-destination'><code>setWarp(position destination)</code></h4>
+<p>Enables the <code>Field</code>&#39;s warp and sets its <code>destination</code>.</p>
+<h4 id='removewarp'><code>removeWarp()</code></h4>
+<p>Removes the <code>Field</code>&#39;s warp.</p>
+<h2 id='itemlookat'>ItemLookAt</h2>
 <p>Holds information about an item which is used by the client to display item inspection pop-ups. It is mainly used in the
 <a href="#server">server entry point</a> <code>lookAtItem</code> and the <a href="#items">Item entry point</a> <code>LookAtItem</code>.</p>
 <h3 id='variables'>Variables</h3><div class="highlight"><pre class="highlight lua tab-lua"><code><span class="kd">local</span> <span class="n">itemLookAt</span> <span class="o">=</span> <span class="n">ItemLookAt</span><span class="p">()</span>
