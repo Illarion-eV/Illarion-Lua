@@ -10,7 +10,7 @@ Most of the time these functions will be used on a field received from `world:ge
 ```lua
 local doorPosition = position(261, 631, 0)
 local doorField = world:getField(doorPosition)
-local groundId = field:tile()
+local groundId = doorField:tile()
 ```
 #### `number tile()`
 
