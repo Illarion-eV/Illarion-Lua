@@ -1,19 +1,19 @@
 ### Skills
 
-#### `getSkillName(skill targetSkill)`
+#### `string getSkillName(skill targetSkill)`
 
 ```lua
 character:getSkillName(Character.ancientLanguage)
 ```
 Returns the name of the given `skill` in the player’s language.
 
-#### `getSkill(skill targetSkill)``
+#### `number getSkill(skill targetSkill)``
 ```lua
 character:getSkill(Character.ancientLanguage)
 ```
 
 Returns the major `skill` value for the character.
-#### `getSkillValue(skill targetSkill)``
+#### `number getSkillValue(skill targetSkill)``
 
 ```lua
 character:getSkillValue(Character.ancientLanguage)
