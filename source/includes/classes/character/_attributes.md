@@ -8,6 +8,33 @@ character:getPlayerLanguage()
 ```
 Returns the player’s language: Player.german or Player.english.
 
+#### `boolean isNewPlayer()`
+```lua
+character:isNewPlayer()
+```
+Returns whether character is a new player or not.
+
+#### `boolean isAdmin()`
+```lua
+character:isAdmin()
+```
+Returns true if that character is admin (GM) and false otherwise.
+
+#### `number idleTime()`
+```lua
+character:idleTime()
+```
+If the character is a player, returns the number of seconds they are idle. Returns 0 otherwise.
+
+#### `boolean isValidChar(character Char)`
+```lua
+isValidChar(char)
+```
+Returns true if `char` is still valid and safe to use. Validity has to be checked if char is
+used in another entrypoint call than the one where it was originally obtained, since a player
+might have logged out, an NPC might have been deleted and a monster might have been
+killed in the meantime.
+
 #### `number getMonsterType()`
 ```lua
 character:getMonsterType()
