@@ -27,6 +27,9 @@ includes:
   - classes/colour
   - classes/character
   - classes/character/movement
+  - classes/character/attributes
+  - classes/character/skills
+  - classes/character/quest
   - classes/dialogs
   - classes/dialogs/messagedialog
   - classes/dialogs/inputdialog
