@@ -692,22 +692,30 @@ The input can be up to <code>maxChars</code> characters long.</p>
 one field to another. Each field is on a different logical <code>position</code>.</p>
 <h3 id='functions'>Functions</h3>
 <p>Most of the time these functions will be used on a field received from <code>world:getField(position)</code>.</p>
-<div class="highlight"><pre class="highlight lua tab-lua"><code><span class="kd">local</span> <span class="n">field</span> <span class="o">=</span> <span class="n">world</span><span class="p">:</span><span class="n">getField</span><span class="p">(</span><span class="n">user</span><span class="p">.</span><span class="n">pos</span><span class="p">)</span>
-<span class="kd">local</span> <span class="n">id</span> <span class="o">=</span> <span class="n">field</span><span class="p">:</span><span class="n">tile</span><span class="p">()</span>
+<div class="highlight"><pre class="highlight lua tab-lua"><code><span class="kd">local</span> <span class="n">doorPosition</span> <span class="o">=</span> <span class="n">position</span><span class="p">(</span><span class="mi">261</span><span class="p">,</span> <span class="mi">631</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="kd">local</span> <span class="n">doorField</span> <span class="o">=</span> <span class="n">world</span><span class="p">:</span><span class="n">getField</span><span class="p">(</span><span class="n">doorPosition</span><span class="p">)</span>
+<span class="kd">local</span> <span class="n">groundId</span> <span class="o">=</span> <span class="n">field</span><span class="p">:</span><span class="n">tile</span><span class="p">()</span>
 </code></pre></div><h4 id='number-tile'><code>number tile()</code></h4>
 <p>Returns the tile id of that field, meaning the number for &quot;water&quot;, &quot;grass&quot;, etc.</p>
-<h4 id='number-countitems'><code>number countItems()</code></h4>
+<div class="highlight"><pre class="highlight lua tab-lua"><code><span class="kd">local</span> <span class="n">itemsOnField</span> <span class="o">=</span> <span class="n">field</span><span class="p">:</span><span class="n">countItems</span><span class="p">()</span>
+</code></pre></div><h4 id='number-countitems'><code>number countItems()</code></h4>
 <p>Returns the number of items on top of that field.</p>
-<h4 id='item-getstackitem-number-stackposition'><code>Item getStackItem(number stackPosition)</code></h4>
+<div class="highlight"><pre class="highlight lua tab-lua"><code><span class="kd">local</span> <span class="n">topItem</span> <span class="o">=</span> <span class="n">field</span><span class="p">:</span><span class="n">getStackItem</span><span class="p">(</span><span class="n">itemsOnField</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+</code></pre></div><h4 id='item-getstackitem-number-stackposition'><code>Item getStackItem(number stackPosition)</code></h4>
 <p>Returns the item at <code>stackPosition</code> on a given field. <code>stackPosition == 0</code> will return the bottom item.
 If <code>stackPosition</code> is equal or greater than the number of items on that field, an item with id <code>0</code> will be returned.</p>
-<h4 id='boolean-ispassable'><code>boolean isPassable()</code></h4>
+<div class="highlight"><pre class="highlight lua tab-lua"><code><span class="kd">local</span> <span class="n">dropPossible</span> <span class="o">=</span> <span class="n">field</span><span class="p">:</span><span class="n">isPassable</span><span class="p">()</span>
+</code></pre></div><h4 id='boolean-ispassable'><code>boolean isPassable()</code></h4>
 <p>Determines whether or not a field allows a character to pass over it or having items dropped on it.</p>
-<h4 id='boolean-position-iswarp'><code>boolean, position isWarp()</code></h4>
+<div class="highlight"><pre class="highlight lua tab-lua"><code><span class="kd">local</span> <span class="n">hasWarp</span><span class="p">,</span> <span class="n">warp</span> <span class="o">=</span> <span class="n">field</span><span class="p">:</span><span class="n">isWarp</span><span class="p">()</span>
+</code></pre></div><h4 id='boolean-position-iswarp'><code>boolean, position isWarp()</code></h4>
 <p>Returns whether or not a field is a warp as well as the warp destination.</p>
-<h4 id='setwarp-position-destination'><code>setWarp(position destination)</code></h4>
+<div class="highlight"><pre class="highlight lua tab-lua"><code><span class="kd">local</span> <span class="n">exit</span> <span class="o">=</span> <span class="n">position</span> <span class="p">(</span><span class="mi">146</span><span class="p">,</span> <span class="o">-</span><span class="mi">381</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="n">field</span><span class="p">:</span><span class="n">setWarp</span><span class="p">(</span><span class="n">exit</span><span class="p">)</span>
+</code></pre></div><h4 id='setwarp-position-destination'><code>setWarp(position destination)</code></h4>
 <p>Enables the field&#39;s warp and sets its <code>destination</code>.</p>
-<h4 id='removewarp'><code>removeWarp()</code></h4>
+<div class="highlight"><pre class="highlight lua tab-lua"><code><span class="n">field</span><span class="p">:</span><span class="n">removeWarp</span><span class="p">()</span>
+</code></pre></div><h4 id='removewarp'><code>removeWarp()</code></h4>
 <p>Removes the field&#39;s warp.</p>
 <h2 id='itemlookat'>ItemLookAt</h2>
 <p>Holds information about an item which is used by the client to display item inspection pop-ups. It is mainly used in the
