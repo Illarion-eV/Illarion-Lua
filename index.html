@@ -694,7 +694,7 @@ one field to another. Each field is on a different logical <code>position</code>
 <p>Most of the time these functions will be used on a field received from <code>world:getField(position)</code>.</p>
 <div class="highlight"><pre class="highlight lua tab-lua"><code><span class="kd">local</span> <span class="n">doorPosition</span> <span class="o">=</span> <span class="n">position</span><span class="p">(</span><span class="mi">261</span><span class="p">,</span> <span class="mi">631</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
 <span class="kd">local</span> <span class="n">doorField</span> <span class="o">=</span> <span class="n">world</span><span class="p">:</span><span class="n">getField</span><span class="p">(</span><span class="n">doorPosition</span><span class="p">)</span>
-<span class="kd">local</span> <span class="n">groundId</span> <span class="o">=</span> <span class="n">field</span><span class="p">:</span><span class="n">tile</span><span class="p">()</span>
+<span class="kd">local</span> <span class="n">groundId</span> <span class="o">=</span> <span class="n">doorField</span><span class="p">:</span><span class="n">tile</span><span class="p">()</span>
 </code></pre></div><h4 id='number-tile'><code>number tile()</code></h4>
 <p>Returns the tile id of that field, meaning the number for &quot;water&quot;, &quot;grass&quot;, etc.</p>
 <div class="highlight"><pre class="highlight lua tab-lua"><code><span class="kd">local</span> <span class="n">itemsOnField</span> <span class="o">=</span> <span class="n">field</span><span class="p">:</span><span class="n">countItems</span><span class="p">()</span>
