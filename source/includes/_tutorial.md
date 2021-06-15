@@ -31,7 +31,7 @@ Should you encounter any problems with this tutorial, please do not hesitate to 
 4. Select _Explorer_ on the left bar and open _server > login.lua_.
 5. Find the line `function M.onLogin(player)` and under it enter `player:inform("Hello Illarion Development!")`
 6. Save the file.
-7. Start your local server and connect with your Illarion client to check for the new login message. ![](images/tutorial/hello.png)
+7. Start your local server and connect with your Illarion client to check for the new login message. To reload scripts while the server is running, use the `!fr` command within the client. ![](images/tutorial/hello.png)
 8. Under _Source Control_ you can now see login.lua as a modified file. Click + to stage the changes. login.lua will now show under _Staged Changes_.
 9. Enter a message title "Say hello on login", insert a blank line and write a more detailed message below. Press CTRL + Enter to submit the commit.
 10. Under _Source Control_ select _... > Push_ to send your changes to your GitHub repository.
