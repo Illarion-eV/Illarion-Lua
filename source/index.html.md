@@ -30,6 +30,7 @@ includes:
   - classes/character/attributes
   - classes/character/skills
   - classes/character/quest
+  - classes/character/items
   - classes/dialogs
   - classes/dialogs/messagedialog
   - classes/dialogs/inputdialog
