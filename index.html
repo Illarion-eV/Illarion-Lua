@@ -310,6 +310,17 @@
           </li>
           <li>
             <a href="#tutorial" class="toc-h1 toc-link" data-title="Tutorial">Tutorial</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#initial-setup" class="toc-h2 toc-link" data-title="Initial Setup">Initial Setup</a>
+                  </li>
+                  <li>
+                    <a href="#starting-a-project" class="toc-h2 toc-link" data-title="Starting a Project">Starting a Project</a>
+                  </li>
+                  <li>
+                    <a href="#sharing-your-work" class="toc-h2 toc-link" data-title="Sharing your Work">Sharing your Work</a>
+                  </li>
+              </ul>
           </li>
           <li>
             <a href="#entry-points" class="toc-h1 toc-link" data-title="Entry Points">Entry Points</a>
@@ -446,7 +457,53 @@ nothing happens when a player uses the item.</p>
 <aside class="notice">
 The available set of entry points describes all game behaviour scripts can handle.
 </aside>
-<h1 id='tutorial'>Tutorial</h1><h1 id='entry-points'>Entry Points</h1>
+<h1 id='tutorial'>Tutorial</h1>
+<p>This tutorial shows how to get started with Illarion content development. It gives a basic introduction into our development process and policies, i.e. what you need to know to contribute to Illarion development. We will go through the steps to set up a development environment and show how projects (even small ones, like fixing spelling errors) are started and shared.</p>
+
+<p>Should you encounter any problems with this tutorial, please do not hesitate to ask for help on <a href="https://illarion.org/community/us_chat.php">Discord</a>. Feedback and suggestions on how to improve it are also welcome!</p>
+<h2 id='initial-setup'>Initial Setup</h2>
+<ol>
+<li>Create a free <a href="https://github.com">GitHub</a> account if you don&#39;t have one and verify your email address.</li>
+<li><a href="https://github.com/illarion-ev/illarion-content/fork">Fork</a> the Illarion game content to your GitHub account.</li>
+<li><a href="https://github.com/illarion-ev/illarion-map/fork">Fork</a> the Illarion maps to your GitHub account.</li>
+<li>Install and run <a href="https://code.visualstudio.com">Visual Studio Code</a>.</li>
+<li>Select <em>Source Control</em> on the left tool bar, then <em>Clone Repository</em> and <em>Clone from GitHub</em>. <img src="images/tutorial/clone-838e8972.png" alt="" /></li>
+<li>Authorize Visual Studio Code to access GitHub.</li>
+<li>In Visual Studio Code, select the Illarion-Map repository and afterwards a location to save it to. Make sure the folder is open in Visual Studio Code.</li>
+<li>Select <em>Source Control</em> again. Select <em>... &gt; Remote &gt; Add Remote...</em>, insert <code>https://github.com/Illarion-eV/Illarion-Map</code> and name it <em>upstream</em>. If asked, you can choose to periodically run <code>git fetch</code>. <img src="images/tutorial/remote-2998813f.png" alt="" /></li>
+<li>On the bottom blue bar, click the current master branch and select <em>origin/develop</em>. <img src="images/tutorial/branch-cb826a4a.png" alt="" /></li>
+<li>Select <em>File &gt; Close Folder</em> and repeat steps 5, 7, 8 and 9 for the Illarion-Content repository, using <code>https://github.com/Illarion-eV/Illarion-Content</code> as remote URL. Name the remote <em>upstream</em> as well.</li>
+<li>Close the Illarion-Content folder and re-open it. You will be asked to install recommended extensions. Do so. These extensions will offer better support for Lua, Git and point out problems in your Lua code. <img src="images/tutorial/extensions-a187c645.png" alt="" /></li>
+<li>Every change you make needs a name and an email. Use a name Illarion devs know you by and an email you can be reached at:
+
+<ol>
+<li>From the menu select <em>View &gt; Terminal</em>.</li>
+<li>Enter: <code>git config --global user.name &quot;your name here&quot;</code></li>
+<li>Enter: <code>git config --global user.email your@email.here</code></li>
+</ol></li>
+<li>Setup the <a href="https://github.com/Illarion-eV/Illarion-Dev">local Illarion development server</a>. Use your Illarion-Map and Illarion-Content directories under 2. Setup.</li>
+</ol>
+<h2 id='starting-a-project'>Starting a Project</h2>
+<ol>
+<li>Make sure the Illarion-Content folder is open and the bottom blue bar shows <em>develop</em>.</li>
+<li>Select <em>Source Control</em> on the left tool bar and select <em>... &gt; Pull, Push &gt; Pull from... &gt; upstream &gt; upstream/develop</em>.</li>
+<li>Select <em>develop &gt; Create new branch...</em> and name it <em>feature/hello-illarion</em>. Notice that the blue bar shows the new branch.</li>
+<li>Select <em>Explorer</em> on the left bar and open <em>server &gt; login.lua</em>.</li>
+<li>Find the line <code>function M.onLogin(player)</code> and under it enter <code>player:inform(&quot;Hello Illarion Development!&quot;)</code></li>
+<li>Save the file.</li>
+<li>Start your local server and connect with your Illarion client to check for the new login message. <img src="images/tutorial/hello-cf18e1cd.png" alt="" /></li>
+<li>Under <em>Source Control</em> you can now see login.lua as a modified file. Click + to stage the changes. login.lua will now show under <em>Staged Changes</em>.</li>
+<li>Enter a message title &quot;Say hello on login&quot;, insert a blank line and write a more detailed message below. Press CTRL + Enter to submit the commit.</li>
+<li>Under <em>Source Control</em> select <em>... &gt; Push</em> to send your changes to your GitHub repository.</li>
+</ol>
+<h2 id='sharing-your-work'>Sharing your Work</h2>
+<ol>
+<li>On GitHub go to your Illarion-Content repository and in the left-hand combo box select the new <em>feature/hello-illarion</em> branch. <img src="images/tutorial/github-0f6d32b6.png" alt="" /></li>
+<li>Either click <em>Compare &amp; pull request</em> or <em>Contribute &gt; Open pull request</em>.</li>
+<li>Switch the base branch from <em>master</em> to <em>develop</em>.</li>
+<li>Enter a suitable title and description before <strong>not</strong> clicking <em>Create pull request</em>, as this would notify a lot of developers and this is not a real project.</li>
+</ol>
+<h1 id='entry-points'>Entry Points</h1>
 <p>As described in the <a href="#introduction">introduction</a>, entry points are the interface between server and scripts. The server
 calls entry points on a variety of events to perform the implemented game mechanics. This allows the server to remain
 unchanged and running, while scripts are updated at run-time.</p>
