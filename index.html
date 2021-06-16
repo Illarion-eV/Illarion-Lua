@@ -355,13 +355,10 @@
             <a href="#classes" class="toc-h1 toc-link" data-title="Classes">Classes</a>
               <ul class="toc-list-h2">
                   <li>
-                    <a href="#position" class="toc-h2 toc-link" data-title="position">position</a>
+                    <a href="#character" class="toc-h2 toc-link" data-title="Character">Character</a>
                   </li>
                   <li>
                     <a href="#colour" class="toc-h2 toc-link" data-title="colour">colour</a>
-                  </li>
-                  <li>
-                    <a href="#character" class="toc-h2 toc-link" data-title="Character">Character</a>
                   </li>
                   <li>
                     <a href="#dialogs" class="toc-h2 toc-link" data-title="Dialogs">Dialogs</a>
@@ -370,7 +367,16 @@
                     <a href="#field" class="toc-h2 toc-link" data-title="Field">Field</a>
                   </li>
                   <li>
+                    <a href="#item" class="toc-h2 toc-link" data-title="Item">Item</a>
+                  </li>
+                  <li>
                     <a href="#itemlookat" class="toc-h2 toc-link" data-title="ItemLookAt">ItemLookAt</a>
+                  </li>
+                  <li>
+                    <a href="#itemstruct" class="toc-h2 toc-link" data-title="ItemStruct">ItemStruct</a>
+                  </li>
+                  <li>
+                    <a href="#position" class="toc-h2 toc-link" data-title="position">position</a>
                   </li>
               </ul>
           </li>
@@ -530,102 +536,7 @@ only the function signature is given for clarity.</p>
 <p>A <code>character</code> uses an <code>item</code>.</p>
 <h3 id='itemlookat-lookatitem-character-character-item-item'><code>ItemLookAt LookAtItem(Character character, Item item)</code></h3>
 <p>A <code>character</code> looks at an <code>item</code>. Needs to return an <a href="#itemlookat">ItemLookAt</a>.</p>
-<h3 id='moveitembeforemove-character-user-item-source-item-target'><code>MoveItemBeforeMove(Character user, Item source, Item target)</code></h3><h3 id='moveitemaftermove-character-user-item-source-item-target'><code>MoveItemAfterMove(Character user, Item source, Item target)</code></h3><h3 id='nextcycle'><code>NextCycle()</code></h3><h3 id='characteronfield-character-user'><code>CharacterOnField(Character user)</code></h3><h2 id='npcs'>NPCs</h2><h2 id='magic'>Magic</h2><h2 id='monsters'>Monsters</h2><h2 id='fields'>Fields</h2><h2 id='quests'>Quests</h2><h2 id='scheduled'>Scheduled</h2><h2 id='server'>Server</h2><h3 id='combat'>Combat</h3><h3 id='death'>Death</h3><h3 id='depot'>Depot</h3><h3 id='item-inspection'>Item Inspection</h3><h3 id='learning'>Learning</h3><h3 id='login'>Login</h3><h3 id='logout'>Logout</h3><h3 id='player-inspection'>Player Inspection</h3><h3 id='reloading-scripts'>Reloading Scripts</h3><h1 id='classes'>Classes</h1><h2 id='position'>position</h2>
-<p>Positions represent a location on the world map.</p>
-<h3 id='variables'>Variables</h3>
-<table><thead>
-<tr>
-<th>Name</th>
-<th>Type</th>
-<th>Writable</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>x</td>
-<td>number</td>
-<td>yes</td>
-<td>x coordinate, increases from west to east (lower left to upper right)</td>
-</tr>
-<tr>
-<td>y</td>
-<td>number</td>
-<td>yes</td>
-<td>y coordinate, increases from north to south (upper left to lower right)</td>
-</tr>
-<tr>
-<td>z</td>
-<td>number</td>
-<td>yes</td>
-<td>z coordinate, increases as levels go up</td>
-</tr>
-</tbody></table>
-<h3 id='functions'>Functions</h3><h4 id='position-number-x-number-y-number-z'><code>position(number x, number y, number z)</code></h4><div class="highlight"><pre class="highlight lua tab-lua"><code><span class="kd">local</span> <span class="n">pos</span> <span class="o">=</span> <span class="n">position</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
-</code></pre></div>
-<p>Returns position for map location (x, y, z).</p>
-<h4 id='position-p1-position-p2'><code>position p1 == position p2</code></h4><div class="highlight"><pre class="highlight lua tab-lua"><code><span class="kd">local</span> <span class="n">equal</span> <span class="o">=</span> <span class="n">position</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">==</span> <span class="n">position</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="c1">-- equal == true</span>
-</code></pre></div>
-<p>Compares two positions <code>p1</code> and <code>p2</code>. Returns</p>
-
-<ul>
-<li><code>true</code> if <code>p1.x == p2.x and p1.y == p2.y and p1.z == p2.z</code></li>
-<li><code>false</code> otherwise</li>
-</ul>
-<h3 id='free-functions'>Free Functions</h3><h4 id='tostring-position-p'><code>tostring(position p)</code></h4><div class="highlight"><pre class="highlight lua tab-lua"><code><span class="kd">local</span> <span class="n">text</span> <span class="o">=</span> <span class="nb">tostring</span><span class="p">(</span><span class="n">position</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span> <span class="c1">-- text == "(3, 4, 0)"</span>
-</code></pre></div>
-<p>Returns <code>&quot;(&quot; .. p.x .. &quot;, &quot; .. p.y .. &quot;, &quot; .. p.z .. &quot;)&quot;</code>.</p>
-
-<aside class="warning">
-A position obtained from a character is still linked to that character and will change when the character moves.
-</aside>
-<div class="highlight"><pre class="highlight lua tab-lua"><code><span class="n">user</span><span class="p">:</span><span class="n">forceWarp</span><span class="p">(</span><span class="n">position</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
-<span class="kd">local</span> <span class="n">pos</span> <span class="o">=</span> <span class="n">user</span><span class="p">.</span><span class="n">pos</span>              <span class="c1">-- pos is (0, 0, 0)</span>
-<span class="n">user</span><span class="p">:</span><span class="n">forceWarp</span><span class="p">(</span><span class="n">position</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span> <span class="c1">-- now user.pos AND pos are (1, 1, 0)</span>
-</code></pre></div>
-<blockquote>
-<p>Avoid this by creating a new position from individual coordinates.</p>
-</blockquote>
-<div class="highlight"><pre class="highlight lua tab-lua"><code><span class="kd">local</span> <span class="n">pos</span> <span class="o">=</span> <span class="n">position</span><span class="p">(</span><span class="n">user</span><span class="p">.</span><span class="n">pos</span><span class="p">.</span><span class="n">x</span><span class="p">,</span> <span class="n">user</span><span class="p">.</span><span class="n">pos</span><span class="p">.</span><span class="n">y</span><span class="p">,</span> <span class="n">user</span><span class="p">.</span><span class="n">pos</span><span class="p">.</span><span class="n">z</span><span class="p">)</span>
-</code></pre></div><h2 id='colour'>colour</h2>
-<p>Colours are used to represent a characters skin or hair colour.</p>
-<h3 id='variables'>Variables</h3>
-<table><thead>
-<tr>
-<th>Name</th>
-<th>Type</th>
-<th>Writable</th>
-<th>Description</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>red</td>
-<td>number</td>
-<td>yes</td>
-<td>From 0 (no red) to 255 (full red)</td>
-</tr>
-<tr>
-<td>green</td>
-<td>number</td>
-<td>yes</td>
-<td>From 0 (no green) to 255 (full green)</td>
-</tr>
-<tr>
-<td>blue</td>
-<td>number</td>
-<td>yes</td>
-<td>From 0 (no blue) to 255 (full blue)</td>
-</tr>
-<tr>
-<td>alpha</td>
-<td>number</td>
-<td>yes</td>
-<td>From 0 (transparent) to 255 (opaque)</td>
-</tr>
-</tbody></table>
-<h3 id='functions'>Functions</h3><h4 id='colour-number-red-number-green-number-blue-number-alpha-255'><code>colour(number red, number green, number blue [, number alpha = 255])</code></h4><div class="highlight"><pre class="highlight lua tab-lua"><code><span class="kd">local</span> <span class="n">black</span> <span class="o">=</span> <span class="n">colour</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
-</code></pre></div>
-<p>Creates colour for given RGBA values.</p>
-<h2 id='character'>Character</h2>
+<h3 id='moveitembeforemove-character-user-item-source-item-target'><code>MoveItemBeforeMove(Character user, Item source, Item target)</code></h3><h3 id='moveitemaftermove-character-user-item-source-item-target'><code>MoveItemAfterMove(Character user, Item source, Item target)</code></h3><h3 id='nextcycle'><code>NextCycle()</code></h3><h3 id='characteronfield-character-user'><code>CharacterOnField(Character user)</code></h3><h2 id='npcs'>NPCs</h2><h2 id='magic'>Magic</h2><h2 id='monsters'>Monsters</h2><h2 id='fields'>Fields</h2><h2 id='quests'>Quests</h2><h2 id='scheduled'>Scheduled</h2><h2 id='server'>Server</h2><h3 id='combat'>Combat</h3><h3 id='death'>Death</h3><h3 id='depot'>Depot</h3><h3 id='item-inspection'>Item Inspection</h3><h3 id='learning'>Learning</h3><h3 id='login'>Login</h3><h3 id='logout'>Logout</h3><h3 id='player-inspection'>Player Inspection</h3><h3 id='reloading-scripts'>Reloading Scripts</h3><h1 id='classes'>Classes</h1><h2 id='character'>Character</h2>
 <p>Players, NPCs and monsters are the three types of characters in Illarion.</p>
 
 <p><img src="images/directions-a05aa5a6.png" alt="directions" /></p>
@@ -684,6 +595,45 @@ A position obtained from a character is still linked to that character and will 
 <h3 id='text-speech-functions'>Text/Speech Functions</h3><h4 id='talk-number-mode-text-message'><code>talk(number mode, text message)</code></h4><div class="highlight"><pre class="highlight lua tab-lua"><code><span class="n">user</span><span class="p">:</span><span class="n">talk</span><span class="p">(</span><span class="n">Character</span><span class="p">.</span><span class="n">say</span><span class="p">,</span> <span class="s2">"Hello World!"</span><span class="p">)</span>
 </code></pre></div>
 <p>Lets a character say/whisper/yell a <code>message</code>. <code>mode</code> can be <code>Character.say</code>, <code>Character.whisper</code> or <code>Character.yell</code>.</p>
+<h2 id='colour'>colour</h2>
+<p>Colours are used to represent a characters skin or hair colour.</p>
+<h3 id='variables'>Variables</h3>
+<table><thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Writable</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>red</td>
+<td>number</td>
+<td>yes</td>
+<td>From 0 (no red) to 255 (full red)</td>
+</tr>
+<tr>
+<td>green</td>
+<td>number</td>
+<td>yes</td>
+<td>From 0 (no green) to 255 (full green)</td>
+</tr>
+<tr>
+<td>blue</td>
+<td>number</td>
+<td>yes</td>
+<td>From 0 (no blue) to 255 (full blue)</td>
+</tr>
+<tr>
+<td>alpha</td>
+<td>number</td>
+<td>yes</td>
+<td>From 0 (transparent) to 255 (opaque)</td>
+</tr>
+</tbody></table>
+<h3 id='functions'>Functions</h3><h4 id='colour-number-red-number-green-number-blue-number-alpha-255'><code>colour(number red, number green, number blue [, number alpha = 255])</code></h4><div class="highlight"><pre class="highlight lua tab-lua"><code><span class="kd">local</span> <span class="n">black</span> <span class="o">=</span> <span class="n">colour</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+</code></pre></div>
+<p>Creates colour for given RGBA values.</p>
 <h2 id='dialogs'>Dialogs</h2>
 <p>Dialogs are a more sophisticated approach to aquire user input than e.g. <code>user.lastSpokenText</code>. Each dialog serves a
 specific purpose like displaying bulk text, interfacing with a merchant or with the crafting system. Dialogs should be
@@ -774,7 +724,7 @@ If <code>stackPosition</code> is equal or greater than the number of items on th
 <div class="highlight"><pre class="highlight lua tab-lua"><code><span class="n">field</span><span class="p">:</span><span class="n">removeWarp</span><span class="p">()</span>
 </code></pre></div><h4 id='removewarp'><code>removeWarp()</code></h4>
 <p>Removes the field&#39;s warp.</p>
-<h2 id='itemlookat'>ItemLookAt</h2>
+<h2 id='item'>Item</h2><h2 id='itemlookat'>ItemLookAt</h2>
 <p>Holds information about an item which is used by the client to display item inspection pop-ups. It is mainly used in the
 <a href="#server">server entry point</a> <code>lookAtItem</code> and the <a href="#items">Item entry point</a> <code>LookAtItem</code>.</p>
 <h3 id='variables'>Variables</h3><div class="highlight"><pre class="highlight lua tab-lua"><code><span class="kd">local</span> <span class="n">itemLookAt</span> <span class="o">=</span> <span class="n">ItemLookAt</span><span class="p">()</span>
@@ -914,7 +864,167 @@ If <code>stackPosition</code> is equal or greater than the number of items on th
 </tbody></table>
 <h3 id='functions'>Functions</h3><h4 id='itemlookat-2'><code>ItemLookAt()</code></h4>
 <p>Returns new ItemLookAt with default values.</p>
-<h1 id='common-bugs'>Common Bugs</h1>
+<h2 id='itemstruct'>ItemStruct</h2><div class="highlight"><pre class="highlight lua tab-lua"><code><span class="kd">local</span> <span class="n">itemStats</span> <span class="o">=</span> <span class="n">world</span><span class="p">:</span><span class="n">getItemStats</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+<span class="kd">local</span> <span class="n">item</span><span class="p">.</span><span class="n">wear</span> <span class="o">=</span> <span class="n">itemStats</span><span class="p">.</span><span class="n">AgeingSpeed</span>
+<span class="n">world</span><span class="p">:</span><span class="n">changeItem</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+</code></pre></div>
+<blockquote>
+<p>Reset item wear to its default</p>
+</blockquote>
+<div class="highlight"><pre class="highlight lua tab-lua"><code><span class="kd">local</span> <span class="n">itemStats</span> <span class="o">=</span> <span class="n">world</span><span class="p">:</span><span class="n">getItemStatsFromId</span><span class="p">(</span><span class="n">Item</span><span class="p">.</span><span class="n">apple</span><span class="p">)</span>
+<span class="kd">local</span> <span class="n">vendorSellPrice</span> <span class="o">=</span> <span class="n">itemStats</span><span class="p">.</span><span class="n">Worth</span>
+<span class="kd">local</span> <span class="n">nameEnglish</span> <span class="o">=</span> <span class="n">itemStats</span><span class="p">.</span><span class="n">English</span>
+<span class="kd">local</span> <span class="n">nameGerman</span> <span class="o">=</span> <span class="n">itemStats</span><span class="p">.</span><span class="n">German</span>
+</code></pre></div>
+<blockquote>
+<p>We don&#39;t need an actual item to get this data, the id (Item.apple) is enough.</p>
+</blockquote>
+
+<p>Represents item definitions obtained from the database. Does not represent an item on the map or in a player&#39;s inventory,
+but general information about an item with a specific id. </p>
+<h3 id='variables'>Variables</h3>
+<p>All of these variables are read-only.</p>
+
+<table><thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>AgeingSpeed</td>
+<td>number</td>
+<td>item does not decay for 3 * AgeingSpeed minutes, by default</td>
+</tr>
+<tr>
+<td>Brightness</td>
+<td>number</td>
+<td>from 0 to 9, used for light sources</td>
+</tr>
+<tr>
+<td>BuyStack</td>
+<td>number</td>
+<td>default stack size on vendors</td>
+</tr>
+<tr>
+<td>English</td>
+<td>string</td>
+<td>English item name</td>
+</tr>
+<tr>
+<td>EnglishDescription</td>
+<td>string</td>
+<td>English item description</td>
+</tr>
+<tr>
+<td>German</td>
+<td>string</td>
+<td>German item name</td>
+</tr>
+<tr>
+<td>GermanDescription</td>
+<td>string</td>
+<td>German item description</td>
+</tr>
+<tr>
+<td>id</td>
+<td>number</td>
+<td>item id</td>
+</tr>
+<tr>
+<td>Level</td>
+<td>number</td>
+<td>item level from 0 to 100</td>
+</tr>
+<tr>
+<td>MaxStack</td>
+<td>number</td>
+<td>maximum stack size</td>
+</tr>
+<tr>
+<td>ObjectAfterRot</td>
+<td>number</td>
+<td>item id the item changes into after decaying</td>
+</tr>
+<tr>
+<td>Rareness</td>
+<td>number</td>
+<td>ItemLookAt.commonItem, ItemLookAt.uncommonItem, ItemLookAt.rareItem or ItemLookAt.epicItem</td>
+</tr>
+<tr>
+<td>rotsInInventory</td>
+<td>boolean</td>
+<td>if set, item decays in a player&#39;s inventory, useful for e.g. lit torches</td>
+</tr>
+<tr>
+<td>Weight</td>
+<td>number</td>
+<td>item weight, item can only be moved if its weight is below 30000</td>
+</tr>
+<tr>
+<td>Worth</td>
+<td>number</td>
+<td>sold by vendors for this amount of copper coins</td>
+</tr>
+</tbody></table>
+<h2 id='position'>position</h2>
+<p>Positions represent a location on the world map.</p>
+<h3 id='variables'>Variables</h3>
+<table><thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Writable</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>x</td>
+<td>number</td>
+<td>yes</td>
+<td>x coordinate, increases from west to east (lower left to upper right)</td>
+</tr>
+<tr>
+<td>y</td>
+<td>number</td>
+<td>yes</td>
+<td>y coordinate, increases from north to south (upper left to lower right)</td>
+</tr>
+<tr>
+<td>z</td>
+<td>number</td>
+<td>yes</td>
+<td>z coordinate, increases as levels go up</td>
+</tr>
+</tbody></table>
+<h3 id='functions'>Functions</h3><h4 id='position-number-x-number-y-number-z'><code>position(number x, number y, number z)</code></h4><div class="highlight"><pre class="highlight lua tab-lua"><code><span class="kd">local</span> <span class="n">pos</span> <span class="o">=</span> <span class="n">position</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+</code></pre></div>
+<p>Returns position for map location (x, y, z).</p>
+<h4 id='position-p1-position-p2'><code>position p1 == position p2</code></h4><div class="highlight"><pre class="highlight lua tab-lua"><code><span class="kd">local</span> <span class="n">equal</span> <span class="o">=</span> <span class="n">position</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">==</span> <span class="n">position</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="c1">-- equal == true</span>
+</code></pre></div>
+<p>Compares two positions <code>p1</code> and <code>p2</code>. Returns</p>
+
+<ul>
+<li><code>true</code> if <code>p1.x == p2.x and p1.y == p2.y and p1.z == p2.z</code></li>
+<li><code>false</code> otherwise</li>
+</ul>
+<h3 id='free-functions'>Free Functions</h3><h4 id='tostring-position-p'><code>tostring(position p)</code></h4><div class="highlight"><pre class="highlight lua tab-lua"><code><span class="kd">local</span> <span class="n">text</span> <span class="o">=</span> <span class="nb">tostring</span><span class="p">(</span><span class="n">position</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span> <span class="c1">-- text == "(3, 4, 0)"</span>
+</code></pre></div>
+<p>Returns <code>&quot;(&quot; .. p.x .. &quot;, &quot; .. p.y .. &quot;, &quot; .. p.z .. &quot;)&quot;</code>.</p>
+
+<aside class="warning">
+A position obtained from a character is still linked to that character and will change when the character moves.
+</aside>
+<div class="highlight"><pre class="highlight lua tab-lua"><code><span class="n">user</span><span class="p">:</span><span class="n">forceWarp</span><span class="p">(</span><span class="n">position</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+<span class="kd">local</span> <span class="n">pos</span> <span class="o">=</span> <span class="n">user</span><span class="p">.</span><span class="n">pos</span>              <span class="c1">-- pos is (0, 0, 0)</span>
+<span class="n">user</span><span class="p">:</span><span class="n">forceWarp</span><span class="p">(</span><span class="n">position</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span> <span class="c1">-- now user.pos AND pos are (1, 1, 0)</span>
+</code></pre></div>
+<blockquote>
+<p>Avoid this by creating a new position from individual coordinates.</p>
+</blockquote>
+<div class="highlight"><pre class="highlight lua tab-lua"><code><span class="kd">local</span> <span class="n">pos</span> <span class="o">=</span> <span class="n">position</span><span class="p">(</span><span class="n">user</span><span class="p">.</span><span class="n">pos</span><span class="p">.</span><span class="n">x</span><span class="p">,</span> <span class="n">user</span><span class="p">.</span><span class="n">pos</span><span class="p">.</span><span class="n">y</span><span class="p">,</span> <span class="n">user</span><span class="p">.</span><span class="n">pos</span><span class="p">.</span><span class="n">z</span><span class="p">)</span>
+</code></pre></div><h1 id='common-bugs'>Common Bugs</h1>
 <ul>
 <li>Missing <code>end</code>, missing <code>(</code> or <code>)</code></li>
 <li>Script name and db entry do not match (be careful of invisible characters!).<br>
