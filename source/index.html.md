@@ -29,7 +29,9 @@ includes:
   - classes/dialogs/messagedialog
   - classes/dialogs/inputdialog
   - classes/field
+  - classes/item
   - classes/itemlookat
+  - classes/itemstruct
   - classes/position
   - bugs
   - changelog
