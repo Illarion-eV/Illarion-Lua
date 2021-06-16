@@ -23,14 +23,14 @@ includes:
   - entrypoints/scheduled
   - entrypoints/server
   - classes
-  - classes/position
-  - classes/colour
   - classes/character
+  - classes/colour
   - classes/dialogs
   - classes/dialogs/messagedialog
   - classes/dialogs/inputdialog
   - classes/field
   - classes/itemlookat
+  - classes/position
   - bugs
   - changelog
 
