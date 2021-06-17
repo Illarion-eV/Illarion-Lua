@@ -724,7 +724,105 @@ If <code>stackPosition</code> is equal or greater than the number of items on th
 <div class="highlight"><pre class="highlight lua tab-lua"><code><span class="n">field</span><span class="p">:</span><span class="n">removeWarp</span><span class="p">()</span>
 </code></pre></div><h4 id='removewarp'><code>removeWarp()</code></h4>
 <p>Removes the field&#39;s warp.</p>
-<h2 id='item'>Item</h2><h2 id='itemlookat'>ItemLookAt</h2>
+<h2 id='item'>Item</h2><div class="highlight"><pre class="highlight lua tab-lua"><code><span class="n">item</span><span class="p">.</span><span class="n">quality</span> <span class="o">=</span> <span class="mi">284</span>
+<span class="n">item</span><span class="p">.</span><span class="n">setData</span><span class="p">(</span><span class="s2">"name"</span><span class="p">,</span> <span class="s2">"John's Item"</span><span class="p">)</span>
+<span class="n">world</span><span class="p">:</span><span class="n">changeItem</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+</code></pre></div>
+<p>Represents an actual item on the map or in a character&#39;s pockets. If you change an <code>item</code>, you need to propagate your
+changes to the server via <code>world:changeItem(item)</code>.</p>
+<h3 id='constants'>Constants</h3><div class="highlight"><pre class="highlight lua tab-lua"><code><span class="kd">local</span> <span class="n">itemStats</span> <span class="o">=</span> <span class="n">world</span><span class="p">:</span><span class="n">getItemStatsFromId</span><span class="p">(</span><span class="n">Item</span><span class="p">.</span><span class="n">apple</span><span class="p">)</span>
+</code></pre></div>
+<p>If an item has an entry <code>someUniqueItemName</code> in <code>itm_name</code> in the items database table, you can get its id with
+<code>Item.someUniqueItemName</code>. This is more descriptive than using the actual number.</p>
+<h3 id='variables'>Variables</h3>
+<table><thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Writable</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>id</td>
+<td>number</td>
+<td>yes</td>
+<td>item id</td>
+</tr>
+<tr>
+<td>inside</td>
+<td>Container</td>
+<td>no</td>
+<td>if the item is in a container, this is that container</td>
+</tr>
+<tr>
+<td>itempos</td>
+<td>number</td>
+<td>no</td>
+<td>if the item is in a container or in a character&#39;s inventory, this is its position there</td>
+</tr>
+<tr>
+<td>number</td>
+<td>number</td>
+<td>yes</td>
+<td>number of identical items in the stack</td>
+</tr>
+<tr>
+<td>owner</td>
+<td>Character</td>
+<td>no</td>
+<td>if the item is on a character, this is that character</td>
+</tr>
+<tr>
+<td>pos</td>
+<td>position</td>
+<td>no</td>
+<td>if the item is on the map, this is the position of the field it is on</td>
+</tr>
+<tr>
+<td>quality</td>
+<td>number</td>
+<td>yes</td>
+<td>item quality from 0 to 999, where the first digit is quality and the last two digits are durability</td>
+</tr>
+<tr>
+<td>wear</td>
+<td>number</td>
+<td>yes</td>
+<td>if an item can decay it loses one wear point every three minutes</td>
+</tr>
+</tbody></table>
+<h3 id='functions'>Functions</h3><h4 id='string-getdata-string-key'><code>string getData(string key)</code></h4><div class="highlight"><pre class="highlight lua tab-lua"><code><span class="kd">local</span> <span class="n">prayerLevel</span> <span class="o">=</span> <span class="nb">tonumber</span><span class="p">(</span><span class="n">item</span><span class="p">:</span><span class="n">getData</span><span class="p">(</span><span class="s2">"prayerLevel"</span><span class="p">))</span>
+</code></pre></div>
+<p>Returns the item&#39;s data value for the given <code>key</code> if that key exists and an empty string otherwise.</p>
+<h4 id='number-gettype'><code>number getType()</code></h4><div class="highlight"><pre class="highlight lua tab-lua"><code><span class="k">if</span> <span class="n">item</span><span class="p">:</span><span class="n">getType</span><span class="p">()</span> <span class="o">==</span> <span class="n">scriptItem</span><span class="p">.</span><span class="n">field</span> <span class="k">then</span>
+    <span class="n">debug</span><span class="p">(</span><span class="s2">"item with id "</span> <span class="o">..</span> <span class="n">item</span><span class="p">.</span><span class="n">id</span> <span class="o">..</span> <span class="s2">" is on the ground"</span><span class="p">)</span>
+<span class="k">end</span>
+</code></pre></div>
+<p>Depending on where the item is located, will return one of</p>
+
+<ul>
+<li><code>scriptItem.notdefined</code></li>
+<li><code>scriptItem.field</code></li>
+<li><code>scriptItem.inventory</code></li>
+<li><code>scriptItem.belt</code></li>
+<li><code>scriptItem.container</code></li>
+</ul>
+<h4 id='boolean-islarge'><code>boolean isLarge()</code></h4><div class="highlight"><pre class="highlight lua tab-lua"><code><span class="kd">local</span> <span class="n">blocksView</span> <span class="o">=</span> <span class="n">item</span><span class="p">:</span><span class="n">isLarge</span><span class="p">()</span>
+</code></pre></div>
+<p>Returns true if and only if the item is large enough to block a character&#39;s view. This means in the database it has a
+volume of at least 5000.</p>
+<h4 id='setdata-string-key-number-value'><code>setData(string key, number value)</code></h4><h4 id='setdata-string-key-string-value'><code>setData(string key, string value)</code></h4><div class="highlight"><pre class="highlight lua tab-lua"><code><span class="n">item</span><span class="p">:</span><span class="n">setData</span><span class="p">(</span><span class="s2">"prayerLevel"</span><span class="p">,</span> <span class="mi">12</span><span class="p">)</span>
+<span class="n">item</span><span class="p">:</span><span class="n">setData</span><span class="p">(</span><span class="s2">"prayerLevel"</span><span class="p">,</span> <span class="s2">""</span><span class="p">)</span>
+<span class="n">item</span><span class="p">:</span><span class="n">setData</span><span class="p">(</span><span class="s2">"prefix"</span><span class="p">,</span> <span class="s2">"very strong "</span><span class="p">)</span>
+</code></pre></div>
+<blockquote>
+<p>The second line removes the data key <code>prayerLevel</code> from the item.</p>
+</blockquote>
+
+<p>Sets the data <code>value</code> for a given <code>key</code> unless <code>value</code> is an empty string, in which case the entry for <code>key</code> is removed.
+If given a number for <code>value</code>, that number is stored as the corresponding string.</p>
+<h2 id='itemlookat'>ItemLookAt</h2>
 <p>Holds information about an item which is used by the client to display item inspection pop-ups. It is mainly used in the
 <a href="#server">server entry point</a> <code>lookAtItem</code> and the <a href="#items">Item entry point</a> <code>LookAtItem</code>.</p>
 <h3 id='variables'>Variables</h3><div class="highlight"><pre class="highlight lua tab-lua"><code><span class="kd">local</span> <span class="n">itemLookAt</span> <span class="o">=</span> <span class="n">ItemLookAt</span><span class="p">()</span>
