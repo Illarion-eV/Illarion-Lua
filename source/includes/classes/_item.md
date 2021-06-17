@@ -12,7 +12,7 @@ changes to the server via `world:changeItem(item)`.
 ```lua
 local itemStats = world:getItemStatsFromId(Item.apple)
 ```
-If an item has an entry `someUniqueItemName` in `itm_name` in the items database table, you can get its id with
+If an item has an entry `someUniqueItemName` in `itm_name` in the items database entry, you can get its id with
 `Item.someUniqueItemName`. This is more descriptive than using the actual number.
 
 ### Variables
