@@ -1,5 +1,7 @@
 # Introduction
 
+## Tools
+
 Illarion game content like items, NPCs, quests, etc. is defined in scripts written in
 <a target="_blank" rel="noopener noreferrer" href='https://www.lua.org/manual/5.2/'>Lua 5.2</a>
 with Illarion specific extensions. This document describes these extensions. Those scripts can be found in the
@@ -20,6 +22,8 @@ description of setting up and using a development environment is available in th
 <aside class="notice">
 Scripts need to be encoded in ISO 8859-1.
 </aside>
+
+## Structure
 
 > `item/apple.lua`
 
@@ -63,3 +67,22 @@ nothing happens when a player uses the item.
 <aside class="notice">
 The available set of entry points describes all game behaviour scripts can handle.
 </aside>
+
+## Notation
+
+Function definitions in this document are given in the following format:
+
+`<return values> <function name>(<parameters>)`
+
+* `return values` stands for a list of variables returned from the function and is omitted if the function does not
+return anything.
+* `<function name>` is the name of the function.
+* `<parameters>` is a list of type/name pairs, separated by space. Optional parameters are given in brackets.
+  Default parameters are assigned the value they will be given if left out of a call.
+
+Example:
+
+`weight, value example(Item item [, number amount = 1])`
+
+The function `example` given here returns `weight` and `value`. It takes an `Item` called `item` as well as an optional
+`number` called `amount` as parameters. If `amount` is not passed into the function it will be set to `1`.
