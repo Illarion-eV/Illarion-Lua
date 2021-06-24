@@ -307,6 +307,20 @@
       <ul id="toc" class="toc-list-h1">
           <li>
             <a href="#introduction" class="toc-h1 toc-link" data-title="Introduction">Introduction</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#tools" class="toc-h2 toc-link" data-title="Tools">Tools</a>
+                  </li>
+                  <li>
+                    <a href="#structure" class="toc-h2 toc-link" data-title="Structure">Structure</a>
+                  </li>
+                  <li>
+                    <a href="#database-changes" class="toc-h2 toc-link" data-title="Database Changes">Database Changes</a>
+                  </li>
+                  <li>
+                    <a href="#notation" class="toc-h2 toc-link" data-title="Notation">Notation</a>
+                  </li>
+              </ul>
           </li>
           <li>
             <a href="#tutorial" class="toc-h1 toc-link" data-title="Tutorial">Tutorial</a>
@@ -400,7 +414,7 @@
         <aside class="warning">                                                                                                  
 This documentation is still in development, but will eventually replace the current version. See changelog for details.
 </aside>
-<h1 id='introduction'>Introduction</h1>
+<h1 id='introduction'>Introduction</h1><h2 id='tools'>Tools</h2>
 <p>Illarion game content like items, NPCs, quests, etc. is defined in scripts written in
 <a target="_blank" rel="noopener noreferrer" href='https://www.lua.org/manual/5.2/'>Lua 5.2</a>
 with Illarion specific extensions. This document describes these extensions. Those scripts can be found in the
@@ -421,7 +435,7 @@ description of setting up and using a development environment is available in th
 <aside class="notice">
 Scripts need to be encoded in ISO 8859-1.
 </aside>
-
+<h2 id='structure'>Structure</h2>
 <blockquote>
 <p><code>item/apple.lua</code></p>
 </blockquote>
@@ -463,6 +477,64 @@ nothing happens when a player uses the item.</p>
 <aside class="notice">
 The available set of entry points describes all game behaviour scripts can handle.
 </aside>
+<h2 id='database-changes'>Database Changes</h2><div class="highlight"><pre class="highlight sql tab-sql"><code><span class="k">INSERT</span> <span class="k">INTO</span> <span class="n">triggerfields</span> <span class="k">VALUES</span> <span class="p">(</span><span class="mi">330</span><span class="p">,</span> <span class="mi">536</span><span class="p">,</span> <span class="o">-</span><span class="mi">24</span><span class="p">,</span> <span class="s1">'triggerfield.irundarmirror'</span><span class="p">);</span>
+<span class="k">INSERT</span> <span class="k">INTO</span> <span class="n">npc</span> <span class="k">VALUES</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">61</span><span class="p">,</span> <span class="mi">334</span><span class="p">,</span> <span class="mi">538</span><span class="p">,</span> <span class="o">-</span><span class="mi">26</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="k">false</span><span class="p">,</span> <span class="s1">'Neil Peter Caldori'</span><span class="p">,</span> <span class="s1">'npc.caldori'</span><span class="p">);</span>
+<span class="k">UPDATE</span> <span class="n">items</span> <span class="k">SET</span> <span class="n">itm_script</span> <span class="o">=</span> <span class="s1">'item.food'</span> <span class="k">WHERE</span> <span class="n">itm_id</span> <span class="o">=</span> <span class="mi">15</span><span class="p">;</span>
+</code></pre></div>
+<blockquote>
+<p>In the second example everything after npc_script will get a default value. You probably do not want an NPC with white skin, though.</p>
+</blockquote>
+
+<p>You need to track all changes you make to the database. This will allow you to</p>
+
+<ul>
+<li>replay any changes if you need to reset your database to incorporate changes to the official database.</li>
+<li>have a changeset to include in your pull request for testing and to update the official database upon merging.</li>
+</ul>
+
+<p>To apply your changes easily, you need to write them down in SQL. Typically these will be INSERT statements for new
+database entries (new NPCs, quests, trigger fields, ...) and UPDATE statements for modifying existing entries
+(e.g. adding a script to an item). The syntax is pretty simple:</p>
+
+<p><code>INSERT INTO &lt;table name&gt; VALUES (&lt;list of all required values&gt;);</code></p>
+
+<p><code>UPDATE &lt;table name&gt; SET &lt;field name&gt; = &lt;value&gt; WHERE &lt;id field&gt; = &lt;entry id&gt;;</code></p>
+
+<aside class="notice">
+Helpful hints for crafting SQL statements:
+<ul>
+<li>Database access is explained in the <a target="_blank" rel="noopener noreferrer" href='https://github.com/Illarion-eV/Illarion-Dev#7-database-access'>local server documentation</a>.</li>
+<li>Strings are put in single quotes (<code>'</code>).</li>
+<li>Possible boolean values are <code>true</code> and <code>false</code>.</li>
+<li>If no value should be inserted for some field, use <code>NULL</code>.</li>
+<li>You can omit the last values in an INSERT statement if they all have default values.</li>
+<li>Do not forget the semi-colon after each SQL statement.</li>
+</ul>
+</aside>
+
+<aside class="notice">
+You can run your set of SQL statements against your local database after clicking "SQL" in the top right corner of
+phppgadmin.
+</aside>
+<h2 id='notation'>Notation</h2>
+<p>Function definitions in this document are given in the following format:</p>
+
+<p><code>&lt;return values&gt; &lt;function name&gt;(&lt;parameters&gt;)</code></p>
+
+<ul>
+<li><code>return values</code> stands for a list of variables returned from the function and is omitted if the function does not
+return anything.</li>
+<li><code>&lt;function name&gt;</code> is the name of the function.</li>
+<li><code>&lt;parameters&gt;</code> is a list of type/name pairs, separated by space. Optional parameters are given in brackets.
+Default parameters are assigned the value they will be given if left out of a call.</li>
+</ul>
+
+<p>Example:</p>
+
+<p><code>weight, value example(Item item [, number amount = 1])</code></p>
+
+<p>The function <code>example</code> given here returns <code>weight</code> and <code>value</code>. It takes an <code>Item</code> called <code>item</code> as well as an optional
+<code>number</code> called <code>amount</code> as parameters. If <code>amount</code> is not passed into the function it will be set to <code>1</code>.</p>
 <h1 id='tutorial'>Tutorial</h1>
 <p>This tutorial shows how to get started with Illarion content development. It gives a basic introduction into our development process and policies, i.e. what you need to know to contribute to Illarion development. We will go through the steps to set up a development environment and show how projects (even small ones, like fixing spelling errors) are started and shared.</p>
 
@@ -536,7 +608,348 @@ only the function signature is given for clarity.</p>
 <p>A <code>character</code> uses an <code>item</code>.</p>
 <h3 id='itemlookat-lookatitem-character-character-item-item'><code>ItemLookAt LookAtItem(Character character, Item item)</code></h3>
 <p>A <code>character</code> looks at an <code>item</code>. Needs to return an <a href="#itemlookat">ItemLookAt</a>.</p>
-<h3 id='moveitembeforemove-character-user-item-source-item-target'><code>MoveItemBeforeMove(Character user, Item source, Item target)</code></h3><h3 id='moveitemaftermove-character-user-item-source-item-target'><code>MoveItemAfterMove(Character user, Item source, Item target)</code></h3><h3 id='nextcycle'><code>NextCycle()</code></h3><h3 id='characteronfield-character-user'><code>CharacterOnField(Character user)</code></h3><h2 id='npcs'>NPCs</h2><h2 id='magic'>Magic</h2><h2 id='monsters'>Monsters</h2><h2 id='fields'>Fields</h2><h2 id='quests'>Quests</h2><h2 id='scheduled'>Scheduled</h2><h2 id='server'>Server</h2><h3 id='combat'>Combat</h3><h3 id='death'>Death</h3><h3 id='depot'>Depot</h3><h3 id='item-inspection'>Item Inspection</h3><h3 id='learning'>Learning</h3><h3 id='login'>Login</h3><h3 id='logout'>Logout</h3><h3 id='player-inspection'>Player Inspection</h3><h3 id='reloading-scripts'>Reloading Scripts</h3><h1 id='classes'>Classes</h1><h2 id='character'>Character</h2>
+<h3 id='moveitembeforemove-character-user-item-source-item-target'><code>MoveItemBeforeMove(Character user, Item source, Item target)</code></h3><h3 id='moveitemaftermove-character-user-item-source-item-target'><code>MoveItemAfterMove(Character user, Item source, Item target)</code></h3><h3 id='nextcycle'><code>NextCycle()</code></h3><h3 id='characteronfield-character-user'><code>CharacterOnField(Character user)</code></h3><h2 id='npcs'>NPCs</h2><div class="highlight"><pre class="highlight lua tab-lua"><code><span class="kd">local</span> <span class="n">M</span> <span class="o">=</span> <span class="p">{}</span>
+
+<span class="k">function</span> <span class="nc">M</span><span class="p">.</span><span class="nf">nextCycle</span> <span class="p">(</span><span class="n">npc</span><span class="p">)</span>
+<span class="k">end</span>
+
+<span class="k">function</span> <span class="nc">M</span><span class="p">.</span><span class="nf">receiveText</span><span class="p">(</span><span class="n">npc</span><span class="p">)</span>
+<span class="k">end</span>
+<span class="k">function</span> <span class="nc">M</span><span class="p">.</span><span class="nf">useNPC</span><span class="p">(</span><span class="n">npc</span><span class="p">,</span> <span class="n">user</span><span class="p">)</span>
+    <span class="c1">-- What should happen when you use the npc</span>
+<span class="k">end</span>
+<span class="n">lookAtNpc</span><span class="p">(</span><span class="n">npc</span><span class="p">,</span> <span class="n">player</span><span class="p">,</span> <span class="n">mode</span><span class="p">)</span>
+    <span class="c1">-- The lookat for the npc (Not in use? Found no existing examples)</span>
+<span class="k">return</span> <span class="n">M</span>
+</code></pre></div>
+<p>nextCycle (npc)
+    Invoked every few server cycles.
+    Must exist in NPC scripts.
+receiveText(npc)
+    Invoked anytime the NPC hears someone speaking.
+useNPC(npc, user)
+    Invoked when the user shift clicks the NPC.
+lookAtNpc(npc, player, mode)
+    Invoked if the player looks at the NPC.
+    Modes: 0 for normal, 1 for close examination.</p>
+<h2 id='magic'>Magic</h2>
+<p><strong>function CastMagic(caster)</strong></p>
+<div class="highlight"><pre class="highlight lua tab-lua"><code><span class="kd">local</span> <span class="n">M</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="k">function</span> <span class="nc">M</span><span class="p">.</span><span class="nf">CastMagic</span><span class="p">(</span><span class="n">user</span><span class="p">)</span>
+    <span class="c1">-- The spell effect?</span>
+<span class="k">end</span>
+<span class="k">return</span> <span class="n">M</span>
+</code></pre></div>
+<p>Invoked when the caster casts a spell without a target.</p>
+
+<p><strong>function CastMagicOnCharacter(caster, targetCharacter)</strong></p>
+<div class="highlight"><pre class="highlight lua tab-lua"><code><span class="kd">local</span> <span class="n">M</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="k">function</span> <span class="nc">M</span><span class="p">.</span><span class="nf">CastMagicOnCharacter</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="n">target</span><span class="p">)</span>
+    <span class="c1">-- The spell effect?</span>
+<span class="k">end</span>
+<span class="k">return</span> <span class="n">M</span>
+</code></pre></div>
+<p>Invoked when the caster casts a spell on a targeteted character/monster.</p>
+
+<p><strong>function CastMagicOnField(caster, targetPosition)</strong></p>
+<div class="highlight"><pre class="highlight lua tab-lua"><code><span class="kd">local</span> <span class="n">M</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="k">function</span> <span class="nc">M</span><span class="p">.</span><span class="nf">CastMagicOnField</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="n">target</span><span class="p">)</span>
+    <span class="c1">-- The spell effect?</span>
+<span class="k">end</span>
+<span class="k">return</span> <span class="n">M</span>
+</code></pre></div>
+<p>Invoked when caster casts a spell on a field at the specified position.</p>
+
+<p><strong>function CastMagicOnItem(caster, targetItem)</strong></p>
+<div class="highlight"><pre class="highlight lua tab-lua"><code><span class="kd">local</span> <span class="n">M</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="k">function</span> <span class="nc">M</span><span class="p">.</span><span class="nf">CastMagicOnItem</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="n">target</span><span class="p">)</span>
+    <span class="c1">-- The spell effect?</span>
+<span class="k">end</span>
+<span class="k">return</span> <span class="n">M</span>
+</code></pre></div>
+<p>Invoked when a spell is cast on a targeted item.</p>
+<h2 id='monsters'>Monsters</h2>
+<p><strong>function onDeath(monster)</strong></p>
+
+<p>Invoked as a monster dies.</p>
+
+<p><strong>function receiveText(monster, textType, text, originator)</strong></p>
+
+<p>Invoked when a monster receives spoken text.</p>
+
+<p><strong>function onAttacked(monster, attacker)</strong></p>
+
+<p>Invoked when a monster is attacked.</p>
+
+<p><strong>function onCasted(monster, caster)</strong></p>
+
+<p>Invoked when a spell is cast on a monster.</p>
+
+<p><strong>function useMonster(monster, user)</strong></p>
+
+<p>Invoked when a monster is used by user.</p>
+
+<p><strong>function onAttack(monster, enemy)</strong></p>
+
+<p>Invoked every time a monster would hit the enemy.</p>
+
+<p><strong>function enemyOnSight(monster, enemy)</strong></p>
+
+<p>Invoked whenever a monster sees an enemy. </p>
+
+<p>Must return true or false.</p>
+
+<p>It is not invoked when the monster stands on a field next to the enemy.</p>
+
+<p><strong>function enemyNear(monster, enemy)</strong></p>
+
+<p>Same as enemyOnSight but when the monster is on the field next to it.</p>
+
+<p>If you plan to have setTarget(...) return 0 (&quot;don&#39;t attack anyone&quot;), then enemyNear(...) must return false.</p>
+
+<p><strong>function lookAtMonster(SourceCharacter, monster, mode)</strong></p>
+
+<p>Invoked if the player looks at the monster.</p>
+
+<p>Modes:</p>
+
+<p>0 = normal</p>
+
+<p>1 = close examination</p>
+
+<p><strong>function onSpawn(monster)</strong></p>
+
+<p>Invoked after the monster has spawned.</p>
+
+<p><strong>function setTarget(monster, candidateList)</strong></p>
+
+<p>If setTarget exists, it is called whenever the monster needs to decide what it should attack.</p>
+
+<p>The candidateList is a list of players who are possible targets. </p>
+
+<p>To set a target, its index in that list has to be returned. </p>
+
+<p>The first enemy in the list has the index 1. </p>
+
+<p>If the function returns 0, the monster will ignore any enemy. </p>
+
+<p>If setTarget does not exist, the player with lowest health is chosen by default.</p>
+<h2 id='fields'>Fields</h2>
+<p><strong>function useTile(user, position)</strong></p>
+<div class="highlight"><pre class="highlight lua tab-lua"><code><span class="kd">local</span> <span class="n">M</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="k">function</span> <span class="nc">M</span><span class="p">.</span><span class="nf">useTile</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="n">position</span><span class="p">)</span>
+    <span class="c1">-- What should happen if you use the tile on the triggerfield.</span>
+<span class="k">end</span>
+<span class="k">return</span> <span class="n">M</span>
+</code></pre></div>
+<p>Is invoked when a tile is shift-clicked (used).</p>
+
+<p><strong>function PutItemOnField(item, user)</strong></p>
+<div class="highlight"><pre class="highlight lua tab-lua"><code><span class="kd">local</span> <span class="n">M</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="k">function</span> <span class="nc">M</span><span class="p">.</span><span class="nf">putItemOnField</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">user</span><span class="p">)</span>
+    <span class="c1">-- What should happen if the item is put on the triggerfield.</span>
+<span class="k">end</span>
+<span class="k">return</span> <span class="n">M</span>
+</code></pre></div>
+<p>Is invoked if an item is put on that triggerfield.</p>
+
+<p><strong>function TakeItemFromField(item, user)</strong></p>
+<div class="highlight"><pre class="highlight lua tab-lua"><code><span class="kd">local</span> <span class="n">M</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="k">function</span> <span class="nc">M</span><span class="p">.</span><span class="nf">TakeItemFromField</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">user</span><span class="p">)</span>
+    <span class="c1">-- What should happen if you remove an item from the triggerfield.</span>
+<span class="k">end</span>
+<span class="k">return</span> <span class="n">M</span>
+</code></pre></div>
+<p>Is invoked if an item is taken away from that triggerfield.</p>
+
+<p><strong>function ItemRotsOnField(oldItem,newItem)</strong></p>
+<div class="highlight"><pre class="highlight lua tab-lua"><code><span class="kd">local</span> <span class="n">M</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="k">function</span> <span class="nc">M</span><span class="p">.</span><span class="nf">ItemRotsOnField</span><span class="p">(</span><span class="mi">176</span><span class="p">,</span> <span class="mi">178</span><span class="p">)</span>
+<span class="c1">-- Turns grey cloth into white cloth upon rotting if placed on the triggerfield.</span>
+<span class="k">return</span> <span class="n">M</span>
+</code></pre></div>
+<p>Is invoked when an item on a triggerfield rots, turning the oldItem into the newItem.</p>
+
+<p><strong>function MoveToField(user)</strong></p>
+<div class="highlight"><pre class="highlight lua tab-lua"><code><span class="kd">local</span> <span class="n">M</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="k">function</span> <span class="nc">M</span><span class="p">.</span><span class="nf">MoveToField</span><span class="p">(</span><span class="n">user</span><span class="p">)</span>
+    <span class="c1">-- What should happen if a character steps onto the triggerfield.</span>
+<span class="k">end</span>
+<span class="k">return</span> <span class="n">M</span>
+</code></pre></div>
+<p>Is invoked if a character moves on that triggerfield.</p>
+
+<p><strong>function MoveFromField(user)</strong></p>
+<div class="highlight"><pre class="highlight lua tab-lua"><code><span class="kd">local</span> <span class="n">M</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="k">function</span> <span class="nc">M</span><span class="p">.</span><span class="nf">MoveFromField</span><span class="p">(</span><span class="n">user</span><span class="p">)</span>
+    <span class="c1">-- What should happen if a character leaves the triggerfield.</span>
+<span class="k">end</span>
+<span class="k">return</span> <span class="n">M</span>
+</code></pre></div>
+<p>Is invoked if a character moves away from that triggerfield.</p>
+
+<p><strong>Database Table:</strong><code>triggerfields</code></p>
+
+<p>Entry in the database is required for any of the above functions to work on the specified tile.</p>
+
+<table><thead>
+<tr>
+<th>tgf_posx</th>
+<th>tgf_posy</th>
+<th>tgf_posz</th>
+<th>tgf_script</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>x</td>
+<td>y</td>
+<td>z</td>
+<td>triggerfield.myScript</td>
+</tr>
+</tbody></table>
+
+<p><strong>Positions</strong></p>
+
+<p>The first three database entries for triggerfields consist of the x, y, z coordinates that define your field.</p>
+
+<p><strong>Script Name</strong></p>
+
+<p>The fourth and last database entry for triggerfields is the name of your script. In this case the &quot;myScript.lua&quot; found in the folder &quot;triggerfield&quot;.</p>
+<h2 id='quests'>Quests</h2><div class="highlight"><pre class="highlight lua tab-lua"><code><span class="kd">local</span> <span class="n">common</span> <span class="o">=</span> <span class="nb">require</span><span class="p">(</span><span class="s2">"base.common"</span><span class="p">)</span>
+<span class="kd">local</span> <span class="n">M</span> <span class="o">=</span> <span class="p">{}</span>
+
+<span class="k">function</span> <span class="nc">M</span><span class="p">.</span><span class="nf">QuestTitle</span><span class="p">(</span><span class="n">user</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">common</span><span class="p">.</span><span class="n">GetNLS</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="s2">"German title text here"</span><span class="p">,</span> <span class="s2">"English title text here"</span><span class="p">)</span>
+<span class="k">end</span>
+
+<span class="k">function</span> <span class="nc">M</span><span class="p">.</span><span class="nf">QuestDescription</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="n">status</span><span class="p">)</span>
+
+    <span class="kd">local</span> <span class="n">german</span> <span class="o">=</span> <span class="c1">-- German description text here</span>
+    <span class="kd">local</span> <span class="n">english</span> <span class="o">=</span> <span class="c1">-- English description text here</span>
+
+    <span class="k">return</span> <span class="n">common</span><span class="p">.</span><span class="n">GetNLS</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="n">german</span><span class="p">,</span> <span class="n">english</span><span class="p">)</span>
+<span class="k">end</span>
+
+<span class="kd">local</span> <span class="n">QuestTarget</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="n">QuestTarget</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="n">position</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">)</span> <span class="c1">-- replace x, y, z with desired coordinates</span>
+<span class="n">QuestTarget</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="n">position</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">)</span>
+
+<span class="k">function</span> <span class="nc">M</span><span class="p">.</span><span class="nf">QuestTargets</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="n">status</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">QuestTarget</span><span class="p">[</span><span class="n">status</span><span class="p">]</span>
+<span class="k">end</span>
+
+<span class="k">function</span> <span class="nc">M</span><span class="p">.</span><span class="nf">QuestFinalStatus</span><span class="p">()</span>
+    <span class="k">return</span> <span class="mi">3</span> <span class="c1">-- Change this number according to what the final quest status is.</span>
+<span class="k">end</span>
+
+<span class="k">return</span> <span class="n">M</span>
+</code></pre></div>
+<p>While you can create quests with setQuestProgress and getQuestProgress, it is much nicer to have an
+actual log of that progress in your client. This way you cannot forget about your quests and you always
+know what to do and where to do it. The client might even point you in the right direction. The entrypoints in this section implement that behaviour.</p>
+
+<p><strong>function QuestTitle(user)</strong></p>
+
+<p>You should return the quest title here, depending on user language.</p>
+
+<p><strong>function QuestDescription(user, status)</strong></p>
+
+<p>You should return the quest description here, depending on user language and quest status.
+You can be as extensive as you want, but make sure to cover the most important points. A
+good description should serve as a reminder where to go to complete the next step of the
+quest, let the player know how to get there and what to do there. Imagine a player continuing
+a quest after some time, they still need to know where they are at and how to go on.</p>
+
+<p><strong>function QuestTargets(user, status)</strong></p>
+
+<p>Here you should return the position where the quest continues, i.e. where a new quest status
+can be obtained. The client will receive this position and direct the player towards it. You
+can also return nil or an empty list if no such positions should be displayed in the client.
+Omit positions with care. Even if you think it would be cool to let players search on their
+own, most of the time it is just annoying. You can also return a list of positions here if the
+quest can continue in more than one location.</p>
+
+<p><strong>function QuestFinalStatus()</strong></p>
+
+<p>Return the final status of your quest here. This is used by the server to determine whether the
+end of a quest has been reached. If so, the client is notified to display the quest as completed</p>
+
+<p><strong>Database Table:</strong><code>quests</code></p>
+
+<p>Quest scripts must be entered into the database for the functions to be applied to the associated quest.</p>
+
+<table><thead>
+<tr>
+<th>qst_id</th>
+<th>qst_script</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>603</td>
+<td>quest.nobarg_603</td>
+</tr>
+</tbody></table>
+
+<p>The example above is for a quest associated with the npc nobarg, with the quest id 603.</p>
+
+<p>In the qst_id entry is the id assigned to the quest.</p>
+
+<p>In the qest_script entry is the folder the script is in (quest) and the name of the .lua file (nobarg_603).</p>
+<h2 id='scheduled'>Scheduled</h2><div class="highlight"><pre class="highlight lua tab-lua"><code><span class="kd">local</span> <span class="n">M</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="k">function</span> <span class="nc">M</span><span class="p">.</span><span class="nf">myScheduledFunction</span><span class="p">()</span>
+    <span class="c1">-- What I want my scheduled function to do</span>
+<span class="k">end</span>
+<span class="k">return</span> <span class="n">M</span>
+</code></pre></div>
+<p><strong>Database Table:</strong><code>scheduledscripts</code></p>
+
+<p>Scripts can be scheduled to be executed at defined intervals by entering them into the database.</p>
+
+<p>The entries can be separated into the following:</p>
+
+<p><strong>Script name</strong></p>
+
+<p>The name of the script file.</p>
+
+<p><strong>Minimum Cycle Time</strong></p>
+
+<p>The minimum time between each time the script is run, in seconds.</p>
+
+<p><strong>Max Cycle Time</strong></p>
+
+<p>The maximum time between each time the script is run, in seconds.</p>
+
+<p>Can be set to the same as minimum time to have no randomness.</p>
+
+<p><strong>Function Name</strong></p>
+
+<p>The name of the function in the script that you want to run.</p>
+
+<p><strong>Database entry example:</strong></p>
+<div class="highlight"><pre class="highlight lua tab-lua"><code><span class="kd">local</span> <span class="n">M</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="k">function</span> <span class="nc">M</span><span class="p">.</span><span class="nf">informUsers</span><span class="p">()</span>
+    <span class="n">world</span><span class="p">:</span><span class="n">broadcast</span><span class="p">(</span><span class="s2">"German Text"</span><span class="p">,</span><span class="s2">"English Text"</span><span class="p">)</span>
+<span class="k">end</span>
+<span class="k">return</span> <span class="n">M</span>
+</code></pre></div>
+<table><thead>
+<tr>
+<th>sc_scriptname</th>
+<th>sc_mincycletime</th>
+<th>sc_maxcycletime</th>
+<th>sc_functionname</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>scheduled.myScript</td>
+<td>10</td>
+<td>15</td>
+<td>informUsers</td>
+</tr>
+</tbody></table>
+
+<p>The above database entry will make it so that the function called &quot;informUsers&quot; found in the lua script &quot;myScheduledScript.lua&quot; in the folder named &quot;scheduled&quot; is ran every 10 to 15 seconds, in this case broadcasting to every player whatever the input text is.</p>
+<h2 id='server'>Server</h2><h3 id='combat'>Combat</h3><h3 id='death'>Death</h3><h3 id='depot'>Depot</h3><h3 id='item-inspection'>Item Inspection</h3><h3 id='learning'>Learning</h3><h3 id='login'>Login</h3><h3 id='logout'>Logout</h3><h3 id='player-inspection'>Player Inspection</h3><h3 id='reloading-scripts'>Reloading Scripts</h3><h1 id='classes'>Classes</h1><h2 id='character'>Character</h2>
 <p>Players, NPCs and monsters are the three types of characters in Illarion.</p>
 
 <p><img src="images/directions-a05aa5a6.png" alt="directions" /></p>
