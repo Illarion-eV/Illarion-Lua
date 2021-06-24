@@ -51,7 +51,7 @@ scripts_ which have a fixed name and implement very specific server behaviour no
 Scripts are defined inside the database using the following format:
 <ul>
 <li>Paths are relative to the repository base directory.</li>
-<li>Directory/file names are seperated by a full stop (<code>.</code>).</li>
+<li>Directory/file names are separated by a full stop (<code>.</code>).</li>
 <li>The <code>.lua</code> extension is omitted.</li>
 </ul>
 E.g. a script <code>item/apple.lua</code> would be entered as <code>item.apple</code>.
