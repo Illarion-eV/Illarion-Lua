@@ -68,6 +68,44 @@ nothing happens when a player uses the item.
 The available set of entry points describes all game behaviour scripts can handle.
 </aside>
 
+## Database Changes
+
+```sql
+INSERT INTO triggerfields VALUES (330, 536, -24, 'triggerfield.irundarmirror');
+INSERT INTO npc VALUES (2, 61, 334, 538, -26, 0, false, 'Neil Peter Caldori', 'npc.caldori');
+UPDATE items SET itm_script = 'item.food' WHERE itm_id = 15;
+```
+> In the second example everything after npc_script will get a default value. You probably do not want an NPC with white skin, though.
+
+You need to track all changes you make to the database. This will allow you to
+
+* replay any changes if you need to reset your database to incorporate changes to the official database.
+* have a changeset to include in your pull request for testing and to update the official database upon merging.
+
+To apply your changes easily, you need to write them down in SQL. Typically these will be INSERT statements for new
+database entries (new NPCs, quests, trigger fields, ...) and UPDATE statements for modifying existing entries
+(e.g. adding a script to an item). The syntax is pretty simple:
+
+`INSERT INTO <table name> VALUES (<list of all required values>);`
+
+`UPDATE <table name> SET <field name> = <value> WHERE <id field> = <entry id>;`
+
+<aside class="notice">
+Helpful hints for crafting SQL statements:
+<ul>
+<li>Database access is explained in the <a target="_blank" rel="noopener noreferrer" href='https://github.com/Illarion-eV/Illarion-Dev#7-database-access'>local server documentation</a>.</li>
+<li>Strings are put in single quotes (<code>'</code>).</li>
+<li>Possible boolean values are <code>true</code> and <code>false</code>.</li>
+<li>If no value should be inserted for some field, use <code>NULL</code>.</li>
+<li>You can omit the last values in an INSERT statement if they all have default values.</li>
+<li>Do not forget the semi-colon after each SQL statement.</li>
+</ul>
+</aside>
+
+<aside class="notice">
+You can run your set of SQL statements against your local database after clicking "SQL" in the top right corner of
+phppgadmin.
+</aside>
 ## Notation
 
 Function definitions in this document are given in the following format:
