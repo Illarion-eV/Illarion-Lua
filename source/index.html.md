@@ -14,11 +14,11 @@ includes:
   - introduction
   - tutorial
   - entrypoints
+  - entrypoints/fields
   - entrypoints/items
-  - entrypoints/npcs
   - entrypoints/magic
   - entrypoints/monsters
-  - entrypoints/fields
+  - entrypoints/npcs
   - entrypoints/quests
   - entrypoints/scheduled
   - entrypoints/server
