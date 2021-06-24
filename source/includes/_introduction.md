@@ -1,7 +1,5 @@
 # Introduction
 
-## Tools
-
 Illarion game content like items, NPCs, quests, etc. is defined in scripts written in
 <a target="_blank" rel="noopener noreferrer" href='https://www.lua.org/manual/5.2/'>Lua 5.2</a>
 with Illarion specific extensions. This document describes these extensions. Those scripts can be found in the
