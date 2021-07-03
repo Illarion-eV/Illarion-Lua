@@ -337,10 +337,10 @@
             <a href="#entry-points" class="toc-h1 toc-link" data-title="Entry Points">Entry Points</a>
               <ul class="toc-list-h2">
                   <li>
-                    <a href="#items" class="toc-h2 toc-link" data-title="Items">Items</a>
+                    <a href="#fields" class="toc-h2 toc-link" data-title="Fields">Fields</a>
                   </li>
                   <li>
-                    <a href="#npcs" class="toc-h2 toc-link" data-title="NPCs">NPCs</a>
+                    <a href="#items" class="toc-h2 toc-link" data-title="Items">Items</a>
                   </li>
                   <li>
                     <a href="#magic" class="toc-h2 toc-link" data-title="Magic">Magic</a>
@@ -349,7 +349,7 @@
                     <a href="#monsters" class="toc-h2 toc-link" data-title="Monsters">Monsters</a>
                   </li>
                   <li>
-                    <a href="#fields" class="toc-h2 toc-link" data-title="Fields">Fields</a>
+                    <a href="#npcs" class="toc-h2 toc-link" data-title="NPCs">NPCs</a>
                   </li>
                   <li>
                     <a href="#quests" class="toc-h2 toc-link" data-title="Quests">Quests</a>
@@ -460,7 +460,7 @@ scripts</em> which have a fixed name and implement very specific server behaviou
 Scripts are defined inside the database using the following format:
 <ul>
 <li>Paths are relative to the repository base directory.</li>
-<li>Directory/file names are seperated by a full stop (<code>.</code>).</li>
+<li>Directory/file names are separated by a full stop (<code>.</code>).</li>
 <li>The <code>.lua</code> extension is omitted.</li>
 </ul>
 E.g. a script <code>item/apple.lua</code> would be entered as <code>item.apple</code>.
@@ -599,36 +599,149 @@ only the function signature is given for clarity.</p>
 </ul>
 
 <p>E.g. a script <code>item/apple.lua</code> would be entered as <code>item.apple</code>.</p>
-<h2 id='items'>Items</h2>
-<p><strong>Database field:</strong> <code>items.itm_script</code></p>
-<h3 id='useitem-character-character-item-item-number-actionstate'><code>UseItem(Character character, Item item, number actionState)</code></h3>
-<p>A <code>character</code> uses an <code>item</code>.</p>
-<h3 id='itemlookat-lookatitem-character-character-item-item'><code>ItemLookAt LookAtItem(Character character, Item item)</code></h3>
-<p>A <code>character</code> looks at an <code>item</code>. Needs to return an <a href="#itemlookat">ItemLookAt</a>.</p>
-<h3 id='moveitembeforemove-character-user-item-source-item-target'><code>MoveItemBeforeMove(Character user, Item source, Item target)</code></h3><h3 id='moveitemaftermove-character-user-item-source-item-target'><code>MoveItemAfterMove(Character user, Item source, Item target)</code></h3><h3 id='nextcycle'><code>NextCycle()</code></h3><h3 id='characteronfield-character-user'><code>CharacterOnField(Character user)</code></h3><h2 id='npcs'>NPCs</h2><div class="highlight"><pre class="highlight lua tab-lua"><code><span class="kd">local</span> <span class="n">M</span> <span class="o">=</span> <span class="p">{}</span>
-
-<span class="k">function</span> <span class="nc">M</span><span class="p">.</span><span class="nf">nextCycle</span> <span class="p">(</span><span class="n">npc</span><span class="p">)</span>
+<h2 id='fields'>Fields</h2>
+<p><strong>function useTile(user, position)</strong></p>
+<div class="highlight"><pre class="highlight lua tab-lua"><code><span class="kd">local</span> <span class="n">M</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="k">function</span> <span class="nc">M</span><span class="p">.</span><span class="nf">useTile</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="n">position</span><span class="p">)</span>
+    <span class="c1">-- What should happen if you use the tile on the triggerfield.</span>
 <span class="k">end</span>
-
-<span class="k">function</span> <span class="nc">M</span><span class="p">.</span><span class="nf">receiveText</span><span class="p">(</span><span class="n">npc</span><span class="p">)</span>
-<span class="k">end</span>
-<span class="k">function</span> <span class="nc">M</span><span class="p">.</span><span class="nf">useNPC</span><span class="p">(</span><span class="n">npc</span><span class="p">,</span> <span class="n">user</span><span class="p">)</span>
-    <span class="c1">-- What should happen when you use the npc</span>
-<span class="k">end</span>
-<span class="n">lookAtNpc</span><span class="p">(</span><span class="n">npc</span><span class="p">,</span> <span class="n">player</span><span class="p">,</span> <span class="n">mode</span><span class="p">)</span>
-    <span class="c1">-- The lookat for the npc (Not in use? Found no existing examples)</span>
 <span class="k">return</span> <span class="n">M</span>
 </code></pre></div>
-<p>nextCycle (npc)
-    Invoked every few server cycles.
-    Must exist in NPC scripts.
-receiveText(npc)
-    Invoked anytime the NPC hears someone speaking.
-useNPC(npc, user)
-    Invoked when the user shift clicks the NPC.
-lookAtNpc(npc, player, mode)
-    Invoked if the player looks at the NPC.
-    Modes: 0 for normal, 1 for close examination.</p>
+<p>Is invoked when a tile is shift-clicked (used).</p>
+
+<p><strong>function PutItemOnField(item, user)</strong></p>
+<div class="highlight"><pre class="highlight lua tab-lua"><code><span class="kd">local</span> <span class="n">M</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="k">function</span> <span class="nc">M</span><span class="p">.</span><span class="nf">putItemOnField</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">user</span><span class="p">)</span>
+    <span class="c1">-- What should happen if the item is put on the triggerfield.</span>
+<span class="k">end</span>
+<span class="k">return</span> <span class="n">M</span>
+</code></pre></div>
+<p>Is invoked if an item is put on that triggerfield.</p>
+
+<p><strong>function TakeItemFromField(item, user)</strong></p>
+<div class="highlight"><pre class="highlight lua tab-lua"><code><span class="kd">local</span> <span class="n">M</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="k">function</span> <span class="nc">M</span><span class="p">.</span><span class="nf">TakeItemFromField</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">user</span><span class="p">)</span>
+    <span class="c1">-- What should happen if you remove an item from the triggerfield.</span>
+<span class="k">end</span>
+<span class="k">return</span> <span class="n">M</span>
+</code></pre></div>
+<p>Is invoked if an item is taken away from that triggerfield.</p>
+
+<p><strong>function ItemRotsOnField(oldItem,newItem)</strong></p>
+<div class="highlight"><pre class="highlight lua tab-lua"><code><span class="kd">local</span> <span class="n">M</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="k">function</span> <span class="nc">M</span><span class="p">.</span><span class="nf">ItemRotsOnField</span><span class="p">(</span><span class="mi">176</span><span class="p">,</span> <span class="mi">178</span><span class="p">)</span>
+<span class="c1">-- Turns grey cloth into white cloth upon rotting if placed on the triggerfield.</span>
+<span class="k">return</span> <span class="n">M</span>
+</code></pre></div>
+<p>Is invoked when an item on a triggerfield rots, turning the oldItem into the newItem.</p>
+
+<p><strong>function MoveToField(user)</strong></p>
+<div class="highlight"><pre class="highlight lua tab-lua"><code><span class="kd">local</span> <span class="n">M</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="k">function</span> <span class="nc">M</span><span class="p">.</span><span class="nf">MoveToField</span><span class="p">(</span><span class="n">user</span><span class="p">)</span>
+    <span class="c1">-- What should happen if a character steps onto the triggerfield.</span>
+<span class="k">end</span>
+<span class="k">return</span> <span class="n">M</span>
+</code></pre></div>
+<p>Is invoked if a character moves on that triggerfield.</p>
+
+<p><strong>function MoveFromField(user)</strong></p>
+<div class="highlight"><pre class="highlight lua tab-lua"><code><span class="kd">local</span> <span class="n">M</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="k">function</span> <span class="nc">M</span><span class="p">.</span><span class="nf">MoveFromField</span><span class="p">(</span><span class="n">user</span><span class="p">)</span>
+    <span class="c1">-- What should happen if a character leaves the triggerfield.</span>
+<span class="k">end</span>
+<span class="k">return</span> <span class="n">M</span>
+</code></pre></div>
+<p>Is invoked if a character moves away from that triggerfield.</p>
+
+<p><strong>Database Table:</strong><code>triggerfields</code></p>
+
+<p>Entry in the database is required for any of the above functions to work on the specified tile.</p>
+
+<table><thead>
+<tr>
+<th>tgf_posx</th>
+<th>tgf_posy</th>
+<th>tgf_posz</th>
+<th>tgf_script</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>x</td>
+<td>y</td>
+<td>z</td>
+<td>triggerfield.myScript</td>
+</tr>
+</tbody></table>
+
+<p><strong>Positions</strong></p>
+
+<p>The first three database entries for triggerfields consist of the x, y, z coordinates that define your field.</p>
+
+<p><strong>Script Name</strong></p>
+
+<p>The fourth and last database entry for triggerfields is the name of your script. In this case the &quot;myScript.lua&quot; found in the folder &quot;triggerfield&quot;.</p>
+<h2 id='items'>Items</h2>
+<blockquote>
+<p>SQL</p>
+</blockquote>
+<div class="highlight"><pre class="highlight sql tab-sql"><code><span class="k">UPDATE</span> <span class="n">items</span> <span class="k">SET</span> <span class="n">itm_script</span> <span class="o">=</span> <span class="s1">'SCRIPT_NAME'</span> <span class="k">WHERE</span> <span class="n">itm_id</span> <span class="o">=</span> <span class="n">ITEM_ID</span><span class="p">;</span>
+</code></pre></div>
+<blockquote>
+<p>Item script with all available entry points</p>
+</blockquote>
+<div class="highlight"><pre class="highlight lua tab-lua"><code><span class="kd">local</span> <span class="n">M</span> <span class="o">=</span> <span class="p">{}</span>
+
+<span class="k">function</span> <span class="nc">M</span><span class="p">.</span><span class="nf">actionDisturbed</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="n">disturber</span><span class="p">)</span>
+    <span class="k">return</span> <span class="kc">false</span>
+<span class="k">end</span>
+
+<span class="k">function</span> <span class="nc">M</span><span class="p">.</span><span class="nf">CharacterOnField</span><span class="p">(</span><span class="n">user</span><span class="p">)</span>
+<span class="k">end</span>
+
+<span class="k">function</span> <span class="nc">M</span><span class="p">.</span><span class="nf">LookAtItem</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="n">item</span><span class="p">)</span>
+    <span class="kd">local</span> <span class="n">lookAt</span> <span class="o">=</span> <span class="n">ItemLookAt</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">lookAt</span>
+<span class="k">end</span>
+
+<span class="k">function</span> <span class="nc">M</span><span class="p">.</span><span class="nf">MoveItemAfterMove</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">target</span><span class="p">)</span>
+<span class="k">end</span>
+
+<span class="k">function</span> <span class="nc">M</span><span class="p">.</span><span class="nf">MoveItemBeforeMove</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">target</span><span class="p">)</span>
+    <span class="k">return</span> <span class="kc">true</span>
+<span class="k">end</span>
+
+<span class="k">function</span> <span class="nc">M</span><span class="p">.</span><span class="nf">UseItem</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="n">item</span><span class="p">,</span> <span class="n">actionState</span><span class="p">)</span>
+<span class="k">end</span>
+
+<span class="k">return</span> <span class="n">M</span>
+</code></pre></div>
+<p><strong>Database field:</strong> <code>items.itm_script</code></p>
+<h3 id='boolean-actiondisturbed-character-user-character-attacker'><code>boolean actionDisturbed(Character user, Character attacker)</code></h3>
+<p>Is called when <code>user</code> is attacked while an action is running. This action had to be started by <code>user:startAction(...)</code>
+in <code>UseItem</code>. If this entry point does not exist or returns <code>false</code> the action is not aborted. If it returns <code>true</code> the
+action is aborted. See section Actions in <a href="#character">Character</a> for more details on starting actions.</p>
+<h3 id='characteronfield-character-user'><code>CharacterOnField(Character user)</code></h3>
+<p>Is invoked if someone steps on an item. For this entry point to be called, the corresponding
+item needs to have an entry in the database table tilesmodificators with tim_specialitem set to <code>true</code>.</p>
+<h3 id='itemlookat-lookatitem-character-user-item-item'><code>ItemLookAt LookAtItem(Character user, Item item)</code></h3>
+<p>A <code>user</code> looks at an <code>item</code>. Needs to return an <a href="#itemlookat">ItemLookAt</a>.</p>
+<h3 id='boolean-moveitembeforemove-character-user-item-source-item-target'><code>boolean MoveItemBeforeMove(Character user, Item source, Item target)</code></h3>
+<p>A <code>user</code> tries to move the item <code>source</code>. After the move that item would be <code>target</code>, having a new location.
+If this returns <code>true</code> or if this entry point does not exist, the move is carried out. If <code>false</code> is returned, the move
+is prevented.</p>
+<h3 id='moveitemaftermove-character-user-item-source-item-target'><code>MoveItemAfterMove(Character user, Item source, Item target)</code></h3>
+<p>A <code>user</code> has moved the item <code>source</code>. It is now the item <code>target</code>.</p>
+<h3 id='useitem-character-user-item-item-number-actionstate'><code>UseItem(Character user, Item item, number actionState)</code></h3>
+<p>A <code>user</code> uses an <code>item</code>. <code>actionState</code> is one of</p>
+
+<ul>
+<li><code>Action.none</code>: no action is running.</li>
+<li><code>Action.success</code>: an action was running and has been completed.</li>
+<li><code>Action.abort</code>: an action was running and has been interrupted by the user being attacked or the user doing something
+else like using an item, moving, etc.</li>
+</ul>
+
+<p>See section Actions in <a href="#character">Character</a> for more details on starting actions.</p>
 <h2 id='magic'>Magic</h2>
 <p><strong>function CastMagic(caster)</strong></p>
 <div class="highlight"><pre class="highlight lua tab-lua"><code><span class="kd">local</span> <span class="n">M</span> <span class="o">=</span> <span class="p">{}</span>
@@ -731,87 +844,30 @@ lookAtNpc(npc, player, mode)
 <p>If the function returns 0, the monster will ignore any enemy. </p>
 
 <p>If setTarget does not exist, the player with lowest health is chosen by default.</p>
-<h2 id='fields'>Fields</h2>
-<p><strong>function useTile(user, position)</strong></p>
-<div class="highlight"><pre class="highlight lua tab-lua"><code><span class="kd">local</span> <span class="n">M</span> <span class="o">=</span> <span class="p">{}</span>
-<span class="k">function</span> <span class="nc">M</span><span class="p">.</span><span class="nf">useTile</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="n">position</span><span class="p">)</span>
-    <span class="c1">-- What should happen if you use the tile on the triggerfield.</span>
+<h2 id='npcs'>NPCs</h2><div class="highlight"><pre class="highlight lua tab-lua"><code><span class="kd">local</span> <span class="n">M</span> <span class="o">=</span> <span class="p">{}</span>
+
+<span class="k">function</span> <span class="nc">M</span><span class="p">.</span><span class="nf">nextCycle</span> <span class="p">(</span><span class="n">npc</span><span class="p">)</span>
 <span class="k">end</span>
-<span class="k">return</span> <span class="n">M</span>
-</code></pre></div>
-<p>Is invoked when a tile is shift-clicked (used).</p>
 
-<p><strong>function PutItemOnField(item, user)</strong></p>
-<div class="highlight"><pre class="highlight lua tab-lua"><code><span class="kd">local</span> <span class="n">M</span> <span class="o">=</span> <span class="p">{}</span>
-<span class="k">function</span> <span class="nc">M</span><span class="p">.</span><span class="nf">putItemOnField</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">user</span><span class="p">)</span>
-    <span class="c1">-- What should happen if the item is put on the triggerfield.</span>
+<span class="k">function</span> <span class="nc">M</span><span class="p">.</span><span class="nf">receiveText</span><span class="p">(</span><span class="n">npc</span><span class="p">)</span>
 <span class="k">end</span>
-<span class="k">return</span> <span class="n">M</span>
-</code></pre></div>
-<p>Is invoked if an item is put on that triggerfield.</p>
-
-<p><strong>function TakeItemFromField(item, user)</strong></p>
-<div class="highlight"><pre class="highlight lua tab-lua"><code><span class="kd">local</span> <span class="n">M</span> <span class="o">=</span> <span class="p">{}</span>
-<span class="k">function</span> <span class="nc">M</span><span class="p">.</span><span class="nf">TakeItemFromField</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">user</span><span class="p">)</span>
-    <span class="c1">-- What should happen if you remove an item from the triggerfield.</span>
+<span class="k">function</span> <span class="nc">M</span><span class="p">.</span><span class="nf">useNPC</span><span class="p">(</span><span class="n">npc</span><span class="p">,</span> <span class="n">user</span><span class="p">)</span>
+    <span class="c1">-- What should happen when you use the npc</span>
 <span class="k">end</span>
+<span class="n">lookAtNpc</span><span class="p">(</span><span class="n">npc</span><span class="p">,</span> <span class="n">player</span><span class="p">,</span> <span class="n">mode</span><span class="p">)</span>
+    <span class="c1">-- The lookat for the npc (Not in use? Found no existing examples)</span>
 <span class="k">return</span> <span class="n">M</span>
 </code></pre></div>
-<p>Is invoked if an item is taken away from that triggerfield.</p>
-
-<p><strong>function ItemRotsOnField(oldItem,newItem)</strong></p>
-<div class="highlight"><pre class="highlight lua tab-lua"><code><span class="kd">local</span> <span class="n">M</span> <span class="o">=</span> <span class="p">{}</span>
-<span class="k">function</span> <span class="nc">M</span><span class="p">.</span><span class="nf">ItemRotsOnField</span><span class="p">(</span><span class="mi">176</span><span class="p">,</span> <span class="mi">178</span><span class="p">)</span>
-<span class="c1">-- Turns grey cloth into white cloth upon rotting if placed on the triggerfield.</span>
-<span class="k">return</span> <span class="n">M</span>
-</code></pre></div>
-<p>Is invoked when an item on a triggerfield rots, turning the oldItem into the newItem.</p>
-
-<p><strong>function MoveToField(user)</strong></p>
-<div class="highlight"><pre class="highlight lua tab-lua"><code><span class="kd">local</span> <span class="n">M</span> <span class="o">=</span> <span class="p">{}</span>
-<span class="k">function</span> <span class="nc">M</span><span class="p">.</span><span class="nf">MoveToField</span><span class="p">(</span><span class="n">user</span><span class="p">)</span>
-    <span class="c1">-- What should happen if a character steps onto the triggerfield.</span>
-<span class="k">end</span>
-<span class="k">return</span> <span class="n">M</span>
-</code></pre></div>
-<p>Is invoked if a character moves on that triggerfield.</p>
-
-<p><strong>function MoveFromField(user)</strong></p>
-<div class="highlight"><pre class="highlight lua tab-lua"><code><span class="kd">local</span> <span class="n">M</span> <span class="o">=</span> <span class="p">{}</span>
-<span class="k">function</span> <span class="nc">M</span><span class="p">.</span><span class="nf">MoveFromField</span><span class="p">(</span><span class="n">user</span><span class="p">)</span>
-    <span class="c1">-- What should happen if a character leaves the triggerfield.</span>
-<span class="k">end</span>
-<span class="k">return</span> <span class="n">M</span>
-</code></pre></div>
-<p>Is invoked if a character moves away from that triggerfield.</p>
-
-<p><strong>Database Table:</strong><code>triggerfields</code></p>
-
-<p>Entry in the database is required for any of the above functions to work on the specified tile.</p>
-
-<table><thead>
-<tr>
-<th>tgf_posx</th>
-<th>tgf_posy</th>
-<th>tgf_posz</th>
-<th>tgf_script</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>x</td>
-<td>y</td>
-<td>z</td>
-<td>triggerfield.myScript</td>
-</tr>
-</tbody></table>
-
-<p><strong>Positions</strong></p>
-
-<p>The first three database entries for triggerfields consist of the x, y, z coordinates that define your field.</p>
-
-<p><strong>Script Name</strong></p>
-
-<p>The fourth and last database entry for triggerfields is the name of your script. In this case the &quot;myScript.lua&quot; found in the folder &quot;triggerfield&quot;.</p>
+<p>nextCycle (npc)
+    Invoked every few server cycles.
+    Must exist in NPC scripts.
+receiveText(npc)
+    Invoked anytime the NPC hears someone speaking.
+useNPC(npc, user)
+    Invoked when the user shift clicks the NPC.
+lookAtNpc(npc, player, mode)
+    Invoked if the player looks at the NPC.
+    Modes: 0 for normal, 1 for close examination.</p>
 <h2 id='quests'>Quests</h2><div class="highlight"><pre class="highlight lua tab-lua"><code><span class="kd">local</span> <span class="n">common</span> <span class="o">=</span> <span class="nb">require</span><span class="p">(</span><span class="s2">"base.common"</span><span class="p">)</span>
 <span class="kd">local</span> <span class="n">M</span> <span class="o">=</span> <span class="p">{}</span>
 
@@ -1002,6 +1058,47 @@ end of a quest has been reached. If so, the client is notified to display the qu
 <td>A character has a maximum of 21 movepoints. Every action like talking, fighting, using etc. needs at least 7 movepoints. The reduction of movepoints depends on the character&#39;s agility. A character gains one movepoint per decisecond.</td>
 </tr>
 </tbody></table>
+<h3 id='actions'>Actions</h3><div class="highlight"><pre class="highlight lua tab-lua"><code><span class="kd">local</span> <span class="n">M</span> <span class="o">=</span> <span class="p">{}</span>
+
+<span class="k">function</span> <span class="nc">M</span><span class="p">.</span><span class="nf">UseItem</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="n">item</span><span class="p">,</span> <span class="n">actionState</span><span class="p">)</span>
+    <span class="kd">local</span> <span class="n">gfxRain</span> <span class="o">=</span> <span class="mi">16</span>
+
+    <span class="k">if</span> <span class="n">actionState</span> <span class="o">==</span> <span class="n">Action</span><span class="p">.</span><span class="n">none</span> <span class="k">then</span>
+        <span class="n">user</span><span class="p">:</span><span class="n">startAction</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="n">gfxRain</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="n">user</span><span class="p">:</span><span class="n">inform</span><span class="p">(</span><span class="s2">"start"</span><span class="p">)</span>
+        <span class="n">item</span><span class="p">.</span><span class="n">number</span> <span class="o">=</span> <span class="n">item</span><span class="p">.</span><span class="n">number</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="n">world</span><span class="p">:</span><span class="n">changeItem</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+        <span class="n">user</span><span class="p">:</span><span class="n">changeSource</span><span class="p">(</span><span class="n">item</span><span class="p">)</span>
+    <span class="k">elseif</span> <span class="n">actionState</span> <span class="o">==</span> <span class="n">Action</span><span class="p">.</span><span class="n">abort</span> <span class="k">then</span>
+        <span class="n">user</span><span class="p">:</span><span class="n">inform</span><span class="p">(</span><span class="s2">"abort: "</span> <span class="o">..</span> <span class="n">item</span><span class="p">.</span><span class="n">number</span><span class="p">)</span>
+    <span class="k">elseif</span> <span class="n">actionState</span> <span class="o">==</span> <span class="n">Action</span><span class="p">.</span><span class="n">success</span> <span class="k">then</span>
+        <span class="n">user</span><span class="p">:</span><span class="n">inform</span><span class="p">(</span><span class="s2">"success: "</span> <span class="o">..</span> <span class="n">item</span><span class="p">.</span><span class="n">number</span><span class="p">)</span>
+    <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="k">function</span> <span class="nc">M</span><span class="p">.</span><span class="nf">actionDisturbed</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="n">attacker</span><span class="p">)</span>
+    <span class="n">user</span><span class="p">:</span><span class="n">inform</span><span class="p">(</span><span class="s2">"disturbed by "</span> <span class="o">..</span> <span class="n">attacker</span><span class="p">.</span><span class="n">name</span><span class="p">)</span>
+    <span class="k">return</span> <span class="kc">true</span>
+<span class="k">end</span>
+
+<span class="k">return</span> <span class="n">M</span>
+</code></pre></div>
+<p>All Use* entry points (e.g. UseItem) which have an <code>actionState</code> parameter, allow for starting actions. An action can be
+seen as a state of concentration of the user, which lasts for a specified time. After that time or when the action is
+interrupted, the entry point is called again with the same parameters, but with actionState set to <code>Action.abort</code> or
+<code>Action.success</code> accordingly. Usually actions are aborted by the user doing something else, like using something,
+moving, etc. However, actions can also be aborted by the user being attacked if an <code>actionDisturbed</code> entry point is
+defined and returns <code>true</code>.</p>
+<h4 id='startaction-number-duration-number-gfxid-number-gfxinterval-number-sfxid-number-sfxinterval'><code>startAction(number duration, number gfxId, number gfxInterval, number sfxId, number sfxInterval)</code></h4>
+<p>Starts an action lasting <code>duration</code> deciseconds. At the start of the action and every <code>gfxInterval</code> deciseconds after
+that <a href="https://illarion.org/~devserver/effects/effects.html">graphic effect</a> <code>gfxId</code> is played.
+Similarly, at the start of the action and every <code>sfxInterval</code> deciseconds after
+that <a href="https://illarion.org/~devserver/sounds/sounds.html">sound effect</a> <code>sfxId</code> is played. If <code>gfxId</code> or <code>sfxId</code> are set
+to <code>0</code>, no effect of that type will be played.</p>
+<h4 id='changesource-item-item'><code>changeSource(Item item)</code></h4>
+<p>If you modify the <code>item</code> associated with an action started in <code>UseItem</code>, this functions ensures the next time
+<code>UseItem</code> is called by the action (when it succeeds or is aborted) the updated item will be provided as a parameter.
+This needs to be called in addition to <code>world:changeItem</code>.</p>
 <h3 id='text-speech-functions'>Text/Speech Functions</h3><h4 id='talk-number-mode-text-message'><code>talk(number mode, text message)</code></h4><div class="highlight"><pre class="highlight lua tab-lua"><code><span class="n">user</span><span class="p">:</span><span class="n">talk</span><span class="p">(</span><span class="n">Character</span><span class="p">.</span><span class="n">say</span><span class="p">,</span> <span class="s2">"Hello World!"</span><span class="p">)</span>
 </code></pre></div>
 <p>Lets a character say/whisper/yell a <code>message</code>. <code>mode</code> can be <code>Character.say</code>, <code>Character.whisper</code> or <code>Character.yell</code>.</p>
