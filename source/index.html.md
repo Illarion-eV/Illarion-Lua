@@ -39,7 +39,6 @@ search: true
 
 code_clipboard: true
 ---
-<aside class="warning">                                                                                                  
+<aside class="warning">
 This documentation is still in development, but will eventually replace the current version. See changelog for details.
 </aside>
-
