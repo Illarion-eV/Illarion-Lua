@@ -32,6 +32,7 @@ includes:
   - classes/itemlookat
   - classes/itemstruct
   - classes/position
+  - resources
   - bugs
   - changelog
 
