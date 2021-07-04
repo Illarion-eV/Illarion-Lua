@@ -31,7 +31,7 @@ end
 return M
 ```
 
-**Database field:** `triggerfields.tgf_script`
+**Database table:** `triggerfields`
 
 ### `ItemRotsOnField(Item oldItem, Item newItem)`
 

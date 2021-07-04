@@ -36,7 +36,7 @@ end
 return M
 ```
 
-**Database field:** `items.itm_script`
+**Database table:** `items`
 
 ### `boolean actionDisturbed(Character user, Character attacker)`
 Is called when `user` is attacked while an action is running. This action had to be started by `user:startAction(...)`
