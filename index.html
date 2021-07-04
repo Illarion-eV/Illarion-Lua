@@ -343,9 +343,6 @@
                     <a href="#items" class="toc-h2 toc-link" data-title="Items">Items</a>
                   </li>
                   <li>
-                    <a href="#magic" class="toc-h2 toc-link" data-title="Magic">Magic</a>
-                  </li>
-                  <li>
                     <a href="#monsters" class="toc-h2 toc-link" data-title="Monsters">Monsters</a>
                   </li>
                   <li>
@@ -408,7 +405,7 @@
     <div class="page-wrapper">
       <div class="dark-box"></div>
       <div class="content">
-        <aside class="warning">                                                                                                  
+        <aside class="warning">
 This documentation is still in development, but will eventually replace the current version. See changelog for details.
 </aside>
 <h1 id='introduction'>Introduction</h1>
@@ -600,86 +597,50 @@ only the function signature is given for clarity.</p>
 
 <p>E.g. a script <code>item/apple.lua</code> would be entered as <code>item.apple</code>.</p>
 <h2 id='fields'>Fields</h2>
-<p><strong>function useTile(user, position)</strong></p>
+<p>These entry points are bound to a single field (x, y, z) on the map.</p>
+
+<blockquote>
+<p>SQL</p>
+</blockquote>
+<div class="highlight"><pre class="highlight sql tab-sql"><code><span class="k">INSERT</span> <span class="k">INTO</span> <span class="n">triggerfields</span> <span class="k">VALUES</span> <span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">,</span> <span class="n">Z</span><span class="p">,</span> <span class="s1">'SCRIPT_NAME'</span><span class="p">);</span>
+</code></pre></div>
+<blockquote>
+<p>Field script with all available entry points</p>
+</blockquote>
 <div class="highlight"><pre class="highlight lua tab-lua"><code><span class="kd">local</span> <span class="n">M</span> <span class="o">=</span> <span class="p">{}</span>
-<span class="k">function</span> <span class="nc">M</span><span class="p">.</span><span class="nf">useTile</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="n">position</span><span class="p">)</span>
-    <span class="c1">-- What should happen if you use the tile on the triggerfield.</span>
+
+<span class="k">function</span> <span class="nc">M</span><span class="p">.</span><span class="nf">ItemRotsOnField</span><span class="p">(</span><span class="n">oldItem</span><span class="p">,</span> <span class="n">newItem</span><span class="p">)</span>
 <span class="k">end</span>
-<span class="k">return</span> <span class="n">M</span>
-</code></pre></div>
-<p>Is invoked when a tile is shift-clicked (used).</p>
 
-<p><strong>function PutItemOnField(item, user)</strong></p>
-<div class="highlight"><pre class="highlight lua tab-lua"><code><span class="kd">local</span> <span class="n">M</span> <span class="o">=</span> <span class="p">{}</span>
-<span class="k">function</span> <span class="nc">M</span><span class="p">.</span><span class="nf">putItemOnField</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">user</span><span class="p">)</span>
-    <span class="c1">-- What should happen if the item is put on the triggerfield.</span>
-<span class="k">end</span>
-<span class="k">return</span> <span class="n">M</span>
-</code></pre></div>
-<p>Is invoked if an item is put on that triggerfield.</p>
-
-<p><strong>function TakeItemFromField(item, user)</strong></p>
-<div class="highlight"><pre class="highlight lua tab-lua"><code><span class="kd">local</span> <span class="n">M</span> <span class="o">=</span> <span class="p">{}</span>
-<span class="k">function</span> <span class="nc">M</span><span class="p">.</span><span class="nf">TakeItemFromField</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">user</span><span class="p">)</span>
-    <span class="c1">-- What should happen if you remove an item from the triggerfield.</span>
-<span class="k">end</span>
-<span class="k">return</span> <span class="n">M</span>
-</code></pre></div>
-<p>Is invoked if an item is taken away from that triggerfield.</p>
-
-<p><strong>function ItemRotsOnField(oldItem,newItem)</strong></p>
-<div class="highlight"><pre class="highlight lua tab-lua"><code><span class="kd">local</span> <span class="n">M</span> <span class="o">=</span> <span class="p">{}</span>
-<span class="k">function</span> <span class="nc">M</span><span class="p">.</span><span class="nf">ItemRotsOnField</span><span class="p">(</span><span class="mi">176</span><span class="p">,</span> <span class="mi">178</span><span class="p">)</span>
-<span class="c1">-- Turns grey cloth into white cloth upon rotting if placed on the triggerfield.</span>
-<span class="k">return</span> <span class="n">M</span>
-</code></pre></div>
-<p>Is invoked when an item on a triggerfield rots, turning the oldItem into the newItem.</p>
-
-<p><strong>function MoveToField(user)</strong></p>
-<div class="highlight"><pre class="highlight lua tab-lua"><code><span class="kd">local</span> <span class="n">M</span> <span class="o">=</span> <span class="p">{}</span>
-<span class="k">function</span> <span class="nc">M</span><span class="p">.</span><span class="nf">MoveToField</span><span class="p">(</span><span class="n">user</span><span class="p">)</span>
-    <span class="c1">-- What should happen if a character steps onto the triggerfield.</span>
-<span class="k">end</span>
-<span class="k">return</span> <span class="n">M</span>
-</code></pre></div>
-<p>Is invoked if a character moves on that triggerfield.</p>
-
-<p><strong>function MoveFromField(user)</strong></p>
-<div class="highlight"><pre class="highlight lua tab-lua"><code><span class="kd">local</span> <span class="n">M</span> <span class="o">=</span> <span class="p">{}</span>
 <span class="k">function</span> <span class="nc">M</span><span class="p">.</span><span class="nf">MoveFromField</span><span class="p">(</span><span class="n">user</span><span class="p">)</span>
-    <span class="c1">-- What should happen if a character leaves the triggerfield.</span>
 <span class="k">end</span>
+
+<span class="k">function</span> <span class="nc">M</span><span class="p">.</span><span class="nf">MoveToField</span><span class="p">(</span><span class="n">user</span><span class="p">)</span>
+<span class="k">end</span>
+
+<span class="k">function</span> <span class="nc">M</span><span class="p">.</span><span class="nf">PutItemOnField</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">user</span><span class="p">)</span>
+<span class="k">end</span>
+
+<span class="k">function</span> <span class="nc">M</span><span class="p">.</span><span class="nf">TakeItemFromField</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="n">user</span><span class="p">)</span>
+<span class="k">end</span>
+
 <span class="k">return</span> <span class="n">M</span>
 </code></pre></div>
-<p>Is invoked if a character moves away from that triggerfield.</p>
+<p><strong>Database table:</strong> <code>triggerfields</code></p>
+<h3 id='itemrotsonfield-item-olditem-item-newitem'><code>ItemRotsOnField(Item oldItem, Item newItem)</code></h3>
+<aside class="info">
+Currently the server does not call ItemRotsOnField.
+</aside>
 
-<p><strong>Database Table:</strong><code>triggerfields</code></p>
-
-<p>Entry in the database is required for any of the above functions to work on the specified tile.</p>
-
-<table><thead>
-<tr>
-<th>tgf_posx</th>
-<th>tgf_posy</th>
-<th>tgf_posz</th>
-<th>tgf_script</th>
-</tr>
-</thead><tbody>
-<tr>
-<td>x</td>
-<td>y</td>
-<td>z</td>
-<td>triggerfield.myScript</td>
-</tr>
-</tbody></table>
-
-<p><strong>Positions</strong></p>
-
-<p>The first three database entries for triggerfields consist of the x, y, z coordinates that define your field.</p>
-
-<p><strong>Script Name</strong></p>
-
-<p>The fourth and last database entry for triggerfields is the name of your script. In this case the &quot;myScript.lua&quot; found in the folder &quot;triggerfield&quot;.</p>
+<p><code>oldItem</code> had its wear reduced to zero on this field and rots into <code>newItem</code>.</p>
+<h3 id='movefromfield-character-user'><code>MoveFromField(Character user)</code></h3>
+<p><code>user</code> moves away from this field.</p>
+<h3 id='movetofield-character-user'><code>MoveToField(Character user)</code></h3>
+<p><code>user</code> moves onto this field.</p>
+<h3 id='putitemonfield-item-item-character-user'><code>PutItemOnField(Item item, Character user)</code></h3>
+<p><code>user</code> puts <code>item</code> on this field.</p>
+<h3 id='takeitemfromfield-item-item-character-user'><code>TakeItemFromField(Item item, Character user)</code></h3>
+<p><code>user</code> takes <code>item</code> from this field.</p>
 <h2 id='items'>Items</h2>
 <blockquote>
 <p>SQL</p>
@@ -715,7 +676,7 @@ only the function signature is given for clarity.</p>
 
 <span class="k">return</span> <span class="n">M</span>
 </code></pre></div>
-<p><strong>Database field:</strong> <code>items.itm_script</code></p>
+<p><strong>Database table:</strong> <code>items</code></p>
 <h3 id='boolean-actiondisturbed-character-user-character-attacker'><code>boolean actionDisturbed(Character user, Character attacker)</code></h3>
 <p>Is called when <code>user</code> is attacked while an action is running. This action had to be started by <code>user:startAction(...)</code>
 in <code>UseItem</code>. If this entry point does not exist or returns <code>false</code> the action is not aborted. If it returns <code>true</code> the
@@ -742,42 +703,6 @@ else like using an item, moving, etc.</li>
 </ul>
 
 <p>See section Actions in <a href="#character">Character</a> for more details on starting actions.</p>
-<h2 id='magic'>Magic</h2>
-<p><strong>function CastMagic(caster)</strong></p>
-<div class="highlight"><pre class="highlight lua tab-lua"><code><span class="kd">local</span> <span class="n">M</span> <span class="o">=</span> <span class="p">{}</span>
-<span class="k">function</span> <span class="nc">M</span><span class="p">.</span><span class="nf">CastMagic</span><span class="p">(</span><span class="n">user</span><span class="p">)</span>
-    <span class="c1">-- The spell effect?</span>
-<span class="k">end</span>
-<span class="k">return</span> <span class="n">M</span>
-</code></pre></div>
-<p>Invoked when the caster casts a spell without a target.</p>
-
-<p><strong>function CastMagicOnCharacter(caster, targetCharacter)</strong></p>
-<div class="highlight"><pre class="highlight lua tab-lua"><code><span class="kd">local</span> <span class="n">M</span> <span class="o">=</span> <span class="p">{}</span>
-<span class="k">function</span> <span class="nc">M</span><span class="p">.</span><span class="nf">CastMagicOnCharacter</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="n">target</span><span class="p">)</span>
-    <span class="c1">-- The spell effect?</span>
-<span class="k">end</span>
-<span class="k">return</span> <span class="n">M</span>
-</code></pre></div>
-<p>Invoked when the caster casts a spell on a targeteted character/monster.</p>
-
-<p><strong>function CastMagicOnField(caster, targetPosition)</strong></p>
-<div class="highlight"><pre class="highlight lua tab-lua"><code><span class="kd">local</span> <span class="n">M</span> <span class="o">=</span> <span class="p">{}</span>
-<span class="k">function</span> <span class="nc">M</span><span class="p">.</span><span class="nf">CastMagicOnField</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="n">target</span><span class="p">)</span>
-    <span class="c1">-- The spell effect?</span>
-<span class="k">end</span>
-<span class="k">return</span> <span class="n">M</span>
-</code></pre></div>
-<p>Invoked when caster casts a spell on a field at the specified position.</p>
-
-<p><strong>function CastMagicOnItem(caster, targetItem)</strong></p>
-<div class="highlight"><pre class="highlight lua tab-lua"><code><span class="kd">local</span> <span class="n">M</span> <span class="o">=</span> <span class="p">{}</span>
-<span class="k">function</span> <span class="nc">M</span><span class="p">.</span><span class="nf">CastMagicOnItem</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="n">target</span><span class="p">)</span>
-    <span class="c1">-- The spell effect?</span>
-<span class="k">end</span>
-<span class="k">return</span> <span class="n">M</span>
-</code></pre></div>
-<p>Invoked when a spell is cast on a targeted item.</p>
 <h2 id='monsters'>Monsters</h2>
 <p><strong>function onDeath(monster)</strong></p>
 
