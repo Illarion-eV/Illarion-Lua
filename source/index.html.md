@@ -16,7 +16,6 @@ includes:
   - entrypoints
   - entrypoints/fields
   - entrypoints/items
-  - entrypoints/magic
   - entrypoints/monsters
   - entrypoints/npcs
   - entrypoints/quests
