@@ -309,6 +309,9 @@
             <a href="#introduction" class="toc-h1 toc-link" data-title="Introduction">Introduction</a>
               <ul class="toc-list-h2">
                   <li>
+                    <a href="#learning-lua" class="toc-h2 toc-link" data-title="Learning Lua">Learning Lua</a>
+                  </li>
+                  <li>
                     <a href="#structure" class="toc-h2 toc-link" data-title="Structure">Structure</a>
                   </li>
                   <li>
@@ -456,6 +459,37 @@ description of setting up and using a development environment is available in th
 <aside class="notice">
 Scripts need to be encoded in ISO 8859-1.
 </aside>
+<h2 id='learning-lua'>Learning Lua</h2>
+<p>If you are new to programming in general or new to Lua, you will need to learn Lua 5.2 if you want to make changes
+beyonds searching for and fixing text errors. Luckily Lua is a fairly simple language and I would suggest beginning by
+studying <a href="https://www.lua.org/pil/contents.html">Programming in Lua</a> chapters 1 to 5.1. You can skip 1.4, since we won&#39;t
+be using a stand-alone interpreter, but rather our <a href="https://github.com/Illarion-eV/Illarion-Dev">local Illarion server</a>.
+While this book is geared towards Lua 5.0, the basics did not change. Before you get started, make sure to follow the
+<a href="#tutorial">tutorial</a> to set up a development environment.</p>
+
+<blockquote>
+<p>Minimal script for testing Lua code</p>
+</blockquote>
+<div class="highlight"><pre class="highlight lua tab-lua"><code><span class="kd">local</span> <span class="n">M</span> <span class="o">=</span> <span class="p">{}</span>
+
+<span class="k">function</span> <span class="nc">M</span><span class="p">.</span><span class="nf">UseItem</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="n">item</span><span class="p">,</span> <span class="n">actionState</span><span class="p">)</span>
+    <span class="c1">-- your code here</span>
+<span class="k">end</span>
+
+<span class="k">return</span> <span class="n">M</span>
+</code></pre></div>
+<p>While learning, you will want to test your code snippets. To do that, you can go to an item script of your choosing,
+e.g. <code>item/id_9_saw.lua</code> and delete all of its contents. Then paste the example on the right and write your code inside
+the <code>UseItem</code> entry point. Make sure to reload (<code>!fr</code> in the client) the server after saving your script to load any
+changes. Now you can run your code by simply using that item. To create an item with e.g. id 9, use <code>!create 9</code> in your
+client (the item might be created in your bag).</p>
+
+<p>Since <code>print</code> does not exist here (where would we print output anyway), you need to use another means of producing
+output. You can either use <code>debug(&quot;some output text&quot;)</code> to send output to the server log, or use
+<code>user:inform(&quot;some output text&quot;)</code> to send output to your client.</p>
+
+<p>If you struggle or are not sure about something, you are always welcome to ask for help in <a href="https://illarion.org/community/us_chat.php">Discord</a>. Developers will be notified if you use the channel Development &gt;
+beginners.</p>
 <h2 id='structure'>Structure</h2>
 <blockquote>
 <p><code>item/apple.lua</code></p>
