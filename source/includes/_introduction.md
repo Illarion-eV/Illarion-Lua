@@ -24,7 +24,7 @@ Scripts need to be encoded in ISO 8859-1.
 ## Learning Lua
 
 If you are new to programming in general or new to Lua, you will need to learn Lua 5.2 if you want to make changes
-beyonds searching for and fixing text errors. Luckily Lua is a fairly simple language and I would suggest beginning by
+beyond searching for and fixing text errors. Luckily Lua is a fairly simple language and I would suggest beginning by
 studying [Programming in Lua](https://www.lua.org/pil/contents.html) chapters 1 to 5.1. You can skip 1.4, since we won't
 be using a stand-alone interpreter, but rather our [local Illarion server](https://github.com/Illarion-eV/Illarion-Dev).
 While this book is geared towards Lua 5.0, the basics did not change. Before you get started, make sure to follow the
