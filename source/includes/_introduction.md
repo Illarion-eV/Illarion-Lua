@@ -21,6 +21,41 @@ description of setting up and using a development environment is available in th
 Scripts need to be encoded in ISO 8859-1.
 </aside>
 
+## Learning Lua
+
+If you are new to programming in general or new to Lua, you will need to learn Lua 5.2 if you want to make changes
+beyonds searching for and fixing text errors. Luckily Lua is a fairly simple language and I would suggest beginning by
+studying [Programming in Lua](https://www.lua.org/pil/contents.html) chapters 1 to 5.1. You can skip 1.4, since we won't
+be using a stand-alone interpreter, but rather our [local Illarion server](https://github.com/Illarion-eV/Illarion-Dev).
+While this book is geared towards Lua 5.0, the basics did not change. Before you get started, make sure to follow the
+[tutorial](#tutorial) to set up a development environment.
+
+> Minimal script for testing Lua code
+
+```lua
+local M = {}
+
+function M.UseItem(user, item, actionState)
+    -- your code here
+end
+
+return M
+```
+
+While learning, you will want to test your code snippets. To do that, you can go to an item script of your choosing,
+e.g. `item/id_9_saw.lua` and delete all of its contents. Then paste the example on the right and write your code inside
+the `UseItem` entry point. Make sure to reload (`!fr` in the client) the server after saving your script to load any
+changes. Now you can run your code by simply using that item. To create an item with e.g. id 9, use `!create 9` in your
+client (the item might be created in your bag).
+
+Since `print` does not exist here (where would we print output anyway), you need to use another means of producing
+output. You can either use `debug("some output text")` to send output to the server log, or use
+`user:inform("some output text")` to send output to your client.
+
+If you struggle or are not sure about something, you are always welcome to ask for help in [Discord]
+(https://illarion.org/community/us_chat.php). Developers will be notified if you use the channel Development >
+beginners.
+
 ## Structure
 
 > `item/apple.lua`
