@@ -14,13 +14,21 @@ includes:
   - introduction
   - tutorial
   - entrypoints
+  - entrypoints/combat
+  - entrypoints/death
+  - entrypoints/depot
   - entrypoints/fields
+  - entrypoints/itemlookat
   - entrypoints/items
+  - entrypoints/learn
+  - entrypoints/login
+  - entrypoints/logout
   - entrypoints/monsters
   - entrypoints/npcs
+  - entrypoints/playerlookat
   - entrypoints/quests
+  - entrypoints/reload
   - entrypoints/scheduled
-  - entrypoints/server
   - classes
   - classes/character
   - classes/colour
