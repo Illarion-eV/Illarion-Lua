@@ -337,10 +337,31 @@
             <a href="#entry-points" class="toc-h1 toc-link" data-title="Entry Points">Entry Points</a>
               <ul class="toc-list-h2">
                   <li>
+                    <a href="#combat" class="toc-h2 toc-link" data-title="Combat">Combat</a>
+                  </li>
+                  <li>
+                    <a href="#death" class="toc-h2 toc-link" data-title="Death">Death</a>
+                  </li>
+                  <li>
+                    <a href="#depot" class="toc-h2 toc-link" data-title="Depot">Depot</a>
+                  </li>
+                  <li>
                     <a href="#fields" class="toc-h2 toc-link" data-title="Fields">Fields</a>
                   </li>
                   <li>
+                    <a href="#item-inspection" class="toc-h2 toc-link" data-title="Item Inspection">Item Inspection</a>
+                  </li>
+                  <li>
                     <a href="#items" class="toc-h2 toc-link" data-title="Items">Items</a>
+                  </li>
+                  <li>
+                    <a href="#learning" class="toc-h2 toc-link" data-title="Learning">Learning</a>
+                  </li>
+                  <li>
+                    <a href="#login" class="toc-h2 toc-link" data-title="Login">Login</a>
+                  </li>
+                  <li>
+                    <a href="#logout" class="toc-h2 toc-link" data-title="Logout">Logout</a>
                   </li>
                   <li>
                     <a href="#monsters" class="toc-h2 toc-link" data-title="Monsters">Monsters</a>
@@ -349,13 +370,16 @@
                     <a href="#npcs" class="toc-h2 toc-link" data-title="NPCs">NPCs</a>
                   </li>
                   <li>
+                    <a href="#player-inspection" class="toc-h2 toc-link" data-title="Player Inspection">Player Inspection</a>
+                  </li>
+                  <li>
                     <a href="#quests" class="toc-h2 toc-link" data-title="Quests">Quests</a>
                   </li>
                   <li>
-                    <a href="#scheduled" class="toc-h2 toc-link" data-title="Scheduled">Scheduled</a>
+                    <a href="#reloading-scripts" class="toc-h2 toc-link" data-title="Reloading Scripts">Reloading Scripts</a>
                   </li>
                   <li>
-                    <a href="#server" class="toc-h2 toc-link" data-title="Server">Server</a>
+                    <a href="#scheduled" class="toc-h2 toc-link" data-title="Scheduled">Scheduled</a>
                   </li>
               </ul>
           </li>
@@ -387,6 +411,9 @@
                     <a href="#position" class="toc-h2 toc-link" data-title="position">position</a>
                   </li>
               </ul>
+          </li>
+          <li>
+            <a href="#resources" class="toc-h1 toc-link" data-title="Resources">Resources</a>
           </li>
           <li>
             <a href="#common-bugs" class="toc-h1 toc-link" data-title="Common Bugs">Common Bugs</a>
@@ -582,7 +609,7 @@ unchanged and running, while scripts are updated at run-time.</p>
 
 <p>Entry points are expected to be functions with pre-defined names, which the server will call. For the server to be able
 to find the script these functions are in, the script is named in the db entry of the appropriate game entity. The only
-exception are server scripts, which just have one exact name.</p>
+exception are <em>server scripts</em>, which just have one exact name.</p>
 
 <p>The server expects scripts to return a table, which contains all implemented entry points. In the following definitions
 only the function signature is given for clarity.</p>
@@ -596,6 +623,59 @@ only the function signature is given for clarity.</p>
 </ul>
 
 <p>E.g. a script <code>item/apple.lua</code> would be entered as <code>item.apple</code>.</p>
+
+<p>Some scripts provide a special global service for the server. These scripts are not attached to a specific game object
+(e.g. item, monster or field), but define general or in some cases default behaviour. All of these scripts are located
+in the <code>server</code> directory. Server scripts should be edited with great caution, since breaking one of those scripts would
+break the related behaviour for the server.</p>
+
+<aside class="info">
+Database scripts are defined in a specific database table. Each server script is in a file with a pre-defined name.
+</aside>
+<h2 id='combat'>Combat</h2>
+<blockquote>
+<p>Combat script with all available entry points</p>
+</blockquote>
+<div class="highlight"><pre class="highlight lua tab-lua"><code><span class="kd">local</span> <span class="n">M</span> <span class="o">=</span> <span class="p">{}</span>
+
+<span class="k">function</span> <span class="nc">M</span><span class="p">.</span><span class="nf">onAttack</span><span class="p">(</span><span class="n">attacker</span><span class="p">,</span> <span class="n">defender</span><span class="p">)</span>
+<span class="k">end</span>
+
+<span class="k">return</span> <span class="n">M</span>
+</code></pre></div>
+<p><strong>Script file:</strong> <code>server/standardfighting.lua</code></p>
+<h3 id='onattack-character-attacker-character-defender'><code>onAttack(Character attacker, Character defender)</code></h3>
+<p>Is called every time <code>attacker</code> tries to hit <code>defender</code> in physical combat.</p>
+<h2 id='death'>Death</h2>
+<blockquote>
+<p>Death script with all available entry points</p>
+</blockquote>
+<div class="highlight"><pre class="highlight lua tab-lua"><code><span class="kd">local</span> <span class="n">M</span> <span class="o">=</span> <span class="p">{}</span>
+
+<span class="k">function</span> <span class="nc">M</span><span class="p">.</span><span class="nf">playerDeath</span><span class="p">(</span><span class="n">user</span><span class="p">)</span>
+<span class="k">end</span>
+
+<span class="k">return</span> <span class="n">M</span>
+</code></pre></div>
+<p><strong>Script file:</strong> <code>server/playerdeath.lua</code></p>
+<h3 id='playerdeath-character-user'><code>playerDeath(Character user)</code></h3>
+<p>Is called when <code>user</code> dies. Here you can handle e.g. penalties for dying.</p>
+<h2 id='depot'>Depot</h2>
+<blockquote>
+<p>Depot script with all available entry points</p>
+</blockquote>
+<div class="highlight"><pre class="highlight lua tab-lua"><code><span class="kd">local</span> <span class="n">M</span> <span class="o">=</span> <span class="p">{}</span>
+
+<span class="k">function</span> <span class="nc">M</span><span class="p">.</span><span class="nf">onOpenDepot</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="n">depot</span><span class="p">)</span>
+    <span class="k">return</span> <span class="kc">true</span>
+<span class="k">end</span>
+
+<span class="k">return</span> <span class="n">M</span>
+</code></pre></div>
+<p><strong>Script file:</strong> <code>server/depot.lua</code></p>
+<h3 id='boolean-onopendepot-character-user-item-depot'><code>boolean onOpenDepot(Character user, Item depot)</code></h3>
+<p>Is called when <code>user</code> tries to open a <code>depot</code>. Has to return <code>true</code> if <code>user</code> is allowed to open this <code>depot</code> and
+<code>false</code> otherwise.</p>
 <h2 id='fields'>Fields</h2>
 <p>These entry points are bound to a single field (x, y, z) on the map.</p>
 
@@ -641,6 +721,23 @@ Currently the server does not call ItemRotsOnField.
 <p><code>user</code> puts <code>item</code> on this field.</p>
 <h3 id='takeitemfromfield-item-item-character-user'><code>TakeItemFromField(Item item, Character user)</code></h3>
 <p><code>user</code> takes <code>item</code> from this field.</p>
+<h2 id='item-inspection'>Item Inspection</h2>
+<blockquote>
+<p>Item inspection script with all available entry points</p>
+</blockquote>
+<div class="highlight"><pre class="highlight lua tab-lua"><code><span class="kd">local</span> <span class="n">M</span> <span class="o">=</span> <span class="p">{}</span>
+
+<span class="k">function</span> <span class="nc">M</span><span class="p">.</span><span class="nf">lookAtItem</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="n">item</span><span class="p">)</span>
+    <span class="kd">local</span> <span class="n">lookAt</span> <span class="o">=</span> <span class="n">ItemLookAt</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">lookAt</span>
+<span class="k">end</span>
+
+<span class="k">return</span> <span class="n">M</span>
+</code></pre></div>
+<p><strong>Script file:</strong> <code>server/itemlookat.lua</code></p>
+<h3 id='itemlookat-lookatitem-character-user-item-item'><code>ItemLookAt lookAtItem(Character user, Item item)</code></h3>
+<p>Handles basic item inspection if <code>item</code> does not have a script with <code>LookAtItem</code> entry point. Needs to return an
+<a href="#itemlookat">ItemLookAt</a>.</p>
 <h2 id='items'>Items</h2>
 <blockquote>
 <p>SQL</p>
@@ -703,6 +800,56 @@ else like using an item, moving, etc.</li>
 </ul>
 
 <p>See section Actions in <a href="#character">Character</a> for more details on starting actions.</p>
+<h2 id='learning'>Learning</h2>
+<blockquote>
+<p>Learning script with all available entry points</p>
+</blockquote>
+<div class="highlight"><pre class="highlight lua tab-lua"><code><span class="kd">local</span> <span class="n">M</span> <span class="o">=</span> <span class="p">{}</span>
+
+<span class="k">function</span> <span class="nc">M</span><span class="p">.</span><span class="nf">learn</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="n">skill</span><span class="p">,</span> <span class="n">actionPoints</span><span class="p">,</span> <span class="n">learnLimit</span><span class="p">)</span>
+<span class="k">end</span>
+
+<span class="k">function</span> <span class="nc">M</span><span class="p">.</span><span class="nf">reduceMC</span><span class="p">(</span><span class="n">user</span><span class="p">)</span>
+<span class="k">end</span>
+
+<span class="k">return</span> <span class="n">M</span>
+</code></pre></div>
+<p><strong>Script file:</strong> <code>server/learn.lua</code></p>
+<h3 id='learn-character-user-number-skill-number-actionpoints-number-learnlimit'><code>learn(Character user, number skill, number actionPoints, number learnLimit)</code></h3>
+<p>Called as a result of <code>user:learn</code> being invoked. <code>skill</code> IDs are defined in the database table <code>skills</code>. A certain
+number of <code>actionPoints</code> were spent on an action, resulting in learning. The learned skill cannot exceed both
+<code>learnLimit</code> and <code>100</code>.</p>
+<h3 id='reducemc-character-user'><code>reduceMC(Character user)</code></h3>
+<p>Called every 10s for every online player. Use this to reduce mental capacity with <code>user:increaseMentalCapacity</code>. A 
+higher mental capacity value makes learning more difficult.</p>
+<h2 id='login'>Login</h2>
+<blockquote>
+<p>Login script with all available entry points</p>
+</blockquote>
+<div class="highlight"><pre class="highlight lua tab-lua"><code><span class="kd">local</span> <span class="n">M</span> <span class="o">=</span> <span class="p">{}</span>
+
+<span class="k">function</span> <span class="nc">M</span><span class="p">.</span><span class="nf">onLogin</span><span class="p">(</span><span class="n">user</span><span class="p">)</span>
+<span class="k">end</span>
+
+<span class="k">return</span> <span class="n">M</span>
+</code></pre></div>
+<p><strong>Script file:</strong> <code>server/login.lua</code></p>
+<h3 id='onlogin-character-user'><code>onLogin(Character user)</code></h3>
+<p>Invoked when <code>user</code> logs in. Here you can display login information, tax players, etc.</p>
+<h2 id='logout'>Logout</h2>
+<blockquote>
+<p>Logout script with all available entry points</p>
+</blockquote>
+<div class="highlight"><pre class="highlight lua tab-lua"><code><span class="kd">local</span> <span class="n">M</span> <span class="o">=</span> <span class="p">{}</span>
+
+<span class="k">function</span> <span class="nc">M</span><span class="p">.</span><span class="nf">onLogout</span><span class="p">(</span><span class="n">user</span><span class="p">)</span>
+<span class="k">end</span>
+
+<span class="k">return</span> <span class="n">M</span>
+</code></pre></div>
+<p><strong>Script file:</strong> <code>server/logout.lua</code></p>
+<h3 id='onlogout-character-user'><code>onLogout(Character user)</code></h3>
+<p>Invoked when <code>user</code> logs out. Here you can e.g. substitute player faction leaders with their NPC equivalent.</p>
 <h2 id='monsters'>Monsters</h2>
 <p><strong>function onDeath(monster)</strong></p>
 
@@ -793,6 +940,20 @@ useNPC(npc, user)
 lookAtNpc(npc, player, mode)
     Invoked if the player looks at the NPC.
     Modes: 0 for normal, 1 for close examination.</p>
+<h2 id='player-inspection'>Player Inspection</h2>
+<blockquote>
+<p>Player inspection script with all available entry points</p>
+</blockquote>
+<div class="highlight"><pre class="highlight lua tab-lua"><code><span class="kd">local</span> <span class="n">M</span> <span class="o">=</span> <span class="p">{}</span>
+
+<span class="k">function</span> <span class="nc">M</span><span class="p">.</span><span class="nf">lookAtPlayer</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="n">targetPlayer</span><span class="p">,</span> <span class="n">mode</span><span class="p">)</span>
+<span class="k">end</span>
+
+<span class="k">return</span> <span class="n">M</span>
+</code></pre></div>
+<p><strong>Script file:</strong> <code>server/playerlookat.lua</code></p>
+<h3 id='lookatplayer-character-user-character-targetplayer-number-mode'><code>lookAtPlayer(Character user, Character targetPlayer, number mode)</code></h3>
+<p>Is invoked when <code>user</code> looks at <code>targetPlayer</code>. For normal inspection <code>mode</code> is 0, for close examination <code>mode</code> is 1.</p>
 <h2 id='quests'>Quests</h2><div class="highlight"><pre class="highlight lua tab-lua"><code><span class="kd">local</span> <span class="n">common</span> <span class="o">=</span> <span class="nb">require</span><span class="p">(</span><span class="s2">"base.common"</span><span class="p">)</span>
 <span class="kd">local</span> <span class="n">M</span> <span class="o">=</span> <span class="p">{}</span>
 
@@ -873,6 +1034,27 @@ end of a quest has been reached. If so, the client is notified to display the qu
 <p>In the qst_id entry is the id assigned to the quest.</p>
 
 <p>In the qest_script entry is the folder the script is in (quest) and the name of the .lua file (nobarg_603).</p>
+<h2 id='reloading-scripts'>Reloading Scripts</h2>
+<blockquote>
+<p>Reload script with all available entry points</p>
+</blockquote>
+<div class="highlight"><pre class="highlight lua tab-lua"><code><span class="kd">local</span> <span class="n">M</span> <span class="o">=</span> <span class="p">{}</span>
+
+<span class="k">function</span> <span class="nc">M</span><span class="p">.</span><span class="nf">onReload</span><span class="p">()</span>
+    <span class="k">return</span> <span class="kc">true</span>
+<span class="k">end</span>
+
+<span class="k">return</span> <span class="n">M</span>
+</code></pre></div>
+<p><strong>Script file:</strong> <code>server/reload.lua</code></p>
+<h3 id='boolean-onreload'><code>boolean onReload()</code></h3>
+<p>Invoked after server start as well as after the <code>!fr</code> command has been issued in the client. Needs to return <code>true</code> for
+the reload to succeed. If <code>false</code> is returned, the reload will fail. You can use this for initialising code that would
+otherwise not run on reload.</p>
+
+<p>Most of the time any initialisation should be performed in a related script, though. The server will run all scripts
+entered into the database as well as all server scripts on every reload and server start. Keep in mind that you <em>can</em>
+put code in a file outside of any function and it will be run at those times.</p>
 <h2 id='scheduled'>Scheduled</h2><div class="highlight"><pre class="highlight lua tab-lua"><code><span class="kd">local</span> <span class="n">M</span> <span class="o">=</span> <span class="p">{}</span>
 <span class="k">function</span> <span class="nc">M</span><span class="p">.</span><span class="nf">myScheduledFunction</span><span class="p">()</span>
     <span class="c1">-- What I want my scheduled function to do</span>
@@ -927,7 +1109,7 @@ end of a quest has been reached. If so, the client is notified to display the qu
 </tbody></table>
 
 <p>The above database entry will make it so that the function called &quot;informUsers&quot; found in the lua script &quot;myScheduledScript.lua&quot; in the folder named &quot;scheduled&quot; is ran every 10 to 15 seconds, in this case broadcasting to every player whatever the input text is.</p>
-<h2 id='server'>Server</h2><h3 id='combat'>Combat</h3><h3 id='death'>Death</h3><h3 id='depot'>Depot</h3><h3 id='item-inspection'>Item Inspection</h3><h3 id='learning'>Learning</h3><h3 id='login'>Login</h3><h3 id='logout'>Logout</h3><h3 id='player-inspection'>Player Inspection</h3><h3 id='reloading-scripts'>Reloading Scripts</h3><h1 id='classes'>Classes</h1><h2 id='character'>Character</h2>
+<h1 id='classes'>Classes</h1><h2 id='character'>Character</h2>
 <p>Players, NPCs and monsters are the three types of characters in Illarion.</p>
 
 <p><img src="images/directions-a05aa5a6.png" alt="directions" /></p>
@@ -1256,7 +1438,7 @@ volume of at least 5000.</p>
 If given a number for <code>value</code>, that number is stored as the corresponding string.</p>
 <h2 id='itemlookat'>ItemLookAt</h2>
 <p>Holds information about an item which is used by the client to display item inspection pop-ups. It is mainly used in the
-<a href="#server">server entry point</a> <code>lookAtItem</code> and the <a href="#items">Item entry point</a> <code>LookAtItem</code>.</p>
+<a href="#item-inspection">server entry point</a> <code>lookAtItem</code> and the <a href="#items">Item entry point</a> <code>LookAtItem</code>.</p>
 <h3 id='variables'>Variables</h3><div class="highlight"><pre class="highlight lua tab-lua"><code><span class="kd">local</span> <span class="n">itemLookAt</span> <span class="o">=</span> <span class="n">ItemLookAt</span><span class="p">()</span>
 <span class="n">itemLookAt</span><span class="p">.</span><span class="n">name</span> <span class="o">=</span> <span class="s2">"Sword"</span>
 <span class="n">itemLookAt</span><span class="p">.</span><span class="n">rareness</span> <span class="o">=</span> <span class="n">ItemLookAt</span><span class="p">.</span><span class="n">uncommonItem</span>
@@ -1554,7 +1736,17 @@ A position obtained from a character is still linked to that character and will 
 <p>Avoid this by creating a new position from individual coordinates.</p>
 </blockquote>
 <div class="highlight"><pre class="highlight lua tab-lua"><code><span class="kd">local</span> <span class="n">pos</span> <span class="o">=</span> <span class="n">position</span><span class="p">(</span><span class="n">user</span><span class="p">.</span><span class="n">pos</span><span class="p">.</span><span class="n">x</span><span class="p">,</span> <span class="n">user</span><span class="p">.</span><span class="n">pos</span><span class="p">.</span><span class="n">y</span><span class="p">,</span> <span class="n">user</span><span class="p">.</span><span class="n">pos</span><span class="p">.</span><span class="n">z</span><span class="p">)</span>
-</code></pre></div><h1 id='common-bugs'>Common Bugs</h1>
+</code></pre></div><h1 id='resources'>Resources</h1>
+<p>These lists contain game content stored in the client. They can be handy during content development, to help you find a
+suitable resource. Every day they are automatically generated.</p>
+
+<ul>
+<li><a href="https://illarion.org/~devserver/effects/effects.html">Graphic Effects</a></li>
+<li><a href="https://illarion.org/~devserver/items/items.html">Items</a></li>
+<li><a href="https://illarion.org/~devserver/music/music.html">Music</a></li>
+<li><a href="https://illarion.org/~devserver/sounds/sounds.html">Sound Effects</a></li>
+</ul>
+<h1 id='common-bugs'>Common Bugs</h1>
 <ul>
 <li>Missing <code>end</code>, missing <code>(</code> or <code>)</code></li>
 <li>Script name and db entry do not match (be careful of invisible characters!).<br>
