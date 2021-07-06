@@ -416,6 +416,14 @@
               </ul>
           </li>
           <li>
+            <a href="#debugging" class="toc-h1 toc-link" data-title="Debugging">Debugging</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#functions" class="toc-h2 toc-link" data-title="Functions">Functions</a>
+                  </li>
+              </ul>
+          </li>
+          <li>
             <a href="#resources" class="toc-h1 toc-link" data-title="Resources">Resources</a>
           </li>
           <li>
@@ -1770,7 +1778,39 @@ A position obtained from a character is still linked to that character and will 
 <p>Avoid this by creating a new position from individual coordinates.</p>
 </blockquote>
 <div class="highlight"><pre class="highlight lua tab-lua"><code><span class="kd">local</span> <span class="n">pos</span> <span class="o">=</span> <span class="n">position</span><span class="p">(</span><span class="n">user</span><span class="p">.</span><span class="n">pos</span><span class="p">.</span><span class="n">x</span><span class="p">,</span> <span class="n">user</span><span class="p">.</span><span class="n">pos</span><span class="p">.</span><span class="n">y</span><span class="p">,</span> <span class="n">user</span><span class="p">.</span><span class="n">pos</span><span class="p">.</span><span class="n">z</span><span class="p">)</span>
-</code></pre></div><h1 id='resources'>Resources</h1>
+</code></pre></div><h1 id='debugging'>Debugging</h1>
+<p>After setting up your editor as described in the <a href="#tutorial">tutorial</a>, it will tell you about Lua syntax errors and
+other problems, like the use of global variables. However, some issues will only surface at run-time. If a script throws
+an error while it is running, that error will appear in the server log.</p>
+
+<p>With the local server you can view this log in the console your started the server in.</p>
+
+<p>The Illarion <a href="https://illarion.org/~devserver/script_error_log.php">development server</a> and the Illarion
+<a href="https://illarion.org/~illarionserver/script_error_log.php">game server</a> provide a summary of script errors. In these
+logs error messages will start with the number of occurences of a specific error, followed by a time stamp.</p>
+<h2 id='functions'>Functions</h2>
+<p>Crude mechanisms like sending debug or error messages to players and prompting them to contact a developer are not very
+helpful, since you rely on the player to give a hopefully accurate report, if the report occurs at all. Instead there
+are two functions you can use to send information to the server log.</p>
+<h3 id='debug-string-message'><code>debug(string message)</code></h3><div class="highlight"><pre class="highlight lua tab-lua"><code><span class="n">debug</span><span class="p">(</span><span class="s2">"some debug info"</span><span class="p">)</span>
+</code></pre></div><div class="highlight"><pre class="highlight plaintext"><code>game-server_1  | Script (notice): Debug Message: some debug info
+game-server_1  | #1 called by: /usr/share/illarion/scripts/test.lua:11
+
+</code></pre></div>
+<p>Sends a debug <code>message</code> to the server log, including a call stack which will show where the message came from. This is
+disabled on the Illarion game server.</p>
+
+<p>Notice how the server log will show your files in the server&#39;s script directory <code>/usr/share/illarion/scripts/</code> instead
+of your local script directory. After the file name, seperated by a <code>:</code> you can see the line number.</p>
+<h3 id='error-string-message'><code>error(string message)</code></h3><div class="highlight"><pre class="highlight lua tab-lua"><code><span class="nb">error</span><span class="p">(</span><span class="s2">"some error message"</span><span class="p">)</span>
+</code></pre></div><div class="highlight"><pre class="highlight plaintext"><code>game-server_1  | Script (err): /usr/share/illarion/scripts/test.lua:16: some error message
+game-server_1  | #1 called by: [C]:-1(global error)
+game-server_1  | #2 called by: /usr/share/illarion/scripts/test.lua:16
+</code></pre></div>
+<p>Sends an error message to the server log and <strong>aborts</strong> the current script. Use this to avoid running into undefined states
+or to prevent potential loss of data. Just as with <code>debug</code> you will get a call stack, which will show the error&#39;s
+origin.</p>
+<h1 id='resources'>Resources</h1>
 <p>These lists contain game content stored in the client. They can be handy during content development, to help you find a
 suitable resource. Every day they are automatically generated.</p>
 
