@@ -40,6 +40,7 @@ includes:
   - classes/itemlookat
   - classes/itemstruct
   - classes/position
+  - debugging
   - resources
   - bugs
   - changelog
