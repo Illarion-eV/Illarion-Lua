@@ -7,3 +7,4 @@ suitable resource. Every day they are automatically generated.
 * [Items](https://illarion.org/~devserver/items/items.html)
 * [Music](https://illarion.org/~devserver/music/music.html)
 * [Sound Effects](https://illarion.org/~devserver/sounds/sounds.html)
+* [Tiles](https://illarion.org/~devserver/tiles/tiles.html)
