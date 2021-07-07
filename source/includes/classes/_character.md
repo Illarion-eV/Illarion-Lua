@@ -9,6 +9,7 @@ Players, NPCs and monsters are the three types of characters in Illarion.
 Name           | Type     | Writable  | Description
 -------------- | -------- | --------- | -----------
 id             | number   | no        | character id
+effects        | userdata | no        | contains methods to control the character's long time effects, see section on long time effects.
 name           | text     | no        | character name
 pos            | position | no        | character position on world map
 lastSpokenText | text     | no        | character's last spoken line of text
@@ -64,6 +65,41 @@ to `0`, no effect of that type will be played.
 If you modify the `item` associated with an action started in `UseItem`, this functions ensures the next time
 `UseItem` is called by the action (when it succeeds or is aborted) the updated item will be provided as a parameter.
 This needs to be called in addition to `world:changeItem`.
+
+### Long Time Effects
+
+See class [LongTimeEffect](#long-time-effect) for details.
+
+#### `effects:addEffect(LongTimeEffect effect)`
+
+```lua
+local effect = LongTimeEffect(10, 50)
+user.effects:addEffect(effect)
+```
+
+Tries to add `effect` to the character. [Entry point](#long-time-effects) `addEffect` is called immediately if the
+effect is not yet present on the character. Otherwise entry point `doubleEffect` is called.
+
+#### `boolean, LongTimeEffect effects.find(number id)`
+#### `boolean, LongTimeEffect effects.find(string name)`
+
+```lua
+local found, effect = user.effects:find("some effect")
+```
+
+Searches for a long time effect by `id` or `name` and returns `true` and that effect if it exists on this character.
+Returns `false` if that effect does not exist on this character.
+
+#### `boolean effects:removeEffect(number id)`
+#### `boolean effects:removeEffect(string name)`
+#### `boolean effects:removeEffect(LongTimeEffect effect)`
+
+```lua
+local removed = user.effects:removeEffect(10)
+```
+
+Removes an effect from this character, either by `id`, by `name` or by passing the `effect` itself. Returns `true` if an
+effect was removed and `false` otherwise.
 
 ### Text/Speech Functions
 

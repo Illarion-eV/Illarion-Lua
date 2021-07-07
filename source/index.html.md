@@ -23,6 +23,7 @@ includes:
   - entrypoints/learn
   - entrypoints/login
   - entrypoints/logout
+  - entrypoints/longtimeeffects
   - entrypoints/monsters
   - entrypoints/npcs
   - entrypoints/playerlookat
@@ -39,6 +40,7 @@ includes:
   - classes/item
   - classes/itemlookat
   - classes/itemstruct
+  - classes/longtimeeffect
   - classes/position
   - logging
   - debugging
