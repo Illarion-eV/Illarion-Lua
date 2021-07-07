@@ -367,6 +367,9 @@
                     <a href="#logout" class="toc-h2 toc-link" data-title="Logout">Logout</a>
                   </li>
                   <li>
+                    <a href="#long-time-effects" class="toc-h2 toc-link" data-title="Long Time Effects">Long Time Effects</a>
+                  </li>
+                  <li>
                     <a href="#monsters" class="toc-h2 toc-link" data-title="Monsters">Monsters</a>
                   </li>
                   <li>
@@ -409,6 +412,9 @@
                   </li>
                   <li>
                     <a href="#itemstruct" class="toc-h2 toc-link" data-title="ItemStruct">ItemStruct</a>
+                  </li>
+                  <li>
+                    <a href="#long-time-effect" class="toc-h2 toc-link" data-title="Long Time Effect">Long Time Effect</a>
                   </li>
                   <li>
                     <a href="#position" class="toc-h2 toc-link" data-title="position">position</a>
@@ -501,8 +507,9 @@ changes. Now you can run your code by simply using that item. To create an item 
 client (the item might be created in your bag).</p>
 
 <p>Since <code>print</code> does not exist here (where would we print output anyway), you need to use another means of producing
-output. You can either use <code>debug(&quot;some output text&quot;)</code> to send output to the server log, or use
-<code>user:inform(&quot;some output text&quot;)</code> to send output to your client.</p>
+output. You can either use <code>log(&quot;some output text&quot;)</code> to send output to the server log, use <code>debug(&quot;some output text&quot;)</code>
+to send output to the server log with a call stack, or use <code>user:inform(&quot;some output text&quot;)</code> to send output to your
+client.</p>
 
 <p>If you struggle or are not sure about something, you are always welcome to ask for help in <a href="https://illarion.org/community/us_chat.php">Discord</a>. Developers will be notified if you use the channel Development &gt;
 beginners.</p>
@@ -900,6 +907,73 @@ higher mental capacity value makes learning more difficult.</p>
 <p><strong>Script file:</strong> <code>server/logout.lua</code></p>
 <h3 id='onlogout-character-user'><code>onLogout(Character user)</code></h3>
 <p>Invoked when <code>user</code> logs out. Here you can e.g. substitute player faction leaders with their NPC equivalent.</p>
+<h2 id='long-time-effects'>Long Time Effects</h2>
+<p><a href="#long-time-effect">Long time effects</a> (LTE) allow you to influence a character over a period of time. Their state is
+saved whenever the character is saved. They consist of:</p>
+
+<ul>
+<li>ID and name </li>
+<li>a script defining the LTE</li>
+<li>a counter tracking how often an effect had been called already</li>
+<li>a variable controlling when the effect will be called again</li>
+<li>several user-defined variables accessible by a key string and holding integers</li>
+</ul>
+
+<p>After adding an LTE to the database, you can add it to a character, e.g. inside an item script. How the effect works has
+to be defined in its script. Every time the LTE is called, the entry point <code>callEffect</code> is invoked. There you can change
+the character&#39;s attributes etc. Note that you should always save any changes of fixed attributes in LTE variables, so
+you can restore everything when the LTE ends. When a character logs out, all its variables are saved. When it logs in
+again, the <code>loadEffect</code> is invoked. Any temporary changes of attributes will be lost on logout, so here you can read
+the values you have saved and perform the changes again.</p>
+
+<blockquote>
+<p>SQL</p>
+</blockquote>
+<div class="highlight"><pre class="highlight sql tab-sql"><code><span class="k">INSERT</span> <span class="k">INTO</span> <span class="n">longtimeeffects</span> <span class="k">VALUES</span> <span class="p">(</span><span class="n">ID</span><span class="p">,</span> <span class="s1">'EFFECT_NAME'</span><span class="p">,</span> <span class="s1">'SCRIPT_NAME'</span><span class="p">);</span>
+</code></pre></div>
+<blockquote>
+<p>LTE script with all available entry points</p>
+</blockquote>
+<div class="highlight"><pre class="highlight lua tab-lua"><code><span class="kd">local</span> <span class="n">M</span> <span class="o">=</span> <span class="p">{}</span>
+
+<span class="k">function</span> <span class="nc">M</span><span class="p">.</span><span class="nf">addEffect</span><span class="p">(</span><span class="n">effect</span><span class="p">,</span> <span class="n">user</span><span class="p">)</span>
+    <span class="n">user</span><span class="p">:</span><span class="n">inform</span><span class="p">(</span><span class="s2">"added "</span> <span class="o">..</span> <span class="n">effect</span><span class="p">.</span><span class="n">effectName</span><span class="p">)</span>
+<span class="k">end</span>
+
+<span class="k">function</span> <span class="nc">M</span><span class="p">.</span><span class="nf">callEffect</span><span class="p">(</span><span class="n">effect</span><span class="p">,</span> <span class="n">user</span><span class="p">)</span>
+    <span class="n">user</span><span class="p">:</span><span class="n">inform</span><span class="p">(</span><span class="s2">"called "</span> <span class="o">..</span> <span class="n">effect</span><span class="p">.</span><span class="n">effectName</span> <span class="o">..</span> <span class="s2">", next: "</span> <span class="o">..</span> <span class="n">effect</span><span class="p">.</span><span class="n">nextCalled</span> <span class="o">..</span> <span class="s2">", called before: "</span> <span class="o">..</span> <span class="n">effect</span><span class="p">.</span><span class="n">numberCalled</span><span class="p">)</span>
+    <span class="k">return</span> <span class="kc">true</span>
+<span class="k">end</span>
+
+<span class="k">function</span> <span class="nc">M</span><span class="p">.</span><span class="nf">doubleEffect</span><span class="p">(</span><span class="n">effect</span><span class="p">,</span> <span class="n">user</span><span class="p">)</span>
+    <span class="n">user</span><span class="p">:</span><span class="n">inform</span><span class="p">(</span><span class="s2">"doubled "</span> <span class="o">..</span> <span class="n">effect</span><span class="p">.</span><span class="n">effectName</span><span class="p">)</span>
+<span class="k">end</span>
+
+<span class="k">function</span> <span class="nc">M</span><span class="p">.</span><span class="nf">loadEffect</span><span class="p">(</span><span class="n">effect</span><span class="p">,</span> <span class="n">user</span><span class="p">)</span>
+    <span class="n">user</span><span class="p">:</span><span class="n">inform</span><span class="p">(</span><span class="s2">"loaded "</span> <span class="o">..</span> <span class="n">effect</span><span class="p">.</span><span class="n">effectName</span><span class="p">)</span>
+<span class="k">end</span>
+
+<span class="k">function</span> <span class="nc">M</span><span class="p">.</span><span class="nf">removeEffect</span><span class="p">(</span><span class="n">effect</span><span class="p">,</span> <span class="n">user</span><span class="p">)</span>
+    <span class="n">user</span><span class="p">:</span><span class="n">inform</span><span class="p">(</span><span class="s2">"removed "</span> <span class="o">..</span> <span class="n">effect</span><span class="p">.</span><span class="n">effectName</span><span class="p">)</span>
+<span class="k">end</span>
+
+<span class="k">return</span> <span class="n">M</span>
+</code></pre></div>
+<p><strong>Database table:</strong> <code>longtimeeffects</code></p>
+<h3 id='addeffect-longtimeeffect-effect-character-user'><code>addEffect(LongTimeEffect effect, Character user)</code></h3>
+<p>A new <code>effect</code> has been added to <code>user</code>.</p>
+<h3 id='bool-calleffect-longtimeeffect-effect-character-user'><code>bool callEffect(LongTimeEffect effect, Character user)</code></h3>
+<p>An <code>effect</code> activates for <code>user</code>. If <code>true</code> is returned, the effect will be called again in <code>effect.nextCalled</code>
+deciseconds. If <code>false</code> is returned, the effect will be removed.</p>
+<h3 id='doubleeffect-longtimeeffect-effect-character-user'><code>doubleEffect(LongTimeEffect effect, Character user)</code></h3>
+<p>A script tried to add an effect to <code>user</code>, but <code>effect</code> which has the same id, was already present. This can be used
+e.g. to refresh the overall duration of <code>effect</code>, by modifying a variable which stores the number of
+times the effect needs to be called.</p>
+<h3 id='loadeffect-longtimeeffect-effect-character-user'><code>loadEffect(LongTimeEffect effect, Character user)</code></h3>
+<p>A <code>user</code> has logged into the game afflicted by <code>effect</code>. Temporary changes need to be recreated here.</p>
+<h3 id='removeeffect-longtimeeffect-effect-character-user'><code>removeEffect(LongTimeEffect effect, Character user)</code></h3>
+<p>An <code>effect</code> was removed from <code>user</code> either by returning <code>false</code> in <code>callEffect</code> or by calling
+<code>user.effects:removeEffect(id)</code>.</p>
 <h2 id='monsters'>Monsters</h2>
 <p><strong>function onDeath(monster)</strong></p>
 
@@ -1179,6 +1253,12 @@ put code in a file outside of any function and it will be run at those times.</p
 <td>character id</td>
 </tr>
 <tr>
+<td>effects</td>
+<td>userdata</td>
+<td>no</td>
+<td>contains methods to control the character&#39;s long time effects, see section on long time effects.</td>
+</tr>
+<tr>
 <td>name</td>
 <td>text</td>
 <td>no</td>
@@ -1256,6 +1336,21 @@ to <code>0</code>, no effect of that type will be played.</p>
 <p>If you modify the <code>item</code> associated with an action started in <code>UseItem</code>, this functions ensures the next time
 <code>UseItem</code> is called by the action (when it succeeds or is aborted) the updated item will be provided as a parameter.
 This needs to be called in addition to <code>world:changeItem</code>.</p>
+<h3 id='long-time-effects'>Long Time Effects</h3>
+<p>See class <a href="#long-time-effect">LongTimeEffect</a> for details.</p>
+<h4 id='effects-addeffect-longtimeeffect-effect'><code>effects:addEffect(LongTimeEffect effect)</code></h4><div class="highlight"><pre class="highlight lua tab-lua"><code><span class="kd">local</span> <span class="n">effect</span> <span class="o">=</span> <span class="n">LongTimeEffect</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">50</span><span class="p">)</span>
+<span class="n">user</span><span class="p">.</span><span class="n">effects</span><span class="p">:</span><span class="n">addEffect</span><span class="p">(</span><span class="n">effect</span><span class="p">)</span>
+</code></pre></div>
+<p>Tries to add <code>effect</code> to the character. <a href="#long-time-effects">Entry point</a> <code>addEffect</code> is called immediately if the
+effect is not yet present on the character. Otherwise entry point <code>doubleEffect</code> is called.</p>
+<h4 id='boolean-longtimeeffect-effects-find-number-id'><code>boolean, LongTimeEffect effects.find(number id)</code></h4><h4 id='boolean-longtimeeffect-effects-find-string-name'><code>boolean, LongTimeEffect effects.find(string name)</code></h4><div class="highlight"><pre class="highlight lua tab-lua"><code><span class="kd">local</span> <span class="n">found</span><span class="p">,</span> <span class="n">effect</span> <span class="o">=</span> <span class="n">user</span><span class="p">.</span><span class="n">effects</span><span class="p">:</span><span class="n">find</span><span class="p">(</span><span class="s2">"some effect"</span><span class="p">)</span>
+</code></pre></div>
+<p>Searches for a long time effect by <code>id</code> or <code>name</code> and returns <code>true</code> and that effect if it exists on this character.
+Returns <code>false</code> if that effect does not exist on this character.</p>
+<h4 id='boolean-effects-removeeffect-number-id'><code>boolean effects:removeEffect(number id)</code></h4><h4 id='boolean-effects-removeeffect-string-name'><code>boolean effects:removeEffect(string name)</code></h4><h4 id='boolean-effects-removeeffect-longtimeeffect-effect'><code>boolean effects:removeEffect(LongTimeEffect effect)</code></h4><div class="highlight"><pre class="highlight lua tab-lua"><code><span class="kd">local</span> <span class="n">removed</span> <span class="o">=</span> <span class="n">user</span><span class="p">.</span><span class="n">effects</span><span class="p">:</span><span class="n">removeEffect</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+</code></pre></div>
+<p>Removes an effect from this character, either by <code>id</code>, by <code>name</code> or by passing the <code>effect</code> itself. Returns <code>true</code> if an
+effect was removed and <code>false</code> otherwise.</p>
 <h3 id='text-speech-functions'>Text/Speech Functions</h3><h4 id='talk-number-mode-text-message'><code>talk(number mode, text message)</code></h4><div class="highlight"><pre class="highlight lua tab-lua"><code><span class="n">user</span><span class="p">:</span><span class="n">talk</span><span class="p">(</span><span class="n">Character</span><span class="p">.</span><span class="n">say</span><span class="p">,</span> <span class="s2">"Hello World!"</span><span class="p">)</span>
 </code></pre></div>
 <p>Lets a character say/whisper/yell a <code>message</code>. <code>mode</code> can be <code>Character.say</code>, <code>Character.whisper</code> or <code>Character.yell</code>.</p>
@@ -1730,6 +1825,63 @@ but general information about an item with a specific id. </p>
 <td>sold by vendors for this amount of copper coins</td>
 </tr>
 </tbody></table>
+<h2 id='long-time-effect'>Long Time Effect</h2>
+<p>Stored in a character&#39;s <code>effects</code> variable. See section &quot;Long Time Effects&quot; for <a href="#character">Character</a> on how to access
+it. For a description on how to use long time effects, see their <a href="#long-time-effects">entry point</a> section.</p>
+<h3 id='variables'>Variables</h3>
+<table><thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Writable</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>effectId</td>
+<td>number</td>
+<td>no</td>
+<td>effect id</td>
+</tr>
+<tr>
+<td>effectName</td>
+<td>string</td>
+<td>no</td>
+<td>effect name</td>
+</tr>
+<tr>
+<td>nextCalled</td>
+<td>number</td>
+<td>yes</td>
+<td>number of deciseconds until the effect should be called</td>
+</tr>
+<tr>
+<td>numberCalled</td>
+<td>number</td>
+<td>no</td>
+<td>number of times the effect has been called before, meaning on the first call this will be zero, etc.</td>
+</tr>
+</tbody></table>
+<h3 id='functions'>Functions</h3><div class="highlight"><pre class="highlight lua tab-lua"><code><span class="kd">local</span> <span class="n">effect</span> <span class="o">=</span> <span class="n">LongTimeEffect</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">50</span><span class="p">)</span>
+<span class="n">effect</span><span class="p">:</span><span class="n">addValue</span><span class="p">(</span><span class="s2">"totalCalls"</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<span class="kd">local</span> <span class="n">exists</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="n">effect</span><span class="p">:</span><span class="n">findValue</span><span class="p">(</span><span class="s2">"totalCalls"</span><span class="p">)</span>
+
+<span class="k">if</span> <span class="n">exists</span> <span class="k">then</span>
+    <span class="n">effect</span><span class="p">:</span><span class="n">addValue</span><span class="p">(</span><span class="s2">"totalCalls"</span><span class="p">,</span> <span class="n">value</span> <span class="o">+</span> <span class="mi">10</span><span class="p">)</span>
+<span class="k">else</span>
+    <span class="n">effect</span><span class="p">:</span><span class="n">addValue</span><span class="p">(</span><span class="s2">"totalCalls"</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<span class="k">end</span>
+
+<span class="n">effect</span><span class="p">:</span><span class="n">removeValue</span><span class="p">(</span><span class="s2">"totalCalls"</span><span class="p">)</span>
+</code></pre></div><h4 id='longtimeeffect-number-id-number-nextcalled'><code>LongTimeEffect(number id, number nextCalled)</code></h4>
+<p>Returns a new LongTimeEffect with given <code>id</code> and <code>nextCalled</code> being the number of deciseconds until the effect is first
+called via entry point <code>callEffect</code> after being added to a character.</p>
+<h4 id='addvalue-string-key-number-value'><code>addValue(string key, number value)</code></h4>
+<p>Adds or overwrites variable <code>key</code> with value <code>value</code>. <code>value</code> is non-negative and less than 2^32.</p>
+<h4 id='boolean-number-findvalue-string-key'><code>boolean, number findValue(string key)</code></h4>
+<p>Returns false if the effect has no variable with name <code>key</code>. Otherwise returns <code>true</code> and the value of that variable.</p>
+<h4 id='removevalue-string-key'><code>removeValue(string key)</code></h4>
+<p>Removes variable with name <code>key</code> from the effect.</p>
 <h2 id='position'>position</h2>
 <p>Positions represent a location on the world map.</p>
 <h3 id='variables'>Variables</h3>
