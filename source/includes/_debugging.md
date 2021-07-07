@@ -4,7 +4,7 @@ After setting up your editor as described in the [tutorial](#tutorial), it will 
 other problems, like the use of global variables. However, some issues will only surface at run-time. If a script throws
 an error while it is running, that error will appear in the server log.
 
-With the local server you can view this log in the console your started the server in.
+With the local server you can view this log in the console you started the server in.
 
 The Illarion [development server](https://illarion.org/~devserver/script_error_log.php) and the Illarion
 [game server](https://illarion.org/~illarionserver/script_error_log.php) provide a summary of script errors. In these
