@@ -416,6 +416,14 @@
               </ul>
           </li>
           <li>
+            <a href="#logging" class="toc-h1 toc-link" data-title="Logging">Logging</a>
+              <ul class="toc-list-h2">
+                  <li>
+                    <a href="#functions" class="toc-h2 toc-link" data-title="Functions">Functions</a>
+                  </li>
+              </ul>
+          </li>
+          <li>
             <a href="#debugging" class="toc-h1 toc-link" data-title="Debugging">Debugging</a>
               <ul class="toc-list-h2">
                   <li>
@@ -1778,12 +1786,25 @@ A position obtained from a character is still linked to that character and will 
 <p>Avoid this by creating a new position from individual coordinates.</p>
 </blockquote>
 <div class="highlight"><pre class="highlight lua tab-lua"><code><span class="kd">local</span> <span class="n">pos</span> <span class="o">=</span> <span class="n">position</span><span class="p">(</span><span class="n">user</span><span class="p">.</span><span class="n">pos</span><span class="p">.</span><span class="n">x</span><span class="p">,</span> <span class="n">user</span><span class="p">.</span><span class="n">pos</span><span class="p">.</span><span class="n">y</span><span class="p">,</span> <span class="n">user</span><span class="p">.</span><span class="n">pos</span><span class="p">.</span><span class="n">z</span><span class="p">)</span>
-</code></pre></div><h1 id='debugging'>Debugging</h1>
+</code></pre></div><h1 id='logging'>Logging</h1>
+<p>Sometimes you want to log information e.g. for game masters. You can do this with the <code>log</code> function.</p>
+
+<p>With the local server you can view this log in the console you started the server in.</p>
+
+<p>The Illarion <a href="https://illarion.org/~devserver/script_log.php">development server</a> and the Illarion
+<a href="https://illarion.org/~illarionserver/script_log.php">game server</a> provide a summary of this log. In these
+logs messages will start with the number of occurences of a specific entry, followed by a time stamp. Be aware of the
+fact that these logs are publicly available.</p>
+<h2 id='functions'>Functions</h2><h3 id='log-string-message'><code>log(string message)</code></h3><div class="highlight"><pre class="highlight lua tab-lua"><code><span class="n">log</span><span class="p">(</span><span class="s2">"some information"</span><span class="p">)</span>
+</code></pre></div><div class="highlight"><pre class="highlight plaintext"><code>game-server_1  | Script (info): some information
+</code></pre></div>
+<p>Sends a log <code>message</code> to the server log.</p>
+<h1 id='debugging'>Debugging</h1>
 <p>After setting up your editor as described in the <a href="#tutorial">tutorial</a>, it will tell you about Lua syntax errors and
 other problems, like the use of global variables. However, some issues will only surface at run-time. If a script throws
 an error while it is running, that error will appear in the server log.</p>
 
-<p>With the local server you can view this log in the console your started the server in.</p>
+<p>With the local server you can view this log in the console you started the server in.</p>
 
 <p>The Illarion <a href="https://illarion.org/~devserver/script_error_log.php">development server</a> and the Illarion
 <a href="https://illarion.org/~illarionserver/script_error_log.php">game server</a> provide a summary of script errors. In these
