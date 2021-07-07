@@ -49,8 +49,9 @@ changes. Now you can run your code by simply using that item. To create an item 
 client (the item might be created in your bag).
 
 Since `print` does not exist here (where would we print output anyway), you need to use another means of producing
-output. You can either use `debug("some output text")` to send output to the server log, or use
-`user:inform("some output text")` to send output to your client.
+output. You can either use `log("some output text")` to send output to the server log, use `debug("some output text")`
+to send output to the server log with a call stack, or use `user:inform("some output text")` to send output to your
+client.
 
 If you struggle or are not sure about something, you are always welcome to ask for help in [Discord]
 (https://illarion.org/community/us_chat.php). Developers will be notified if you use the channel Development >
