@@ -45,6 +45,6 @@ game-server_1  | #1 called by: [C]:-1(global error)
 game-server_1  | #2 called by: /usr/share/illarion/scripts/test.lua:16
 ```
 
-Sends an error message to the server log and **aborts** the current script. Use this to avoid running into undefined states
+Sends an error `message` to the server log and **aborts** the current script. Use this to avoid running into undefined states
 or to prevent potential loss of data. Just as with `debug` you will get a call stack, which will show the error's
 origin.
