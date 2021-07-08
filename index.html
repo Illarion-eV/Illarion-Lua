@@ -922,9 +922,9 @@ saved whenever the character is saved. They consist of:</p>
 <p>After adding an LTE to the database, you can add it to a character, e.g. inside an item script. How the effect works has
 to be defined in its script. Every time the LTE is called, the entry point <code>callEffect</code> is invoked. There you can change
 the character&#39;s attributes etc. Note that you should always save any changes of fixed attributes in LTE variables, so
-you can restore everything when the LTE ends. When a character logs out, all its variables are saved. When it logs in
-again, the <code>loadEffect</code> is invoked. Any temporary changes of attributes will be lost on logout, so here you can read
-the values you have saved and perform the changes again.</p>
+you can restore everything when the LTE ends. When a character logs out, all LTE variables are saved. When it logs in
+again, the entry point <code>loadEffect</code> is invoked. Any temporary changes of attributes will be lost on logout, so here you
+can read the values you have saved and perform those changes again.</p>
 
 <blockquote>
 <p>SQL</p>
@@ -1491,7 +1491,7 @@ If <code>stackPosition</code> is equal or greater than the number of items on th
 changes to the server via <code>world:changeItem(item)</code>.</p>
 <h3 id='constants'>Constants</h3><div class="highlight"><pre class="highlight lua tab-lua"><code><span class="kd">local</span> <span class="n">itemStats</span> <span class="o">=</span> <span class="n">world</span><span class="p">:</span><span class="n">getItemStatsFromId</span><span class="p">(</span><span class="n">Item</span><span class="p">.</span><span class="n">apple</span><span class="p">)</span>
 </code></pre></div>
-<p>If an item has an entry <code>someUniqueItemName</code> in <code>itm_name</code> in the items database entry, you can get its id with
+<p>If an item has an entry <code>someUniqueItemName</code> in <code>itm_name</code> in the item&#39;s database entry, you can get its id with
 <code>Item.someUniqueItemName</code>. This is more descriptive than using the actual number.</p>
 <h3 id='variables'>Variables</h3>
 <table><thead>
