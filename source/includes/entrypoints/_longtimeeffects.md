@@ -12,9 +12,9 @@ saved whenever the character is saved. They consist of:
 After adding an LTE to the database, you can add it to a character, e.g. inside an item script. How the effect works has
 to be defined in its script. Every time the LTE is called, the entry point `callEffect` is invoked. There you can change
 the character's attributes etc. Note that you should always save any changes of fixed attributes in LTE variables, so
-you can restore everything when the LTE ends. When a character logs out, all its variables are saved. When it logs in
-again, the `loadEffect` is invoked. Any temporary changes of attributes will be lost on logout, so here you can read
-the values you have saved and perform the changes again.
+you can restore everything when the LTE ends. When a character logs out, all LTE variables are saved. When it logs in
+again, the entry point `loadEffect` is invoked. Any temporary changes of attributes will be lost on logout, so here you
+can read the values you have saved and perform those changes again.
 
 > SQL
 
