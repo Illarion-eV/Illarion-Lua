@@ -1084,27 +1084,33 @@ lookAtNpc(npc, player, mode)
 <p><strong>Script file:</strong> <code>server/playerlookat.lua</code></p>
 <h3 id='lookatplayer-character-user-character-targetplayer-number-mode'><code>lookAtPlayer(Character user, Character targetPlayer, number mode)</code></h3>
 <p>Is invoked when <code>user</code> looks at <code>targetPlayer</code>. For normal inspection <code>mode</code> is 0, for close examination <code>mode</code> is 1.</p>
-<h2 id='quests'>Quests</h2><div class="highlight"><pre class="highlight lua tab-lua"><code><span class="kd">local</span> <span class="n">common</span> <span class="o">=</span> <span class="nb">require</span><span class="p">(</span><span class="s2">"base.common"</span><span class="p">)</span>
+<h2 id='quests'>Quests</h2><div class="highlight"><pre class="highlight sql tab-sql"><code><span class="k">INSERT</span> <span class="k">INTO</span> <span class="n">quests</span> <span class="k">VALUES</span> <span class="p">(</span><span class="n">QUEST_ID</span><span class="p">,</span> <span class="s1">'QUEST_SCRIPT'</span><span class="p">);</span>
+</code></pre></div><div class="highlight"><pre class="highlight lua tab-lua"><code><span class="kd">local</span> <span class="n">common</span> <span class="o">=</span> <span class="nb">require</span><span class="p">(</span><span class="s2">"base.common"</span><span class="p">)</span>
 <span class="kd">local</span> <span class="n">M</span> <span class="o">=</span> <span class="p">{}</span>
 
 <span class="k">function</span> <span class="nc">M</span><span class="p">.</span><span class="nf">QuestTitle</span><span class="p">(</span><span class="n">user</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">common</span><span class="p">.</span><span class="n">GetNLS</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="s2">"German title text here"</span><span class="p">,</span> <span class="s2">"English title text here"</span><span class="p">)</span>
 <span class="k">end</span>
 
+<span class="kd">local</span> <span class="n">description</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="n">questDescription</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="n">german</span> <span class="o">=</span> <span class="s">[[Some German description
+                                  for quest status 1
+                                  with multiple lines]]</span><span class="p">,</span>
+                       <span class="n">english</span> <span class="o">=</span> <span class="s">[[Some English description
+                                   for quest status 1 with
+                                   multiple lines]]</span><span class="p">}</span>
+
 <span class="k">function</span> <span class="nc">M</span><span class="p">.</span><span class="nf">QuestDescription</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="n">status</span><span class="p">)</span>
-
-    <span class="kd">local</span> <span class="n">german</span> <span class="o">=</span> <span class="c1">-- German description text here</span>
-    <span class="kd">local</span> <span class="n">english</span> <span class="o">=</span> <span class="c1">-- English description text here</span>
-
-    <span class="k">return</span> <span class="n">common</span><span class="p">.</span><span class="n">GetNLS</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="n">german</span><span class="p">,</span> <span class="n">english</span><span class="p">)</span>
+    <span class="kd">local</span> <span class="n">description</span> <span class="o">=</span> <span class="n">questDescription</span><span class="p">[</span><span class="n">status</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">common</span><span class="p">.</span><span class="n">GetNLS</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="n">description</span><span class="p">.</span><span class="n">german</span><span class="p">,</span> <span class="n">description</span><span class="p">.</span><span class="n">english</span><span class="p">)</span>
 <span class="k">end</span>
 
-<span class="kd">local</span> <span class="n">QuestTarget</span> <span class="o">=</span> <span class="p">{}</span>
-<span class="n">QuestTarget</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="n">position</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">)</span> <span class="c1">-- replace x, y, z with desired coordinates</span>
-<span class="n">QuestTarget</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="n">position</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">)</span>
+<span class="kd">local</span> <span class="n">questTarget</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="n">questTarget</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">position</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">)</span> <span class="c1">-- replace x, y, z with desired coordinates</span>
+<span class="n">questTarget</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="n">position</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">),</span> <span class="n">position</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">)}</span> <span class="c1">-- multiple targets</span>
 
 <span class="k">function</span> <span class="nc">M</span><span class="p">.</span><span class="nf">QuestTargets</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="n">status</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">QuestTarget</span><span class="p">[</span><span class="n">status</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">questTarget</span><span class="p">[</span><span class="n">status</span><span class="p">]</span>
 <span class="k">end</span>
 
 <span class="k">function</span> <span class="nc">M</span><span class="p">.</span><span class="nf">QuestFinalStatus</span><span class="p">()</span>
@@ -1113,37 +1119,12 @@ lookAtNpc(npc, player, mode)
 
 <span class="k">return</span> <span class="n">M</span>
 </code></pre></div>
-<p>While you can create quests with setQuestProgress and getQuestProgress, it is much nicer to have an
+<p>While you can create quests with <code>setQuestProgress</code> and <code>getQuestProgress</code>, it is much nicer to have an
 actual log of that progress in your client. This way you cannot forget about your quests and you always
-know what to do and where to do it. The client might even point you in the right direction. The entrypoints in this section implement that behaviour.</p>
+know what to do and where to do it. The client might even point you in the right direction. The entrypoints in this
+section implement that behaviour.</p>
 
-<p><strong>function QuestTitle(user)</strong></p>
-
-<p>You should return the quest title here, depending on user language.</p>
-
-<p><strong>function QuestDescription(user, status)</strong></p>
-
-<p>You should return the quest description here, depending on user language and quest status.
-You can be as extensive as you want, but make sure to cover the most important points. A
-good description should serve as a reminder where to go to complete the next step of the
-quest, let the player know how to get there and what to do there. Imagine a player continuing
-a quest after some time, they still need to know where they are at and how to go on.</p>
-
-<p><strong>function QuestTargets(user, status)</strong></p>
-
-<p>Here you should return the position where the quest continues, i.e. where a new quest status
-can be obtained. The client will receive this position and direct the player towards it. You
-can also return nil or an empty list if no such positions should be displayed in the client.
-Omit positions with care. Even if you think it would be cool to let players search on their
-own, most of the time it is just annoying. You can also return a list of positions here if the
-quest can continue in more than one location.</p>
-
-<p><strong>function QuestFinalStatus()</strong></p>
-
-<p>Return the final status of your quest here. This is used by the server to determine whether the
-end of a quest has been reached. If so, the client is notified to display the quest as completed</p>
-
-<p><strong>Database Table:</strong><code>quests</code></p>
+<p><strong>Database Table:</strong> <code>quests</code></p>
 
 <p>Quest scripts must be entered into the database for the functions to be applied to the associated quest.</p>
 
@@ -1159,11 +1140,27 @@ end of a quest has been reached. If so, the client is notified to display the qu
 </tr>
 </tbody></table>
 
-<p>The example above is for a quest associated with the npc nobarg, with the quest id 603.</p>
-
-<p>In the qst_id entry is the id assigned to the quest.</p>
-
-<p>In the qest_script entry is the folder the script is in (quest) and the name of the .lua file (nobarg_603).</p>
+<p>The example above is for a quest associated with the npc nobarg, with the quest id 603. In the <code>qst_id</code> entry is the id
+assigned to the quest. In the <code>qst_script</code> entry is the folder the script is in (quest) and the name of the .lua file
+(nobarg_603).</p>
+<h3 id='string-questtitle-character-user'><code>string QuestTitle(Character user)</code></h3>
+<p>You should return the quest title here, depending on user language.</p>
+<h3 id='string-questdescription-character-user-number-status'><code>string QuestDescription(Character user, number status)</code></h3>
+<p>You should return the quest description here, depending on user language and quest status.
+You can be as extensive as you want, but make sure to cover the most important points. A
+good description should serve as a reminder where to go to complete the next step of the
+quest. Let the player know how to get there and what to do there. Imagine a player continuing
+a quest after some time, they still need to know where they are at and how to go on.</p>
+<h3 id='list-position-questtargets-character-user-number-status'><code>list|position QuestTargets(Character user, number status)</code></h3>
+<p>Here you should return the position where the quest continues, i.e. where a new quest status
+can be obtained. The client will receive this position and direct the player towards it. You
+can also return nil or an empty list if no such positions should be displayed in the client.
+Omit positions with care. Even if you think it would be cool to let players search on their
+own, most of the time it is just annoying. You can also return a list of positions here if the
+quest can continue in more than one location.</p>
+<h3 id='number-questfinalstatus'><code>number QuestFinalStatus()</code></h3>
+<p>Return the final status of your quest here. This is used by the server to determine whether the
+end of a quest has been reached. If so, the client is notified to display the quest as completed.</p>
 <h2 id='reloading-scripts'>Reloading Scripts</h2>
 <blockquote>
 <p>Reload script with all available entry points</p>
@@ -1185,17 +1182,20 @@ otherwise not run on reload.</p>
 <p>Most of the time any initialisation should be performed in a related script, though. The server will run all scripts
 entered into the database as well as all server scripts on every reload and server start. Keep in mind that you <em>can</em>
 put code in a file outside of any function and it will be run at those times.</p>
-<h2 id='scheduled'>Scheduled</h2><div class="highlight"><pre class="highlight lua tab-lua"><code><span class="kd">local</span> <span class="n">M</span> <span class="o">=</span> <span class="p">{}</span>
+<h2 id='scheduled'>Scheduled</h2><div class="highlight"><pre class="highlight sql tab-sql"><code><span class="k">INSERT</span> <span class="k">INTO</span> <span class="n">scheduledscripts</span> <span class="k">VALUES</span> <span class="p">(</span><span class="s1">'SCRIPT_NAME'</span><span class="p">,</span> <span class="n">MIN_TIME</span><span class="p">,</span> <span class="n">MAX_TIME</span><span class="p">,</span> <span class="s1">'myScheduledFunction'</span><span class="p">);</span>
+</code></pre></div><div class="highlight"><pre class="highlight lua tab-lua"><code><span class="kd">local</span> <span class="n">M</span> <span class="o">=</span> <span class="p">{}</span>
+
 <span class="k">function</span> <span class="nc">M</span><span class="p">.</span><span class="nf">myScheduledFunction</span><span class="p">()</span>
     <span class="c1">-- What I want my scheduled function to do</span>
 <span class="k">end</span>
+
 <span class="k">return</span> <span class="n">M</span>
 </code></pre></div>
-<p><strong>Database Table:</strong><code>scheduledscripts</code></p>
+<p><strong>Database Table:</strong> <code>scheduledscripts</code></p>
 
 <p>Scripts can be scheduled to be executed at defined intervals by entering them into the database.</p>
 
-<p>The entries can be separated into the following:</p>
+<p>You need the following information:</p>
 
 <p><strong>Script name</strong></p>
 
@@ -1203,23 +1203,23 @@ put code in a file outside of any function and it will be run at those times.</p
 
 <p><strong>Minimum Cycle Time</strong></p>
 
-<p>The minimum time between each time the script is run, in seconds.</p>
+<p>The minimum time between each function call in seconds.</p>
 
-<p><strong>Max Cycle Time</strong></p>
+<p><strong>Maximum Cycle Time</strong></p>
 
-<p>The maximum time between each time the script is run, in seconds.</p>
-
-<p>Can be set to the same as minimum time to have no randomness.</p>
+<p>The maximum time between each function call in seconds. Can be set to the same as minimum time to have no randomness.</p>
 
 <p><strong>Function Name</strong></p>
 
-<p>The name of the function in the script that you want to run.</p>
+<p>The name of the function you want to run.</p>
 
 <p><strong>Database entry example:</strong></p>
 <div class="highlight"><pre class="highlight lua tab-lua"><code><span class="kd">local</span> <span class="n">M</span> <span class="o">=</span> <span class="p">{}</span>
+
 <span class="k">function</span> <span class="nc">M</span><span class="p">.</span><span class="nf">informUsers</span><span class="p">()</span>
     <span class="n">world</span><span class="p">:</span><span class="n">broadcast</span><span class="p">(</span><span class="s2">"German Text"</span><span class="p">,</span><span class="s2">"English Text"</span><span class="p">)</span>
 <span class="k">end</span>
+
 <span class="k">return</span> <span class="n">M</span>
 </code></pre></div>
 <table><thead>
@@ -1238,7 +1238,9 @@ put code in a file outside of any function and it will be run at those times.</p
 </tr>
 </tbody></table>
 
-<p>The above database entry will make it so that the function called &quot;informUsers&quot; found in the lua script &quot;myScheduledScript.lua&quot; in the folder named &quot;scheduled&quot; is ran every 10 to 15 seconds, in this case broadcasting to every player whatever the input text is.</p>
+<p>The above database entry will make it so that the function <code>informUsers</code> found in the Lua script
+<code>myScheduledScript.lua</code> in the folder named <code>scheduled</code> is run every 10 to 15 seconds. In this case it is broadcasting
+the given text to all players.</p>
 <h1 id='classes'>Classes</h1><h2 id='character'>Character</h2>
 <p>Players, NPCs and monsters are the three types of characters in Illarion.</p>
 
