@@ -42,6 +42,7 @@ includes:
   - classes/itemstruct
   - classes/longtimeeffect
   - classes/position
+  - classes/random
   - logging
   - debugging
   - resources
