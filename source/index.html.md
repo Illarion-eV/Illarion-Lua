@@ -14,27 +14,44 @@ includes:
   - introduction
   - tutorial
   - entrypoints
-  - entrypoints/items
-  - entrypoints/npcs
-  - entrypoints/magic
-  - entrypoints/monsters
+  - entrypoints/combat
+  - entrypoints/death
+  - entrypoints/depot
   - entrypoints/fields
+  - entrypoints/itemlookat
+  - entrypoints/items
+  - entrypoints/learn
+  - entrypoints/login
+  - entrypoints/logout
+  - entrypoints/longtimeeffects
+  - entrypoints/monsters
+  - entrypoints/npcs
+  - entrypoints/playerlookat
   - entrypoints/quests
+  - entrypoints/reload
   - entrypoints/scheduled
-  - entrypoints/server
   - classes
-  - classes/position
-  - classes/colour
   - classes/character
   - classes/character/movement
   - classes/character/attributes
   - classes/character/skills
   - classes/character/quest
   - classes/character/items
+  - classes/colour
   - classes/dialogs
   - classes/dialogs/messagedialog
   - classes/dialogs/inputdialog
+  - classes/field
+  - classes/item
   - classes/itemlookat
+  - classes/itemstruct
+  - classes/longtimeeffect
+  - classes/position
+  - classes/random
+  - classes/scriptvars
+  - logging
+  - debugging
+  - resources
   - bugs
   - changelog
 
@@ -42,6 +59,6 @@ search: true
 
 code_clipboard: true
 ---
-<aside class="warning">                                                                                                  
+<aside class="warning">
 This documentation is still in development, but will eventually replace the current version. See changelog for details.
 </aside>

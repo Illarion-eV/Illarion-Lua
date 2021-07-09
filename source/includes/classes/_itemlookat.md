@@ -1,7 +1,7 @@
 ## ItemLookAt
 
 Holds information about an item which is used by the client to display item inspection pop-ups. It is mainly used in the
-[server entry point](#server) `lookAtItem` and the [Item entry point](#items) `LookAtItem`.
+[server entry point](#item-inspection) `lookAtItem` and the [Item entry point](#items) `LookAtItem`.
 
 ### Variables
 
