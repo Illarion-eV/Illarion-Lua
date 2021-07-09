@@ -43,6 +43,7 @@ includes:
   - classes/longtimeeffect
   - classes/position
   - classes/random
+  - classes/scriptvars
   - logging
   - debugging
   - resources
