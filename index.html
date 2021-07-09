@@ -419,6 +419,12 @@
                   <li>
                     <a href="#position" class="toc-h2 toc-link" data-title="position">position</a>
                   </li>
+                  <li>
+                    <a href="#random" class="toc-h2 toc-link" data-title="Random">Random</a>
+                  </li>
+                  <li>
+                    <a href="#script-variables" class="toc-h2 toc-link" data-title="Script Variables">Script Variables</a>
+                  </li>
               </ul>
           </li>
           <li>
@@ -1938,7 +1944,40 @@ A position obtained from a character is still linked to that character and will 
 <p>Avoid this by creating a new position from individual coordinates.</p>
 </blockquote>
 <div class="highlight"><pre class="highlight lua tab-lua"><code><span class="kd">local</span> <span class="n">pos</span> <span class="o">=</span> <span class="n">position</span><span class="p">(</span><span class="n">user</span><span class="p">.</span><span class="n">pos</span><span class="p">.</span><span class="n">x</span><span class="p">,</span> <span class="n">user</span><span class="p">.</span><span class="n">pos</span><span class="p">.</span><span class="n">y</span><span class="p">,</span> <span class="n">user</span><span class="p">.</span><span class="n">pos</span><span class="p">.</span><span class="n">z</span><span class="p">)</span>
-</code></pre></div><h1 id='logging'>Logging</h1>
+</code></pre></div><h2 id='random'>Random</h2>
+<p>Most of the time the random number generator supplied by Lua should be enough. However, if you are looking for a
+statistically sound implementation of a random number generator, or if you need another distribution besides the uniform
+one, this is the class you are looking for.</p>
+<h3 id='functions'>Functions</h3>
+<p>These functions belong to the class <code>Random</code> and not to variables of type <code>Random</code>. As such they use the <code>.</code> delimeter
+instead of <code>:</code>. It is not possible to create variables of type <code>Random</code>.</p>
+<h4 id='number-uniform'><code>number uniform()</code></h4><div class="highlight"><pre class="highlight lua tab-lua"><code><span class="kd">local</span> <span class="n">chance</span> <span class="o">=</span> <span class="n">Random</span><span class="p">.</span><span class="n">uniform</span><span class="p">()</span>
+</code></pre></div>
+<p>Returns a random floating-point value uniformly distributed in the range [0, 1).</p>
+<h4 id='number-uniform-number-min-number-max'><code>number uniform(number min, number max)</code></h4><div class="highlight"><pre class="highlight lua tab-lua"><code><span class="kd">local</span> <span class="n">die</span> <span class="o">=</span> <span class="n">Random</span><span class="p">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span>
+</code></pre></div>
+<p>Returns a random integer value uniformly distributed in the integer range [<code>min</code>, <code>max</code>]</p>
+<h4 id='number-normal-number-mean-number-standard_deviation'><code>number normal(number mean, number standard_deviation)</code></h4><div class="highlight"><pre class="highlight lua tab-lua"><code><span class="kd">local</span> <span class="n">chance</span> <span class="o">=</span> <span class="n">Random</span><span class="p">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">10</span><span class="p">.</span><span class="mi">75</span><span class="p">,</span> <span class="mi">1</span><span class="p">.</span><span class="mi">2</span><span class="p">)</span>
+</code></pre></div>
+<p>Returns a random floating-point value normally distributed with given <code>mean</code>and <code>standard_deviation</code>.</p>
+<h2 id='script-variables'>Script Variables</h2>
+<p><code>ScriptVars</code> is a global variable, allowing us to save values in the database and to access them with an identifier
+string. Use with caution as these values have global effect. Everything in <code>ScriptVars</code> is automatically saved upon
+server shutdown.</p>
+<h3 id='functions'>Functions</h3><div class="highlight"><pre class="highlight lua tab-lua"><code><span class="n">ScriptVars</span><span class="p">:</span><span class="n">set</span><span class="p">(</span><span class="s2">"welcome"</span><span class="p">,</span> <span class="s2">"Welcome to Illarion"</span><span class="p">)</span>
+<span class="kd">local</span> <span class="n">found</span><span class="p">,</span> <span class="n">message</span> <span class="o">=</span> <span class="n">ScriptVars</span><span class="p">:</span><span class="n">find</span><span class="p">(</span><span class="s2">"welcome"</span><span class="p">)</span>
+<span class="n">ScriptVars</span><span class="p">:</span><span class="n">remove</span><span class="p">(</span><span class="s2">"something"</span><span class="p">)</span>
+<span class="n">ScriptVars</span><span class="p">:</span><span class="n">save</span><span class="p">()</span>
+
+</code></pre></div><h4 id='boolean-string-find-string-key'><code>boolean, string find(string key)</code></h4>
+<p>Returns <code>false</code> if a ScriptVar <code>key</code> does not exist. Otherwise returns <code>true</code> and the value of ScriptVar <code>key</code>.</p>
+<h4 id='boolean-remove-string-key'><code>boolean remove(string key)</code></h4>
+<p>Removes ScriptVar <code>key</code> and returns <code>true</code> if there was such an entry. Returns <code>false</code> otherwise.</p>
+<h4 id='save'><code>save()</code></h4>
+<p>Saves all ScriptVars immediately. Use with caution, this might cause lag.</p>
+<h4 id='set-string-key-number-value'><code>set(string key, number value)</code></h4><h4 id='set-string-key-string-value'><code>set(string key, string value)</code></h4>
+<p>Writes <code>value</code> into ScriptVar <code>key</code>. Values are always stored as strings.</p>
+<h1 id='logging'>Logging</h1>
 <p>Sometimes you want to log information e.g. for game masters. You can do this with the <code>log</code> function.</p>
 
 <p>With the local server you can view this log in the console you started the server in.</p>
