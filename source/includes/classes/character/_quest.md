@@ -1,4 +1,4 @@
-### Quests
+### Character - Quests
 #### `setQuestProgress(number questID, number progress)`
 ```lua
 character:setQuestProgress(100,1)

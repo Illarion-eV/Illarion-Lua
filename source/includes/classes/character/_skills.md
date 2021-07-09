@@ -1,4 +1,4 @@
-### Skills
+### Character - Skills
 
 #### `string getSkillName(skill targetSkill)`
 

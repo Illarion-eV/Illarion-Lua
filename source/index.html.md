@@ -37,6 +37,7 @@ includes:
   - classes/character/skills
   - classes/character/quest
   - classes/character/items
+  - classes/character/ambient
   - classes/colour
   - classes/dialogs
   - classes/dialogs/messagedialog

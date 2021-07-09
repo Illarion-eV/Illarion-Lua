@@ -1,7 +1,22 @@
-### Attributes
+### Character - Admin
+#### `boolean pageGM(string text)`
+```lua
+character:pageGM("Please marry me!")
+```
+Returns true if `ticket` is successfully logged as message to the GM team.
 
-* General Information
+#### `logAdmin(string message)`
+```lua
+character:logAdmin("Set GM castle on fire.")
+```
+Writes `message` for the given user into the server log using the admin facility.
 
+### Character - Information
+#### `sendCharDescription(number id, string text)`
+```lua
+character:sendCharDescription(10, "An old man.")
+```
+Shows the `text` as character description of the character with ID `id` only to the current character.
 #### `getPlayerLanguage()`
 ```lua
 character:getPlayerLanguage()
@@ -48,9 +63,8 @@ character:getType()
 Returns Character.player for players, Character.monster for monsters and Character.npc for
 NPCs.
 
-* Appearance
-
-Setters
+### Character Appearance
+* Setters
 
 #### `setSkinColour(colour skinColour)`
 ```lua
@@ -82,19 +96,19 @@ character:setRace(4)
 ```
 Temporarily sets the race of a character.
 
-Getters
+* Getters
 
 #### `colour getSkinColour()`
 ```lua
 character:getSkinColour()
 ```
-Returns skin colour.
+Returns the skin colour of the character.
 
 #### `colour getHairColour()`
 ```lua
 character:getHairColour()
 ```
-Returns hair color.
+Returns the hair color of the character.
 
 #### `number getHair()`
 ```lua
@@ -112,9 +126,9 @@ Returns the ID of the present beard, 0 for no beard.
 ```lua
 character:getRace()
 ```
-Returns the race of a character.
+Returns the race of the character.
 
-* Constitution
+### Character - Constitution
 
 #### `increasePoisonValue(number amount)`
 ```lua
@@ -152,7 +166,7 @@ character:increaseMentalCapacity(20)
 ```
 Increases the mental capacity of the character with the given `amount`.
 
-* Modifying attributes
+### Character - Modifying attributes
 
 #### `number increaseAttrib(string attribute, number value)`
 ```lua
@@ -212,7 +226,7 @@ getMaxAttributePoints(). On failure resets primary attribute values to database 
 Returns whether the operation was successful or not.
 
 
-* Magic
+### Character - Magic
 
 Illarion distinguishes between four magic types: Mages(0), Priests(1), Bards(2) and Druids(3).
 

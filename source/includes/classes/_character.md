@@ -4,7 +4,7 @@ Players, NPCs and monsters are the three types of characters in Illarion.
 
 ![directions](images/directions.png)
 
-### Variables
+### Character - Variables
 
 Name           | Type     | Writable  | Description
 -------------- | -------- | --------- | -----------
@@ -17,7 +17,7 @@ attackmode     | boolean  | no        | `true` if character currently attacks, `
 activeLanguage | number   | yes       | 0: common, 1: human, 2: dwarf, 3: elf, 4: lizard, 5: orc, 6: halfling, 7: fairy, 8: gnome, 9: goblin, 10: ancient
 movepoints     | number   | yes       | A character has a maximum of 21 movepoints. Every action like talking, fighting, using etc. needs at least 7 movepoints. The reduction of movepoints depends on the character's agility. A character gains one movepoint per decisecond.
 
-### Actions
+### Character - Actions
 
 ```lua
 local M = {}
@@ -101,10 +101,12 @@ local removed = user.effects:removeEffect(10)
 Removes an effect from this character, either by `id`, by `name` or by passing the `effect` itself. Returns `true` if an
 effect was removed and `false` otherwise.
 
-### Text/Speech Functions
+### Character - Text/Speech Functions
 
 #### `talk(number mode, string message)`
+#### `talk(number mode, string textInGerman, string textInEnglish)`
 ```lua
 character:talk(Character.say, "Hello World!")
+character:talk(Character.say, "Hallo Welt!", "Hello World!")
 ```
 Lets a character say/whisper/yell a `message`. `mode` can be `Character.say`, `Character.whisper` or `Character.yell`.

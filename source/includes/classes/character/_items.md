@@ -1,4 +1,15 @@
-### Item/Inventory handling
+### Character - Books
+#### `sendBook(number id)`
+```lua
+character:sendBook(0)
+```
+Tells the client to display book `id` for the current character.
+### Character - Item/Inventory handling
+Relevant class sections for the following section :
+[Item](#item), [ItemStruct](#itemstruct).
+A full list of all item IDs can be found [here](https://illarion.org/~martin/itemlist.pdf).
+
+
 * Inventory slots
 The current implementation covers following inventory/ slot IDs.
 
@@ -36,7 +47,7 @@ Increases the amount of items at `bodyPosition`by `count`.
 character:swapAtPos(Character.belt_pos_1, 2763, 999)
 ```
 Changes the item at the given `bodyPosition` to the given `itemID` and `quality`.
-A full list of all item IDs can be found ![here](https://illarion.org/~martin/itemlist.pdf).
+A full list of all item IDs can be found [here](https://illarion.org/~martin/itemlist.pdf).
 
 #### `table getItemList(number itemID)`
 ```lua
@@ -44,7 +55,7 @@ character:getItemList(2763)
 ```
 Returns a list with all items of this `itemID`.
 
-* Depot/Containers
+### Character - Depot/Containers
 
 #### `conStruct getBackPack()`
 ```lua
@@ -64,7 +75,7 @@ character:takeItemNr(Character.belt_pos_2,2)
 ```
 Takes the `amount` of items from the `bodyPosition` and returns the taken items.
 
-* Items
+### Character - Items
 
 #### `number createItem(number itemID, number count, int number quality, dataTable data)`
 ```lua

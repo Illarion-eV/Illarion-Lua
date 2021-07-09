@@ -1,4 +1,16 @@
-### Movement/Position functions
+### Character - Movement/Position functions
+
+#### `setClippingActive(boolean status)`
+```lua
+character:setClippingActive(True)
+```
+Enables the character to walk on fields where he usualy can’t walk (water, walls, ...).
+#### `boolean getClippingActive()`
+```lua
+character:getClippingActive()
+```
+Returns true if clipping is enabled for the current
+character, otherwise false.
 
 #### `move(number direction, boolean activeMove=true)`
 
