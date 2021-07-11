@@ -8,39 +8,66 @@ INSERT INTO quests VALUES (QUEST_ID, 'QUEST_SCRIPT');
 local common = require("base.common")
 local M = {}
 
-function M.QuestTitle(user)
-    return common.GetNLS(user, "German title text here", "English title text here")
-end
+local GERMAN = Player.german
+local ENGLISH = Player.english
+
+local title = {}
+title[GERMAN] = "Deutscher Questtitel"
+title[ENGLISH] = "English Quest Title"
 
 local description = {}
-questDescription[1] = {german = [[Some German description
-                                  for quest status 1
-                                  with multiple lines]],
-                       english = [[Some English description
-                                   for quest status 1 with
-                                   multiple lines]]}
+description[GERMAN] = {}
+description[ENGLISH] = {}
+description[GERMAN][1] = "Tolle lange Beschreibung die angezeigt wird wenn man Queststatus 1 erreicht, \z
+                          auch was man wo machen muss ..."
+description[ENGLISH][1] = "Cool long description which is displayed when you reach quest status 1, \z
+                           also mention what to do where ..."
 
-function M.QuestDescription(user, status)
-    local description = questDescription[status]
-    return common.GetNLS(user, description.german, description.english)
-end
+local start = position(1, 2, 3)
 
 local questTarget = {}
-questTarget[1] = position(x, y, z) -- replace x, y, z with desired coordinates
-questTarget[2] = {position(x, y, z), position(x, y, z)} -- multiple targets
+questTarget[1] = {position(1, 2, 3), position(4, 5, 6)}
+
+local FINAL_QUEST_STATUS = 0
+
+function M.QuestTitle(user)
+    return common.GetNLS(user, title[GERMAN], title[ENGLISH])
+end
+
+function M.QuestDescription(user, status)
+    local german = description[GERMAN][status] or ""
+    local english = description[ENGLISH][status] or ""
+
+    return common.GetNLS(user, german, english)
+end
+
+function M.QuestAvailability(user, status)
+    if status == 0 then
+        return Player.questAvailable
+    else
+        return Player.questNotAvailable
+    end
+end
+
+function M.QuestStart()
+    return start
+end
 
 function M.QuestTargets(user, status)
     return questTarget[status]
 end
 
 function M.QuestFinalStatus()
-    return 3 -- Change this number according to what the final quest status is.
+    return FINAL_QUEST_STATUS
 end
 
 return M
 ```
-While you can create quests with `setQuestProgress` and `getQuestProgress`, it is much nicer to have an
-actual log of that progress in your client. This way you cannot forget about your quests and you always
+
+> A more extensive template is available in `quest/quest.template`
+
+While you can create quests with `setQuestProgress` and `getQuestProgress` alone, it is nice to have an actual
+log of your quest progress in your client. This way you cannot forget about your quests and you always
 know what to do and where to do it. The client might even point you in the right direction. The entrypoints in this
 section implement that behaviour.
 
@@ -67,6 +94,26 @@ You can be as extensive as you want, but make sure to cover the most important p
 good description should serve as a reminder where to go to complete the next step of the
 quest. Let the player know how to get there and what to do there. Imagine a player continuing
 a quest after some time, they still need to know where they are at and how to go on.
+
+### `position QuestStart()`
+
+Return the position where the quest begins. This will probably be the position of an NPC or item.
+
+### `number QuestAvailability(Character user, number status)`
+
+You can return three possible values here, depending on the `user` and the current quest `status`:
+
+* `Player.questAvailable`: yellow quest marker "!"
+* `Player.questWillBeAvailable`: grey quest marker "!"
+* `Player.questNotAvailable`: no quest marker
+
+If the quest could be available soon (e.g. missing skill) return `Player.questWillBeAvailable`
+and if the player tries to accept the quest, inform them what exactly is missing to do so.
+If the quest will not be available (wrong town, too much skill already, etc.) return
+`Player.questNotAvailable`.
+
+If this entry point is not defined, the server will assume `Player.questAvailable` for `status == 0`
+and `Player.questNotAvailable` otherwise.
 
 ### `list|position QuestTargets(Character user, number status)`
 
