@@ -115,13 +115,13 @@ If the quest will not be available (wrong town, too much skill already, etc.) re
 If this entry point is not defined, the server will assume `Player.questAvailable` for `status == 0`
 and `Player.questNotAvailable` otherwise.
 
-### `list|position QuestTargets(Character user, number status)`
+### `position|table QuestTargets(Character user, number status)`
 
 Here you should return the position where the quest continues, i.e. where a new quest status
 can be obtained. The client will receive this position and direct the player towards it. You
-can also return nil or an empty list if no such positions should be displayed in the client.
+can also return nil or an empty table if no such positions should be displayed in the client.
 Omit positions with care. Even if you think it would be cool to let players search on their
-own, most of the time it is just annoying. You can also return a list of positions here if the
+own, most of the time it is just annoying. You can also return a table of positions here if the
 quest can continue in more than one location.
 
 ### `number QuestFinalStatus()`
