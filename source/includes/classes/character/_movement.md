@@ -62,3 +62,15 @@ character:distanceMetricToPosition(position(1,1,1))
 
 Returns distance between the character and a `secondCharacter`
 or between the character and a `position`.
+
+#### `boolean getOnRoute()`
+```lua
+character:getOnRoute()
+```
+Returns if the character is currently following a route(waypoints).
+
+#### `setOnRoute(boolean isOnRoute)`
+```lua
+character:setOnRoute(true)
+```
+Makes the character following/stopping a route.

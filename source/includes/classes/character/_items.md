@@ -1,9 +1,4 @@
-### Character - Books
-#### `sendBook(number id)`
-```lua
-character:sendBook(0)
-```
-Tells the client to display book `id` for the current character.
+
 ### Character - Item/Inventory handling
 Relevant class sections for the following section :
 [Item](#item), [ItemStruct](#itemstruct).
@@ -56,7 +51,6 @@ character:getItemList(2763)
 Returns a list with all items of this `itemID`.
 
 ### Character - Depot/Containers
-
 #### `conStruct getBackPack()`
 ```lua
 character:getBackPack()
@@ -124,3 +118,9 @@ Counts only at the specified `slots`
 Valid `slots` values are  "all", "belt", "body", "backpack". The variant with `data` does only count
 items that include these data values. If the data table is empty however, only items without
 data are counted.
+
+#### `table getLoot()`
+```lua
+monster:getLoot()
+```
+Returns the loot for a monster, otherwise throws a NoLootFound error.
