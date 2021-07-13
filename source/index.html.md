@@ -30,6 +30,7 @@ includes:
   - entrypoints/quests
   - entrypoints/reload
   - entrypoints/scheduled
+  - entrypoints/talk
   - classes
   - classes/character
   - classes/colour
