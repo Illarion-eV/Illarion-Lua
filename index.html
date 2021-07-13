@@ -387,6 +387,9 @@
                   <li>
                     <a href="#scheduled" class="toc-h2 toc-link" data-title="Scheduled">Scheduled</a>
                   </li>
+                  <li>
+                    <a href="#talk" class="toc-h2 toc-link" data-title="Talk">Talk</a>
+                  </li>
               </ul>
           </li>
           <li>
@@ -1197,12 +1200,12 @@ If the quest will not be available (wrong town, too much skill already, etc.) re
 
 <p>If this entry point is not defined, the server will assume <code>Player.questAvailable</code> for <code>status == 0</code>
 and <code>Player.questNotAvailable</code> otherwise.</p>
-<h3 id='list-position-questtargets-character-user-number-status'><code>list|position QuestTargets(Character user, number status)</code></h3>
+<h3 id='position-table-questtargets-character-user-number-status'><code>position|table QuestTargets(Character user, number status)</code></h3>
 <p>Here you should return the position where the quest continues, i.e. where a new quest status
 can be obtained. The client will receive this position and direct the player towards it. You
-can also return nil or an empty list if no such positions should be displayed in the client.
+can also return nil or an empty table if no such positions should be displayed in the client.
 Omit positions with care. Even if you think it would be cool to let players search on their
-own, most of the time it is just annoying. You can also return a list of positions here if the
+own, most of the time it is just annoying. You can also return a table of positions here if the
 quest can continue in more than one location.</p>
 <h3 id='number-questfinalstatus'><code>number QuestFinalStatus()</code></h3>
 <p>Return the final status of your quest here. This is used by the server to determine whether the
@@ -1287,6 +1290,24 @@ put code in a file outside of any function and it will be run at those times.</p
 <p>The above database entry will make it so that the function <code>informUsers</code> found in the Lua script
 <code>myScheduledScript.lua</code> in the folder named <code>scheduled</code> is run every 10 to 15 seconds. In this case it is broadcasting
 the given text to all players.</p>
+<h2 id='talk'>Talk</h2>
+<blockquote>
+<p>Talk script with all available entry points</p>
+</blockquote>
+<div class="highlight"><pre class="highlight lua tab-lua"><code><span class="kd">local</span> <span class="n">M</span> <span class="o">=</span> <span class="p">{}</span>
+
+<span class="k">function</span> <span class="nc">M</span><span class="p">.</span><span class="nf">talk</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="n">talkType</span><span class="p">,</span> <span class="n">text</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">text</span>
+<span class="k">end</span>
+
+<span class="k">return</span> <span class="n">M</span>
+</code></pre></div>
+<p><strong>Script file:</strong> <code>server/playertalk.lua</code></p>
+<h3 id='string-talk-character-user-number-talktype-string-text'><code>string talk(Character user, number talkType, string text)</code></h3>
+<p>Is called when player <code>user</code> tries to speak <code>text</code>. <code>talkType</code> is one of <code>Character.say</code>, <code>Character.whisper</code>
+and <code>Character.yell</code>. Needs to return the text the player will actually speak.</p>
+
+<p>This can be used for speaking passwords, reciting spells, making players sound drunk, etc.</p>
 <h1 id='classes'>Classes</h1><h2 id='character'>Character</h2>
 <p>Players, NPCs and monsters are the three types of characters in Illarion.</p>
 
