@@ -983,72 +983,66 @@ times the effect needs to be called.</p>
 <h3 id='removeeffect-longtimeeffect-effect-character-user'><code>removeEffect(LongTimeEffect effect, Character user)</code></h3>
 <p>An <code>effect</code> was removed from <code>user</code> either by returning <code>false</code> in <code>callEffect</code> or by calling
 <code>user.effects:removeEffect(id)</code>.</p>
-<h2 id='monsters'>Monsters</h2>
-<p><strong>function onDeath(monster)</strong></p>
-
-<p>Invoked as a monster dies.</p>
-
-<p><strong>function receiveText(monster, textType, text, originator)</strong></p>
-
-<p>Invoked when a monster receives spoken text.</p>
-
-<p><strong>function onAttacked(monster, attacker)</strong></p>
-
-<p>Invoked when a monster is attacked.</p>
-
-<p><strong>function onCasted(monster, caster)</strong></p>
-
-<p>Invoked when a spell is cast on a monster.</p>
-
-<p><strong>function useMonster(monster, user)</strong></p>
-
-<p>Invoked when a monster is used by user.</p>
-
-<p><strong>function onAttack(monster, enemy)</strong></p>
-
-<p>Invoked every time a monster would hit the enemy.</p>
-
-<p><strong>function enemyOnSight(monster, enemy)</strong></p>
-
-<p>Invoked whenever a monster sees an enemy. </p>
-
-<p>Must return true or false.</p>
+<h2 id='monsters'>Monsters</h2><h3 id='abortroute-character-monster'><code>abortRoute(Character monster)</code></h3>
+<p>Is called if <code>monster</code> has reached the destination of its route or if items block the way and the destination cannot
+be reached. See section Waypoints in <a href="#character">Character</a> for details on routes.</p>
+<h3 id='boolean-actiondisturbed-character-user-character-disturber'><code>boolean actionDisturbed(Character user, Character disturber)</code></h3>
+<p>Is called when <code>user</code> is attacked while an action is running. This action had to be started by <code>user:startAction(...)</code>
+in <code>useMonster</code>. If this entry point does not exist or returns <code>false</code> the action is not aborted. If it returns <code>true</code>
+the action is aborted. See section Actions in <a href="#character">Character</a> for more details on starting actions.</p>
+<h3 id='boolean-enemynear-character-monster-character-enemy'><code>boolean enemyNear(Character monster, Character enemy)</code></h3>
+<p>Invoked when <code>monster</code> is on a field next to <code>enemy</code>. If <code>setTarget</code> returns <code>0</code> (&quot;don&#39;t attack anyone&quot;), then
+<code>enemyNear</code> has to return <code>false</code>.</p>
+<h3 id='boolean-enemyonsight-character-monster-character-enemy'><code>boolean enemyOnSight(Character monster, Character enemy)</code></h3>
+<p>Invoked whenever a monster sees an enemy. Must return true or false.</p>
 
 <p>It is not invoked when the monster stands on a field next to the enemy.</p>
+<h3 id='lookatmonster-character-user-character-monster-number-mode'><code>lookAtMonster(Character user, Character monster, number mode)</code></h3>
+<p>Invoked when <code>user</code> looks at <code>monster</code> with <code>mode</code> being one of:</p>
 
-<p><strong>function enemyNear(monster, enemy)</strong></p>
+<ul>
+<li><code>Player.look</code>: casual inspection</li>
+<li><code>Player.stare</code>: thorough inspection</li>
+</ul>
 
-<p>Same as enemyOnSight but when the monster is on the field next to it.</p>
+<aside class="info">
+The current client does not support Player.look, so mode will always be Player.stare
+</aside>
+<h3 id='onattack-character-monster-character-enemy'><code>onAttack(Character monster, Character enemy)</code></h3>
+<p>Invoked every time <code>monster</code> would hit <code>enemy</code>.</p>
+<h3 id='onattacked-character-monster-character-attacker'><code>onAttacked(Character monster, Character attacker)</code></h3>
+<p>Invoked when <code>monster</code> is hit by <code>attacker</code>.</p>
+<h3 id='oncasted-character-monster-character-caster'><code>onCasted(Character monster, Character caster)</code></h3>
+<p>Invoked when a spell is cast on <code>monster</code> by <code>caster</code>.</p>
 
-<p>If you plan to have setTarget(...) return 0 (&quot;don&#39;t attack anyone&quot;), then enemyNear(...) must return false.</p>
+<aside class="info">
+The current client does not implement magic, so this entry point is never called.
+</aside>
+<h3 id='ondeath-character-monster'><code>onDeath(Character monster)</code></h3>
+<p>Invoked as <code>monster</code> dies.</p>
+<h3 id='onspawn-character-monster'><code>onSpawn(Character monster)</code></h3>
+<p>Invoked after <code>monster</code> has spawned.</p>
+<h3 id='receivetext-character-monster-number-texttype-string-text-character-speaker'><code>receiveText(Character monster, number textType, string text, Character speaker)</code></h3>
+<p>Invoked when <code>monster</code> receives <code>text</code> spoken by <code>speaker</code>. <code>textType</code> is <code>Character.say</code>, <code>Character.whisper</code> or
+<code>Character.yell</code>.</p>
+<h3 id='number-settarget-character-monster-table-candidatelist'><code>number setTarget(Character monster, table candidateList)</code></h3>
+<p>If <code>setTarget</code> exists, it is called whenever <code>monster</code> needs to decide what it should attack.
+The <code>candidateList</code> is a table of <a href="#character">players</a> who are possible targets.
+To set a target, its index in that table has to be returned.
+The first enemy in the table has the index <code>1</code>.
+If the entry point returns <code>0</code>, <code>monster</code> will ignore all enemies.
+If <code>setTarget</code> does not exist, the player with lowest health is chosen by default.</p>
+<h3 id='usemonster-character-monster-character-user-number-actionstate'><code>useMonster(Character monster, Character user, number actionState)</code></h3>
+<p>A <code>user</code> uses a <code>monster</code>. <code>actionState</code> is one of</p>
 
-<p><strong>function lookAtMonster(SourceCharacter, monster, mode)</strong></p>
+<ul>
+<li><code>Action.none</code>: no action is running.</li>
+<li><code>Action.success</code>: an action was running and has been completed.</li>
+<li><code>Action.abort</code>: an action was running and has been interrupted by the user being attacked or the user doing something
+else like using an item, moving, etc.</li>
+</ul>
 
-<p>Invoked if the player looks at the monster.</p>
-
-<p>Modes:</p>
-
-<p>0 = normal</p>
-
-<p>1 = close examination</p>
-
-<p><strong>function onSpawn(monster)</strong></p>
-
-<p>Invoked after the monster has spawned.</p>
-
-<p><strong>function setTarget(monster, candidateList)</strong></p>
-
-<p>If setTarget exists, it is called whenever the monster needs to decide what it should attack.</p>
-
-<p>The candidateList is a list of players who are possible targets. </p>
-
-<p>To set a target, its index in that list has to be returned. </p>
-
-<p>The first enemy in the list has the index 1. </p>
-
-<p>If the function returns 0, the monster will ignore any enemy. </p>
-
-<p>If setTarget does not exist, the player with lowest health is chosen by default.</p>
+<p>See section Actions in <a href="#character">Character</a> for more details on starting actions.</p>
 <h2 id='npcs'>NPCs</h2><div class="highlight"><pre class="highlight lua tab-lua"><code><span class="kd">local</span> <span class="n">M</span> <span class="o">=</span> <span class="p">{}</span>
 
 <span class="k">function</span> <span class="nc">M</span><span class="p">.</span><span class="nf">nextCycle</span> <span class="p">(</span><span class="n">npc</span><span class="p">)</span>
