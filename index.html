@@ -983,7 +983,10 @@ times the effect needs to be called.</p>
 <h3 id='removeeffect-longtimeeffect-effect-character-user'><code>removeEffect(LongTimeEffect effect, Character user)</code></h3>
 <p>An <code>effect</code> was removed from <code>user</code> either by returning <code>false</code> in <code>callEffect</code> or by calling
 <code>user.effects:removeEffect(id)</code>.</p>
-<h2 id='monsters'>Monsters</h2><h3 id='abortroute-character-monster'><code>abortRoute(Character monster)</code></h3>
+<h2 id='monsters'>Monsters</h2>
+<p>Monster entry points are only run when a player is within a range of 60 fields, two levels up and down,
+or if the monster is on a route.</p>
+<h3 id='abortroute-character-monster'><code>abortRoute(Character monster)</code></h3>
 <p>Is called if <code>monster</code> has reached the destination of its route or if items block the way and the destination cannot
 be reached. See section Waypoints in <a href="#character">Character</a> for details on routes.</p>
 <h3 id='boolean-actiondisturbed-character-user-character-disturber'><code>boolean actionDisturbed(Character user, Character disturber)</code></h3>
@@ -1057,16 +1060,25 @@ else like using an item, moving, etc.</li>
     <span class="c1">-- The lookat for the npc (Not in use? Found no existing examples)</span>
 <span class="k">return</span> <span class="n">M</span>
 </code></pre></div>
-<p>nextCycle (npc)
-    Invoked every few server cycles.
-    Must exist in NPC scripts.
-receiveText(npc)
-    Invoked anytime the NPC hears someone speaking.
-useNPC(npc, user)
-    Invoked when the user shift clicks the NPC.
-lookAtNpc(npc, player, mode)
-    Invoked if the player looks at the NPC.
-    Modes: 0 for normal, 1 for close examination.</p>
+<p>NPC entry points are only run when a player is within a range of 60 fields, two levels up and down,
+or if the NPC is on a route.</p>
+<h3 id='lookatnpc-npc-user-mode'><code>lookAtNpc(npc, user, mode)</code></h3>
+<p>Invoked when <code>user</code> looks at <code>npc</code> with <code>mode</code> being one of:</p>
+
+<ul>
+<li><code>Player.look</code>: casual inspection</li>
+<li><code>Player.stare</code>: thorough inspection</li>
+</ul>
+
+<aside class="info">
+The current client does not support Player.look, so mode will always be Player.stare
+</aside>
+<h3 id='nextcycle-npc'><code>nextCycle(npc)</code></h3>
+<p>Invoked every decisecond if a player is nearby or <code>npc</code> is on a route.</p>
+<h3 id='receivetext-npc-talktype-message-talker'><code>receiveText(npc, talkType, message, talker)</code></h3>
+<p>Invoked anytime the NPC hears someone speaking.</p>
+<h3 id='usenpc-npc-user-actionstate'><code>useNPC(npc, user, actionState)</code></h3>
+<p>Invoked when the user shift clicks the NPC.</p>
 <h2 id='player-inspection'>Player Inspection</h2>
 <blockquote>
 <p>Player inspection script with all available entry points</p>
@@ -1246,11 +1258,12 @@ put code in a file outside of any function and it will be run at those times.</p
 
 <p><strong>Minimum Cycle Time</strong></p>
 
-<p>The minimum time between each function call in seconds.</p>
+<p>The minimum time between each function call in deciseconds.</p>
 
 <p><strong>Maximum Cycle Time</strong></p>
 
-<p>The maximum time between each function call in seconds. Can be set to the same as minimum time to have no randomness.</p>
+<p>The maximum time between each function call in deciseconds.
+Can be set to the same value as minimum time to have no randomness.</p>
 
 <p><strong>Function Name</strong></p>
 
@@ -1275,14 +1288,14 @@ put code in a file outside of any function and it will be run at those times.</p
 </thead><tbody>
 <tr>
 <td>scheduled.myScript</td>
-<td>10</td>
-<td>15</td>
+<td>100</td>
+<td>150</td>
 <td>informUsers</td>
 </tr>
 </tbody></table>
 
-<p>The above database entry will make it so that the function <code>informUsers</code> found in the Lua script
-<code>myScheduledScript.lua</code> in the folder named <code>scheduled</code> is run every 10 to 15 seconds. In this case it is broadcasting
+<p>The above database entry will make it so that the function <code>informUsers</code> found in
+<code>myScheduledScript.lua</code> in the <code>scheduled</code> directory is run every 10 to 15 seconds. In this case it is broadcasting
 the given text to all players.</p>
 <h2 id='talk'>Talk</h2>
 <blockquote>
