@@ -15,6 +15,9 @@ lookAtNpc(npc, player, mode)
 return M
 ```
 
+NPC entry points are only run when a player is within a range of 60 fields, two levels up and down,
+or if the NPC is on a route.
+
 nextCycle (npc)
     Invoked every few server cycles.
     Must exist in NPC scripts.

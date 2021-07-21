@@ -1,5 +1,8 @@
 ## Monsters
 
+Monster entry points are only run when a player is within a range of 60 fields, two levels up and down,
+or if the monster is on a route.
+
 ### `abortRoute(Character monster)`
 Is called if `monster` has reached the destination of its route or if items block the way and the destination cannot
 be reached. See section Waypoints in [Character](#character) for details on routes.
