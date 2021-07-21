@@ -25,11 +25,12 @@ The name of the script file.
 
 **Minimum Cycle Time**
 
-The minimum time between each function call in seconds.
+The minimum time between each function call in deciseconds.
 
 **Maximum Cycle Time**
 
-The maximum time between each function call in seconds. Can be set to the same as minimum time to have no randomness.
+The maximum time between each function call in deciseconds.
+Can be set to the same value as minimum time to have no randomness.
 
 **Function Name**
 
@@ -49,8 +50,8 @@ return M
 
 |sc_scriptname|sc_mincycletime|sc_maxcycletime|sc_functionname|
 |-------------|---------------|---------------|---------------|
-|scheduled.myScript| 10| 15| informUsers| 
+|scheduled.myScript| 100| 150| informUsers| 
 
-The above database entry will make it so that the function `informUsers` found in the Lua script
-`myScheduledScript.lua` in the folder named `scheduled` is run every 10 to 15 seconds. In this case it is broadcasting
+The above database entry will make it so that the function `informUsers` found in
+`myScheduledScript.lua` in the `scheduled` directory is run every 10 to 15 seconds. In this case it is broadcasting
 the given text to all players.
