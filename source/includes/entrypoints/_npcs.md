@@ -15,13 +15,24 @@ lookAtNpc(npc, player, mode)
 return M
 ```
 
-nextCycle (npc)
-    Invoked every few server cycles.
-    Must exist in NPC scripts.
-receiveText(npc)
+NPC entry points are only run when a player is within a range of 60 fields, two levels up and down,
+or if the NPC is on a route.
+
+### `lookAtNpc(npc, user, mode)`
+Invoked when `user` looks at `npc` with `mode` being one of:
+
+* `Player.look`: casual inspection
+* `Player.stare`: thorough inspection
+
+<aside class="info">
+The current client does not support Player.look, so mode will always be Player.stare
+</aside>
+
+### `nextCycle(npc)`
+    Invoked every decisecond if a player is nearby or `npc` is on a route.
+
+### `receiveText(npc, talkType, message, talker)`
     Invoked anytime the NPC hears someone speaking.
-useNPC(npc, user)
+
+### `useNPC(npc, user, actionState)`
     Invoked when the user shift clicks the NPC.
-lookAtNpc(npc, player, mode)
-    Invoked if the player looks at the NPC.
-    Modes: 0 for normal, 1 for close examination.

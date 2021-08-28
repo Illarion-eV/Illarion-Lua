@@ -1,68 +1,74 @@
 ## Monsters
 
-**function onDeath(monster)**
+Monster entry points are only run when a player is within a range of 60 fields, two levels up and down,
+or if the monster is on a route.
 
-Invoked as a monster dies.
+### `abortRoute(Character monster)`
+Is called if `monster` has reached the destination of its route or if items block the way and the destination cannot
+be reached. See section Waypoints in [Character](#character) for details on routes.
 
-**function receiveText(monster, textType, text, originator)**
+### `boolean actionDisturbed(Character user, Character disturber)`
+Is called when `user` is attacked while an action is running. This action had to be started by `user:startAction(...)`
+in `useMonster`. If this entry point does not exist or returns `false` the action is not aborted. If it returns `true`
+the action is aborted. See section Actions in [Character](#character) for more details on starting actions.
 
-Invoked when a monster receives spoken text.
+### `boolean enemyNear(Character monster, Character enemy)`
+Invoked when `monster` is on a field next to `enemy`. If `setTarget` returns `0` ("don't attack anyone"), then
+`enemyNear` has to return `false`.
 
-**function onAttacked(monster, attacker)**
-
-Invoked when a monster is attacked.
-
-**function onCasted(monster, caster)**
-
-Invoked when a spell is cast on a monster.
-
-**function useMonster(monster, user)**
-
-Invoked when a monster is used by user.
-
-**function onAttack(monster, enemy)**
-
-Invoked every time a monster would hit the enemy.
-
-**function enemyOnSight(monster, enemy)**
-
-Invoked whenever a monster sees an enemy. 
-
-Must return true or false.
+### `boolean enemyOnSight(Character monster, Character enemy)`
+Invoked whenever a monster sees an enemy. Must return true or false.
 
 It is not invoked when the monster stands on a field next to the enemy.
 
-**function enemyNear(monster, enemy)**
+### `lookAtMonster(Character user, Character monster, number mode)`
 
-Same as enemyOnSight but when the monster is on the field next to it.
+Invoked when `user` looks at `monster` with `mode` being one of:
 
-If you plan to have setTarget(...) return 0 ("don't attack anyone"), then enemyNear(...) must return false.
+* `Player.look`: casual inspection
+* `Player.stare`: thorough inspection
 
-**function lookAtMonster(SourceCharacter, monster, mode)**
+<aside class="info">
+The current client does not support Player.look, so mode will always be Player.stare
+</aside>
 
-Invoked if the player looks at the monster.
+### `onAttack(Character monster, Character enemy)`
+Invoked every time `monster` would hit `enemy`.
 
-Modes:
+### `onAttacked(Character monster, Character attacker)`
+Invoked when `monster` is hit by `attacker`.
 
-0 = normal
+### `onCasted(Character monster, Character caster)`
+Invoked when a spell is cast on `monster` by `caster`.
 
-1 = close examination
+<aside class="info">
+The current client does not implement magic, so this entry point is never called.
+</aside>
 
-**function onSpawn(monster)**
+### `onDeath(Character monster)`
+Invoked as `monster` dies.
 
-Invoked after the monster has spawned.
+### `onSpawn(Character monster)`
+Invoked after `monster` has spawned.
 
-**function setTarget(monster, candidateList)**
+### `receiveText(Character monster, number textType, string text, Character speaker)`
+Invoked when `monster` receives `text` spoken by `speaker`. `textType` is `Character.say`, `Character.whisper` or
+`Character.yell`.
 
-If setTarget exists, it is called whenever the monster needs to decide what it should attack.
+### `number setTarget(Character monster, table candidateList)`
+If `setTarget` exists, it is called whenever `monster` needs to decide what it should attack.
+The `candidateList` is a table of [players](#character) who are possible targets.
+To set a target, its index in that table has to be returned.
+The first enemy in the table has the index `1`.
+If the entry point returns `0`, `monster` will ignore all enemies.
+If `setTarget` does not exist, the player with lowest health is chosen by default.
 
-The candidateList is a list of players who are possible targets. 
+### `useMonster(Character monster, Character user, number actionState)`
+A `user` uses a `monster`. `actionState` is one of
 
-To set a target, its index in that list has to be returned. 
+* `Action.none`: no action is running.
+* `Action.success`: an action was running and has been completed.
+* `Action.abort`: an action was running and has been interrupted by the user being attacked or the user doing something
+else like using an item, moving, etc.
 
-The first enemy in the list has the index 1. 
-
-If the function returns 0, the monster will ignore any enemy. 
-
-If setTarget does not exist, the player with lowest health is chosen by default.
-
+See section Actions in [Character](#character) for more details on starting actions.
