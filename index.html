@@ -1319,7 +1319,7 @@ and <code>Character.yell</code>. Needs to return the text the player will actual
 <p>Players, NPCs and monsters are the three types of characters in Illarion.</p>
 
 <p><img src="images/directions-a05aa5a6.png" alt="directions" /></p>
-<h3 id='variables'>Variables</h3>
+<h3 id='character-variables'>Character - Variables</h3>
 <table><thead>
 <tr>
 <th>Name</th>
@@ -1354,7 +1354,7 @@ and <code>Character.yell</code>. Needs to return the text the player will actual
 </tr>
 <tr>
 <td>lastSpokenText</td>
-<td>text</td>
+<td>string</td>
 <td>no</td>
 <td>character&#39;s last spoken line of text</td>
 </tr>
@@ -1377,7 +1377,7 @@ and <code>Character.yell</code>. Needs to return the text the player will actual
 <td>A character has a maximum of 21 movepoints. Every action like talking, fighting, using etc. needs at least 7 movepoints. The reduction of movepoints depends on the character&#39;s agility. A character gains one movepoint per decisecond.</td>
 </tr>
 </tbody></table>
-<h3 id='actions'>Actions</h3><div class="highlight"><pre class="highlight lua tab-lua"><code><span class="kd">local</span> <span class="n">M</span> <span class="o">=</span> <span class="p">{}</span>
+<h3 id='character-actions'>Character - Actions</h3><div class="highlight"><pre class="highlight lua tab-lua"><code><span class="kd">local</span> <span class="n">M</span> <span class="o">=</span> <span class="p">{}</span>
 
 <span class="k">function</span> <span class="nc">M</span><span class="p">.</span><span class="nf">UseItem</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="n">item</span><span class="p">,</span> <span class="n">actionState</span><span class="p">)</span>
     <span class="kd">local</span> <span class="n">gfxRain</span> <span class="o">=</span> <span class="mi">16</span>
@@ -1433,9 +1433,365 @@ Returns <code>false</code> if that effect does not exist on this character.</p>
 </code></pre></div>
 <p>Removes an effect from this character, either by <code>id</code>, by <code>name</code> or by passing the <code>effect</code> itself. Returns <code>true</code> if an
 effect was removed and <code>false</code> otherwise.</p>
-<h3 id='text-speech-functions'>Text/Speech Functions</h3><h4 id='talk-number-mode-text-message'><code>talk(number mode, text message)</code></h4><div class="highlight"><pre class="highlight lua tab-lua"><code><span class="n">user</span><span class="p">:</span><span class="n">talk</span><span class="p">(</span><span class="n">Character</span><span class="p">.</span><span class="n">say</span><span class="p">,</span> <span class="s2">"Hello World!"</span><span class="p">)</span>
+<h3 id='character-text-speech-functions'>Character - Text/Speech Functions</h3><h4 id='talk-number-mode-string-message'><code>talk(number mode, string message)</code></h4><h4 id='talk-number-mode-string-textingerman-string-textinenglish'><code>talk(number mode, string textInGerman, string textInEnglish)</code></h4><div class="highlight"><pre class="highlight lua tab-lua"><code><span class="n">character</span><span class="p">:</span><span class="n">talk</span><span class="p">(</span><span class="n">Character</span><span class="p">.</span><span class="n">say</span><span class="p">,</span> <span class="s2">"Hello World!"</span><span class="p">)</span>
+<span class="n">character</span><span class="p">:</span><span class="n">talk</span><span class="p">(</span><span class="n">Character</span><span class="p">.</span><span class="n">say</span><span class="p">,</span> <span class="s2">"Hallo Welt!"</span><span class="p">,</span> <span class="s2">"Hello World!"</span><span class="p">)</span>
 </code></pre></div>
 <p>Lets a character say/whisper/yell a <code>message</code>. <code>mode</code> can be <code>Character.say</code>, <code>Character.whisper</code> or <code>Character.yell</code>.</p>
+<h3 id='character-movement-position-functions'>Character - Movement/Position functions</h3><h4 id='setclippingactive-boolean-status'><code>setClippingActive(boolean status)</code></h4><div class="highlight"><pre class="highlight lua tab-lua"><code><span class="n">character</span><span class="p">:</span><span class="n">setClippingActive</span><span class="p">(</span><span class="n">True</span><span class="p">)</span>
+</code></pre></div>
+<p>Enables the character to walk on fields where he usualy can’t walk (water, walls, ...).</p>
+<h4 id='boolean-getclippingactive'><code>boolean getClippingActive()</code></h4><div class="highlight"><pre class="highlight lua tab-lua"><code><span class="n">character</span><span class="p">:</span><span class="n">getClippingActive</span><span class="p">()</span>
+</code></pre></div>
+<p>Returns true if clipping is enabled for the current
+character, otherwise false.</p>
+<h4 id='move-number-direction-boolean-activemove-true'><code>move(number direction, boolean activeMove=true)</code></h4><div class="highlight"><pre class="highlight lua tab-lua"><code><span class="n">character</span><span class="p">:</span><span class="n">move</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="kc">true</span><span class="p">)</span>
+</code></pre></div>
+<p>Moves the <code>character</code> one step in the <code>direction</code>, is the movement performed
+actively <code>activeMove</code> should be <code>true</code> otherwise <code>false</code>.</p>
+<h4 id='number-getfaceto'><code>number getFaceTo()</code></h4><div class="highlight"><pre class="highlight lua tab-lua"><code><span class="n">character</span><span class="p">:</span><span class="n">getFaceTo</span><span class="p">()</span>
+</code></pre></div>
+<p>Returns an integer between 0 and 7 inclusively that indicates the direction the character is
+facing to.</p>
+<h4 id='turn-number-direction-turn-posstruct-position'><code>turn(number direction)</code> \  <code>turn(posStruct position)</code></h4><div class="highlight"><pre class="highlight lua tab-lua"><code><span class="n">character</span><span class="p">:</span><span class="n">turn</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">character</span><span class="p">:</span><span class="n">turn</span><span class="p">(</span><span class="n">position</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">0</span><span class="p">))</span>
+</code></pre></div>
+<p>Turns the character either towards a <code>direction</code> or towards a <code>position</code>.</p>
+<h4 id='warp-posstruct-position-forcewarp-posstruct-position'><code>warp(posStruct position)</code> \ <code>forceWarp(posStruct position)</code></h4><div class="highlight"><pre class="highlight lua tab-lua"><code><span class="n">character</span><span class="p">:</span><span class="n">warp</span><span class="p">(</span><span class="n">position</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
+<span class="n">character</span><span class="p">:</span><span class="n">forceWarp</span><span class="p">(</span><span class="n">position</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
+</code></pre></div>
+<p>Warps the character to a certain <code>position</code>. While the warp function
+is going to protect the character to be spawned on a non-moveable position,
+forceWarp ignores this aspect.</p>
+<h4 id='boolean-isinrage-character-secondcharacter-number-distance'><code>boolean isInRage(character secondCharacter, number distance)</code>`</h4><div class="highlight"><pre class="highlight lua tab-lua"><code><span class="n">character</span><span class="p">:</span><span class="n">isInRage</span><span class="p">(</span><span class="n">secondCharacter</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+</code></pre></div>
+<p>Returns <code>true</code> if <code>secondCharacter</code> is within <code>distance</code> of the character, else <code>false</code>.</p>
+<h4 id='boolean-isinrangetoposition-posstruct-position-number-distance'><code>boolean isInRangeToPosition(posStruct position, number distance)</code></h4>
+<p>Returns <code>true</code> if the character is within the <code>distance</code> of <code>position</code>, else <code>false</code>.</p>
+<h4 id='number-distancemetric-character-secondcharacter'><code>number distanceMetric(character secondCharacter)</code></h4><h4 id='number-distancemetrictoposition-posstruct-position'><code>number distanceMetricToPosition(posStruct position)</code></h4><div class="highlight"><pre class="highlight lua tab-lua"><code><span class="n">character</span><span class="p">:</span><span class="n">distanceMetric</span><span class="p">(</span><span class="n">secondCharacter</span><span class="p">)</span>
+<span class="n">character</span><span class="p">:</span><span class="n">distanceMetricToPosition</span><span class="p">(</span><span class="n">position</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
+</code></pre></div>
+<p>Returns distance between the character and a <code>secondCharacter</code>
+or between the character and a <code>position</code>.</p>
+<h4 id='boolean-getonroute'><code>boolean getOnRoute()</code></h4><div class="highlight"><pre class="highlight lua tab-lua"><code><span class="n">character</span><span class="p">:</span><span class="n">getOnRoute</span><span class="p">()</span>
+</code></pre></div>
+<p>Returns if the character is currently following a route(waypoints).</p>
+<h4 id='setonroute-boolean-isonroute'><code>setOnRoute(boolean isOnRoute)</code></h4><div class="highlight"><pre class="highlight lua tab-lua"><code><span class="n">character</span><span class="p">:</span><span class="n">setOnRoute</span><span class="p">(</span><span class="kc">true</span><span class="p">)</span>
+</code></pre></div>
+<p>Makes the character following/stopping a route.</p>
+<h3 id='character-admin'>Character - Admin</h3><h4 id='boolean-pagegm-string-text'><code>boolean pageGM(string text)</code></h4><div class="highlight"><pre class="highlight lua tab-lua"><code><span class="n">character</span><span class="p">:</span><span class="n">pageGM</span><span class="p">(</span><span class="s2">"Please marry me!"</span><span class="p">)</span>
+</code></pre></div>
+<p>Returns true if <code>ticket</code> is successfully logged as message to the GM team.</p>
+<h4 id='logadmin-string-message'><code>logAdmin(string message)</code></h4><div class="highlight"><pre class="highlight lua tab-lua"><code><span class="n">character</span><span class="p">:</span><span class="n">logAdmin</span><span class="p">(</span><span class="s2">"Set GM castle on fire."</span><span class="p">)</span>
+</code></pre></div>
+<p>Writes <code>message</code> for the given user into the server log using the admin facility.</p>
+<h3 id='character-information'>Character - Information</h3><h4 id='sendchardescription-number-id-string-text'><code>sendCharDescription(number id, string text)</code></h4><div class="highlight"><pre class="highlight lua tab-lua"><code><span class="n">character</span><span class="p">:</span><span class="n">sendCharDescription</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="s2">"An old man."</span><span class="p">)</span>
+</code></pre></div>
+<p>Shows the <code>text</code> as character description of the character with ID <code>id</code> only to the current character.</p>
+<h4 id='getplayerlanguage'><code>getPlayerLanguage()</code></h4><div class="highlight"><pre class="highlight lua tab-lua"><code><span class="n">character</span><span class="p">:</span><span class="n">getPlayerLanguage</span><span class="p">()</span>
+</code></pre></div>
+<p>Returns the player’s language: Player.german or Player.english.</p>
+<h4 id='boolean-isnewplayer'><code>boolean isNewPlayer()</code></h4><div class="highlight"><pre class="highlight lua tab-lua"><code><span class="n">character</span><span class="p">:</span><span class="n">isNewPlayer</span><span class="p">()</span>
+</code></pre></div>
+<p>Returns whether character is a new player or not.</p>
+<h4 id='boolean-isadmin'><code>boolean isAdmin()</code></h4><div class="highlight"><pre class="highlight lua tab-lua"><code><span class="n">character</span><span class="p">:</span><span class="n">isAdmin</span><span class="p">()</span>
+</code></pre></div>
+<p>Returns true if that character is admin (GM) and false otherwise.</p>
+<h4 id='number-idletime'><code>number idleTime()</code></h4><div class="highlight"><pre class="highlight lua tab-lua"><code><span class="n">character</span><span class="p">:</span><span class="n">idleTime</span><span class="p">()</span>
+</code></pre></div>
+<p>If the character is a player, returns the number of seconds they are idle. Returns 0 otherwise.</p>
+<h4 id='boolean-isvalidchar-character-char'><code>boolean isValidChar(character Char)</code></h4><div class="highlight"><pre class="highlight lua tab-lua"><code><span class="n">isValidChar</span><span class="p">(</span><span class="n">char</span><span class="p">)</span>
+</code></pre></div>
+<p>Returns true if <code>char</code> is still valid and safe to use. Validity has to be checked if char is
+used in another entrypoint call than the one where it was originally obtained, since a player
+might have logged out, an NPC might have been deleted and a monster might have been
+killed in the meantime.</p>
+<h4 id='number-getmonstertype'><code>number getMonsterType()</code></h4><div class="highlight"><pre class="highlight lua tab-lua"><code><span class="n">character</span><span class="p">:</span><span class="n">getMonsterType</span><span class="p">()</span>
+</code></pre></div>
+<p>Returns the monster-ID of a monster.</p>
+<h4 id='number-gettype'><code>number getType()</code></h4><div class="highlight"><pre class="highlight lua tab-lua"><code><span class="n">character</span><span class="p">:</span><span class="n">getType</span><span class="p">()</span>
+</code></pre></div>
+<p>Returns Character.player for players, Character.monster for monsters and Character.npc for
+NPCs.</p>
+<h3 id='character-appearance'>Character Appearance</h3>
+<ul>
+<li>Setters</li>
+</ul>
+<h4 id='setskincolour-colour-skincolour'><code>setSkinColour(colour skinColour)</code></h4><div class="highlight"><pre class="highlight lua tab-lua"><code><span class="n">character</span><span class="p">:</span><span class="n">setSkinColour</span><span class="p">(</span><span class="n">colour</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">))</span>
+</code></pre></div>
+<p>Sets the skin colour.</p>
+<h4 id='sethaircolour-colour-haricolour'><code>setHairColour(colour hariColour)</code></h4><div class="highlight"><pre class="highlight lua tab-lua"><code><span class="n">character</span><span class="p">:</span><span class="n">setHairColour</span><span class="p">(</span><span class="n">colour</span><span class="p">(</span><span class="mi">255</span><span class="p">,</span><span class="mi">255</span><span class="p">,</span><span class="mi">255</span><span class="p">))</span>
+</code></pre></div>
+<p>Sets hair and beard colour.</p>
+<h4 id='sethair-number-hairid'><code>setHair(number hairID)</code></h4><div class="highlight"><pre class="highlight lua tab-lua"><code><span class="n">character</span><span class="p">:</span><span class="n">setHair</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+</code></pre></div>
+<p>Changes the character hair to given one.</p>
+<h4 id='setbeard-number-beardid'><code>setBeard(number beardID)</code></h4><div class="highlight"><pre class="highlight lua tab-lua"><code><span class="n">character</span><span class="p">:</span><span class="n">setBeard</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+</code></pre></div>
+<p>Changes the beard of the character to the given one.</p>
+<h4 id='setrace-number-race'><code>setRace(number race)</code></h4><div class="highlight"><pre class="highlight lua tab-lua"><code><span class="n">character</span><span class="p">:</span><span class="n">setRace</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+</code></pre></div>
+<p>Temporarily sets the race of a character.</p>
+
+<ul>
+<li>Getters</li>
+</ul>
+<h4 id='colour-getskincolour'><code>colour getSkinColour()</code></h4><div class="highlight"><pre class="highlight lua tab-lua"><code><span class="n">character</span><span class="p">:</span><span class="n">getSkinColour</span><span class="p">()</span>
+</code></pre></div>
+<p>Returns the skin colour of the character.</p>
+<h4 id='colour-gethaircolour'><code>colour getHairColour()</code></h4><div class="highlight"><pre class="highlight lua tab-lua"><code><span class="n">character</span><span class="p">:</span><span class="n">getHairColour</span><span class="p">()</span>
+</code></pre></div>
+<p>Returns the hair color of the character.</p>
+<h4 id='number-gethair'><code>number getHair()</code></h4><div class="highlight"><pre class="highlight lua tab-lua"><code><span class="n">character</span><span class="p">:</span><span class="n">getHair</span><span class="p">()</span>
+</code></pre></div>
+<p>Returns the ID of the present hair, 0 for no hair.</p>
+<h4 id='number-getbeard'><code>number getBeard()</code></h4><div class="highlight"><pre class="highlight lua tab-lua"><code><span class="n">character</span><span class="p">:</span><span class="n">getBeard</span><span class="p">()</span>
+</code></pre></div>
+<p>Returns the ID of the present beard, 0 for no beard.</p>
+<h4 id='number-getrace'><code>number getRace()</code></h4><div class="highlight"><pre class="highlight lua tab-lua"><code><span class="n">character</span><span class="p">:</span><span class="n">getRace</span><span class="p">()</span>
+</code></pre></div>
+<p>Returns the race of the character.</p>
+<h3 id='character-constitution'>Character - Constitution</h3><h4 id='increasepoisonvalue-number-amount'><code>increasePoisonValue(number amount)</code></h4><div class="highlight"><pre class="highlight lua tab-lua"><code><span class="n">character</span><span class="p">:</span><span class="n">increasePoisonValue</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+</code></pre></div>
+<p>Increases the toxication with the given <code>amount</code>.</p>
+<h4 id='number-getpoisonvalue'><code>number getPoisonValue()</code></h4><div class="highlight"><pre class="highlight lua tab-lua"><code><span class="n">character</span><span class="p">:</span><span class="n">getPoisonValue</span><span class="p">()</span>
+</code></pre></div>
+<p>Returns the character&#39;s toxication value.</p>
+<h4 id='setpoisonvalue-number-value'><code>setPoisonValue(number value)</code></h4><div class="highlight"><pre class="highlight lua tab-lua"><code><span class="n">character</span><span class="p">:</span><span class="n">setPoisonValue</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
+</code></pre></div>
+<p>Sets the toxication to the given <code>value</code>.</p>
+<h4 id='number-getmentalcapacity'><code>number getMentalCapacity()</code></h4><div class="highlight"><pre class="highlight lua tab-lua"><code><span class="n">character</span><span class="p">:</span><span class="n">getMentalCapacity</span><span class="p">()</span>
+</code></pre></div>
+<p>Returns the mental capacity of the character which influences the ability to skill.</p>
+<h4 id='setmentalcapacity-number-value'><code>setMentalCapacity(number value)</code></h4><div class="highlight"><pre class="highlight lua tab-lua"><code><span class="n">character</span><span class="p">:</span><span class="n">setMentalCapacity</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
+</code></pre></div>
+<p>Sets the mental capacity of the character to the given <code>value</code></p>
+<h4 id='increasementalcapacity-number-amount'><code>increaseMentalCapacity(number amount)</code></h4><div class="highlight"><pre class="highlight lua tab-lua"><code><span class="n">character</span><span class="p">:</span><span class="n">increaseMentalCapacity</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span>
+</code></pre></div>
+<p>Increases the mental capacity of the character with the given <code>amount</code>.</p>
+<h3 id='character-modifying-attributes'>Character - Modifying attributes</h3><h4 id='number-increaseattrib-string-attribute-number-value'><code>number increaseAttrib(string attribute, number value)</code></h4><div class="highlight"><pre class="highlight lua tab-lua"><code><span class="n">character</span><span class="p">:</span><span class="n">increaseAttrib</span><span class="p">(</span><span class="s2">"intelligence"</span><span class="p">,</span><span class="mi">100</span><span class="p">)</span>
+</code></pre></div>
+<p>Increases the attribute given (see below) and returns the new attribute <code>value</code>. Use <code>value</code>=0
+to read the attribute’s value. Note that this command also sends a player update to all characters in range if necessary.</p>
+<h4 id='setattrib-string-attribute-number-value'><code>setAttrib(string attribute, number value)</code></h4><div class="highlight"><pre class="highlight lua tab-lua"><code><span class="n">character</span><span class="p">:</span><span class="n">setAttrib</span><span class="p">(</span><span class="s2">"hitpoints"</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+</code></pre></div>
+<p>Sets the given <code>value</code> for the given <code>attribute</code>.
+Be aware that any attribute change to fixed attributes like &quot;strength&quot; will only last for the
+current session and will be reset to the database value upon the next login.</p>
+<h4 id='boolean-isbaseattributevalid-string-attribute-number-value'><code>boolean isBaseAttributeValid(string attribute, number value)</code></h4><div class="highlight"><pre class="highlight lua tab-lua"><code><span class="n">character</span><span class="p">:</span><span class="n">isBaseAttributeValid</span><span class="p">(</span><span class="s2">"strength"</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+</code></pre></div>
+<p>Returns whether <code>value</code> is acceptable for the given <code>attribute</code> and the race of the character,
+respecting limits given in table.</p>
+<h4 id='number-getbaseattributesum'><code>number getBaseAttributeSum()</code></h4><div class="highlight"><pre class="highlight lua tab-lua"><code><span class="n">character</span><span class="p">:</span><span class="n">getBaseAttributeSum</span><span class="p">()</span>
+</code></pre></div>
+<p>Returns the current sum of the eight primary attributes.</p>
+<h4 id='number-getmaxattributepoints'><code>number getMaxAttributePoints()</code></h4><div class="highlight"><pre class="highlight lua tab-lua"><code><span class="n">character</span><span class="p">:</span><span class="n">getMaxAttributePoints</span><span class="p">()</span>
+</code></pre></div>
+<p>Returns the maximum value which the sum of primary attributes should have.</p>
+<h4 id='number-getbaseattribute-string-attribute'><code>number getBaseAttribute(string attribute)</code></h4>
+<p>Returns the base value of the given <code>attribute</code>, that is the value that this attribute normally
+has, when no special effects are active.</p>
+<h4 id='boolean-setbaseattribute-string-attribute-number-value'><code>boolean setBaseAttribute(string attribute, number value)</code>`</h4>
+<p>Sets the base value of the given <code>attribute</code> and returns <code>true</code> if isBaseAttributeValid(...)
+would return <code>true</code>. Otherwise is a no-op and returns <code>false</code>.</p>
+<h4 id='boolean-increasebaseattribute-string-attribute-number-amount'><code>boolean increaseBaseAttribute(string attribute, number amount)</code></h4><div class="highlight"><pre class="highlight lua tab-lua"><code><span class="n">character</span><span class="p">:</span><span class="n">increaseBaseAttribute</span><span class="p">(</span><span class="s2">"strength"</span><span class="p">,</span><span class="mi">20</span><span class="p">)</span>
+</code></pre></div>
+<p>If isBaseAttributeValid(...) would return <code>true</code>, increases or decreases the base value of
+the given <code>attribute</code> and returns <code>true</code>. Otherwise is a no-op and returns <code>false</code>.</p>
+<h4 id='boolean-savebaseattributes'><code>boolean saveBaseAttributes()</code></h4><div class="highlight"><pre class="highlight lua tab-lua"><code><span class="n">character</span><span class="p">:</span><span class="n">saveBaseAttributes</span><span class="p">()</span>
+</code></pre></div>
+<p>Saves the eight primary base attributes to the database, iff getBaseAttributeSum() ==
+getMaxAttributePoints(). On failure resets primary attribute values to database values.
+Returns whether the operation was successful or not.</p>
+<h3 id='character-magic'>Character - Magic</h3>
+<p>Illarion distinguishes between four magic types: Mages(0), Priests(1), Bards(2) and Druids(3).</p>
+<h4 id='number-getmagictype'><code>number getMagicType()</code></h4><div class="highlight"><pre class="highlight lua tab-lua"><code><span class="n">character</span><span class="p">:</span><span class="n">getMagicType</span><span class="p">()</span>
+</code></pre></div>
+<p>Returns the magic type of the character.</p>
+<h4 id='setmagictype-number-magictype'><code>setMagicType(number magicType)</code></h4><div class="highlight"><pre class="highlight lua tab-lua"><code><span class="c1">-- Be a druid</span>
+<span class="n">character</span><span class="p">:</span><span class="n">setMagicType</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+</code></pre></div>
+<p>Changes the magic type of the character to the given <code>magicType</code>.</p>
+<h4 id='number-getmagicflags-number-magictype'><code>number getMagicFlags(number magicType)</code></h4><div class="highlight"><pre class="highlight lua tab-lua"><code><span class="n">character</span><span class="p">:</span><span class="n">getMagicFlags</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+</code></pre></div>
+<p>Returns the number of magicFlags of the given <code>magicType</code>.</p>
+<h4 id='teachmagic-number-magictype-number-magicflag'><code>teachMagic(number magicType,number magicFlag)</code></h4><div class="highlight"><pre class="highlight lua tab-lua"><code><span class="c1">-- Teach rune with ID 1</span>
+<span class="n">character</span><span class="p">:</span><span class="n">teachMagic</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">2</span><span class="o">^</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+</code></pre></div>
+<p>Can be used to teach a character runes or other flags, based on the given <code>magicType</code>and <code>magicFlag</code>.</p>
+<h3 id='character-skills'>Character - Skills</h3><h4 id='string-getskillname-skill-targetskill'><code>string getSkillName(skill targetSkill)</code></h4><div class="highlight"><pre class="highlight lua tab-lua"><code><span class="n">character</span><span class="p">:</span><span class="n">getSkillName</span><span class="p">(</span><span class="n">Character</span><span class="p">.</span><span class="n">ancientLanguage</span><span class="p">)</span>
+</code></pre></div>
+<p>Returns the name of the given <code>skill</code> in the player’s language.</p>
+<h4 id='number-getskill-skill-targetskill'><code>number getSkill(skill targetSkill)</code>`</h4><div class="highlight"><pre class="highlight lua tab-lua"><code><span class="n">character</span><span class="p">:</span><span class="n">getSkill</span><span class="p">(</span><span class="n">Character</span><span class="p">.</span><span class="n">ancientLanguage</span><span class="p">)</span>
+</code></pre></div>
+<p>Returns the major <code>skill</code> value for the character.</p>
+<h4 id='number-getskillvalue-skill-targetskill'><code>number getSkillValue(skill targetSkill)</code>`</h4><div class="highlight"><pre class="highlight lua tab-lua"><code><span class="n">character</span><span class="p">:</span><span class="n">getSkillValue</span><span class="p">(</span><span class="n">Character</span><span class="p">.</span><span class="n">ancientLanguage</span><span class="p">)</span>
+</code></pre></div>
+<p>Returns a table with two fields, major and minor, representing the <code>skill</code> and the minor skill.</p>
+<h4 id='setskill-skill-targetskill-number-major-number-minor'><code>setSkill(skill targetSkill, number major, number minor)</code>`</h4><div class="highlight"><pre class="highlight lua tab-lua"><code><span class="n">character</span><span class="p">:</span><span class="n">setSkill</span><span class="p">(</span><span class="n">Character</span><span class="p">.</span><span class="n">ancientLanguage</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+</code></pre></div>
+<p>Directly sets major and minor skill. Returns the new major skill. If the skill does not exist in the database, nothing is set and 0 is returned.</p>
+<h4 id='increaseskill-skill-targetskill-number-value'><code>increaseSkill(skill targetSkill, number value)</code></h4><h4 id='increaseminorskill-skill-targetskill-number-value'><code>increaseMinorSkill(skill targetSkill, number value)</code></h4><div class="highlight"><pre class="highlight lua tab-lua"><code><span class="n">character</span><span class="p">:</span><span class="n">increaseSkill</span><span class="p">(</span><span class="n">Character</span><span class="p">.</span><span class="n">ancientLanguage</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<span class="n">character</span><span class="p">:</span><span class="n">increaseMinorSkill</span><span class="p">(</span><span class="n">Character</span><span class="p">.</span><span class="n">slashingWeapons</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+</code></pre></div>
+<p>Increase major and minor skill, respectively. Returns the new major skill. If the skill does not exist in the database, nothing is increased and 0 is returned.</p>
+<h4 id='learn-skill-targetskill-number-actionpoints-number-learnlimit'><code>learn(skill targetSkill, number actionPoints, number learnLimit)</code></h4><div class="highlight"><pre class="highlight lua tab-lua"><code><span class="n">character</span><span class="p">:</span><span class="n">learn</span><span class="p">(</span><span class="n">Character</span><span class="p">.</span><span class="n">slashingWeapons</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span><span class="mi">100</span><span class="p">)</span>
+</code></pre></div>
+<p>Number of <code>actionPoints</code> used up for the action which resulted in learning, but the skill will not be advanced beyond this <code>learnLimit</code> and never beyond 100.</p>
+<h3 id='character-quests'>Character - Quests</h3><h4 id='setquestprogress-number-questid-number-progress'><code>setQuestProgress(number questID, number progress)</code></h4><div class="highlight"><pre class="highlight lua tab-lua"><code><span class="n">character</span><span class="p">:</span><span class="n">setQuestProgress</span><span class="p">(</span><span class="mi">100</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+</code></pre></div>
+<p>A quest <code>progress</code> can be set for a specific <code>quest</code>.</p>
+<h4 id='number-getquestprogress-number-questid'><code>number getQuestProgress(number questID)</code></h4><div class="highlight"><pre class="highlight lua tab-lua"><code><span class="n">character</span><span class="p">:</span><span class="n">getQuestProgress</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
+</code></pre></div>
+<p>Returns the progress for a specific <code>quest</code>. Optionally also returns the time when this
+progress was last set as Unix timestamp.</p>
+<h3 id='character-item-inventory-handling'>Character - Item/Inventory handling</h3>
+<p>Relevant class sections for the following section :
+<a href="#item">Item</a>, <a href="#itemstruct">ItemStruct</a>.
+A full list of all item IDs can be found <a href="https://illarion.org/~martin/itemlist.pdf">here</a>.</p>
+
+<ul>
+<li>Inventory slots
+The current implementation covers following inventory/ slot IDs.</li>
+</ul>
+
+<table><thead>
+<tr>
+<th>enum</th>
+<th>value</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>Character.backpack</td>
+<td>0</td>
+</tr>
+<tr>
+<td>Character.head</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Character.neck</td>
+<td>2</td>
+</tr>
+<tr>
+<td>Character.breast</td>
+<td>3</td>
+</tr>
+<tr>
+<td>Character.hands</td>
+<td>4</td>
+</tr>
+<tr>
+<td>Character.left_tool</td>
+<td>5</td>
+</tr>
+<tr>
+<td>Character.right_tool</td>
+<td>6</td>
+</tr>
+<tr>
+<td>Character.finger_left_hand</td>
+<td>7</td>
+</tr>
+<tr>
+<td>Character.finger_right_hand</td>
+<td>8</td>
+</tr>
+<tr>
+<td>Character.legs</td>
+<td>9</td>
+</tr>
+<tr>
+<td>Character.feet</td>
+<td>10</td>
+</tr>
+<tr>
+<td>Character.coat</td>
+<td>11</td>
+</tr>
+<tr>
+<td>Character.belt_pos_1</td>
+<td>12</td>
+</tr>
+<tr>
+<td>Character.belt_pos_2</td>
+<td>13</td>
+</tr>
+<tr>
+<td>Character.belt_pos_3</td>
+<td>14</td>
+</tr>
+<tr>
+<td>Character.belt_pos_4</td>
+<td>15</td>
+</tr>
+<tr>
+<td>Character.belt_pos_5</td>
+<td>16</td>
+</tr>
+<tr>
+<td>Character.belt_pos_6</td>
+<td>17</td>
+</tr>
+</tbody></table>
+<h4 id='increaseatpos-number-bodyposition-number-count'><code>increaseAtPos(number bodyPosition, number count)</code></h4><div class="highlight"><pre class="highlight lua tab-lua"><code><span class="n">character</span><span class="p">:</span><span class="n">increaseAtPos</span><span class="p">(</span><span class="n">Character</span><span class="p">.</span><span class="n">belt_pos_1</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+</code></pre></div>
+<p>Increases the amount of items at <code>bodyPosition</code>by <code>count</code>.</p>
+<h4 id='swapatpos-number-bodyposition-number-itemid-number-quality'><code>swapAtPos(number bodyPosition, number itemID, number quality)</code></h4><div class="highlight"><pre class="highlight lua tab-lua"><code><span class="c1">-- 2763 == pickaxe</span>
+<span class="n">character</span><span class="p">:</span><span class="n">swapAtPos</span><span class="p">(</span><span class="n">Character</span><span class="p">.</span><span class="n">belt_pos_1</span><span class="p">,</span> <span class="mi">2763</span><span class="p">,</span> <span class="mi">999</span><span class="p">)</span>
+</code></pre></div>
+<p>Changes the item at the given <code>bodyPosition</code> to the given <code>itemID</code> and <code>quality</code>.
+A full list of all item IDs can be found <a href="https://illarion.org/~martin/itemlist.pdf">here</a>.</p>
+<h4 id='table-getitemlist-number-itemid'><code>table getItemList(number itemID)</code></h4><div class="highlight"><pre class="highlight lua tab-lua"><code><span class="n">character</span><span class="p">:</span><span class="n">getItemList</span><span class="p">(</span><span class="mi">2763</span><span class="p">)</span>
+</code></pre></div>
+<p>Returns a list with all items of this <code>itemID</code>.</p>
+<h3 id='character-depot-containers'>Character - Depot/Containers</h3><h4 id='construct-getbackpack'><code>conStruct getBackPack()</code></h4><div class="highlight"><pre class="highlight lua tab-lua"><code><span class="n">character</span><span class="p">:</span><span class="n">getBackPack</span><span class="p">()</span>
+</code></pre></div>
+<p>Returns a container-item, which can contain other items.</p>
+<h4 id='construct-getdepot-number-depotid'><code>conStruct getDepot(number depotID)</code></h4><div class="highlight"><pre class="highlight lua tab-lua"><code><span class="n">character</span><span class="p">:</span><span class="n">getDepot</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+</code></pre></div>
+<p>Returns a container-item (the depot of that Character).</p>
+<h4 id='table-takeitemnr-number-bodyposition-number-amount'><code>table takeItemNr(number bodyPosition,number amount).</code></h4><div class="highlight"><pre class="highlight lua tab-lua"><code><span class="n">character</span><span class="p">:</span><span class="n">takeItemNr</span><span class="p">(</span><span class="n">Character</span><span class="p">.</span><span class="n">belt_pos_2</span><span class="p">,</span><span class="mi">2</span><span class="p">)</span>
+</code></pre></div>
+<p>Takes the <code>amount</code> of items from the <code>bodyPosition</code> and returns the taken items.</p>
+<h3 id='character-items'>Character - Items</h3><h4 id='number-createitem-number-itemid-number-count-int-number-quality-datatable-data'><code>number createItem(number itemID, number count, int number quality, dataTable data)</code></h4><div class="highlight"><pre class="highlight lua tab-lua"><code><span class="n">character</span><span class="p">:</span><span class="n">createItem</span><span class="p">(</span><span class="mi">2764</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">999</span><span class="p">,</span> <span class="p">{})</span>
+</code></pre></div>
+<p>Item is created in the belt or backpack of character. If that is not possible, the items will
+not be created. The function returns an integer that gives the number of items that cannot
+be created.</p>
+<h4 id='createatpos-number-bodyposition-number-itemid-number-count'><code>createAtPos(number bodyPosition, number itemID, number count)</code></h4><div class="highlight"><pre class="highlight lua tab-lua"><code><span class="n">character</span><span class="p">:</span><span class="n">createAtPos</span><span class="p">(</span><span class="n">Character</span><span class="p">.</span><span class="n">hands</span><span class="p">,</span> <span class="mi">2763</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+</code></pre></div>
+<p>Creates an item at a special body position.</p>
+<h4 id='changequalityat-number-bodyposition-number-amount'><code>changeQualityAt(number bodyPosition, number amount)</code></h4><div class="highlight"><pre class="highlight lua tab-lua"><code><span class="n">character</span><span class="p">:</span><span class="n">changeQualityAt</span><span class="p">(</span><span class="n">hands</span><span class="p">,</span> <span class="mi">333</span><span class="p">)</span>
+</code></pre></div>
+<p>Changes the quality by the  <code>amount</code> at the <code>body position</code>.</p>
+<h4 id='number-eraseitem-number-itemid-number-count'><code>number eraseItem(number itemID, number count)</code></h4><h4 id='number-eraseitem-number-itemid-number-count-table-data'><code>number eraseItem(number itemID, number count, table data)</code></h4><div class="highlight"><pre class="highlight lua tab-lua"><code><span class="n">character</span><span class="p">:</span><span class="n">eraseItem</span><span class="p">(</span><span class="mi">2763</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="p">{})</span>
+<span class="n">character</span><span class="p">:</span><span class="n">eraseItem</span><span class="p">(</span><span class="mi">2763</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="p">{</span><span class="n">glyphEffect</span><span class="p">:</span><span class="mi">0</span><span class="p">})</span>
+</code></pre></div>
+<p>The given <code>count</code> of items with the <code>itemID</code> are erased from the inventory. You have
+no influence on which items are deleted, you can just determine ID and number. The return
+value contains the amount of items that could not be deleted. In case the optional <code>data</code>
+parameter is set, only items that include these data values are deleted. If the data table is
+empty however, only items without data are erased.</p>
+<h4 id='number-countitem-number-itemid'><code>number countItem(number itemID)</code></h4><div class="highlight"><pre class="highlight lua tab-lua"><code><span class="n">character</span><span class="p">:</span><span class="n">count</span><span class="p">(</span><span class="mi">2763</span><span class="p">)</span>
+</code></pre></div>
+<p>Returns the amount of items with type <code>itemID</code> in the character&#39;s inventory.</p>
+<h4 id='number-countitemat-string-slots-number-itemid'><code>number countItemAt(string slots, number itemID)</code></h4><h4 id='number-countitemat-string-slots-number-itemid-table-data'><code>number countItemAt(string slots, number itemID, table data)</code></h4><div class="highlight"><pre class="highlight lua tab-lua"><code><span class="n">character</span><span class="p">:</span><span class="n">countItemAt</span><span class="p">(</span><span class="s2">"all"</span><span class="p">,</span> <span class="mi">2763</span><span class="p">)</span>
+<span class="n">character</span><span class="p">:</span><span class="n">countItemAt</span><span class="p">(</span><span class="s2">"all"</span><span class="p">,</span> <span class="mi">2763</span><span class="p">,</span> <span class="p">{</span><span class="s2">"madeBy"</span><span class="p">:</span> <span class="s2">"Vilarion"</span><span class="p">})</span>
+</code></pre></div>
+<p>Counts only at the specified <code>slots</code>
+Valid <code>slots</code> values are  &quot;all&quot;, &quot;belt&quot;, &quot;body&quot;, &quot;backpack&quot;. The variant with <code>data</code> does only count
+items that include these data values. If the data table is empty however, only items without
+data are counted.</p>
+<h4 id='table-getloot'><code>table getLoot()</code></h4><div class="highlight"><pre class="highlight lua tab-lua"><code><span class="n">monster</span><span class="p">:</span><span class="n">getLoot</span><span class="p">()</span>
+</code></pre></div>
+<p>Returns the loot for a monster, otherwise throws a NoLootFound error.</p>
+<h3 id='character-ambient'>Character - Ambient</h3><h4 id='startmusic-number-track'><code>startMusic(number track)</code></h4><div class="highlight"><pre class="highlight lua tab-lua"><code><span class="n">character</span><span class="p">:</span><span class="n">startMusic</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+</code></pre></div>
+<p>Starts music <code>track</code> for the current character, with 0 meaning silence.</p>
+<h4 id='defaultmusic'><code>defaultMusic()</code></h4><div class="highlight"><pre class="highlight lua tab-lua"><code><span class="n">character</span><span class="p">:</span><span class="n">defaultMusic</span><span class="p">()</span>
+</code></pre></div>
+<p>Plays the default music for the current character
+as defined by the map.</p>
 <h2 id='colour'>colour</h2>
 <p>Colours are used to represent a characters skin or hair colour.</p>
 <h3 id='variables'>Variables</h3>
