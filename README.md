@@ -8,3 +8,4 @@ The Illarion Lua documentation handles the scripting aspects of creating game co
 The [sources](source) are written in Markdown and build with [Slate](https://github.com/slatedocs/slate).
 See their reference on how to contribute.
 
+The easiest way to run a development server are the run-in-docker/stop-in-docker scripts.
