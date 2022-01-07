@@ -40,6 +40,7 @@ includes:
   - classes/character/items
   - classes/character/ambient
   - classes/colour
+  - classes/container
   - classes/dialogs
   - classes/dialogs/messagedialog
   - classes/dialogs/inputdialog
@@ -51,7 +52,6 @@ includes:
   - classes/position
   - classes/random
   - classes/scriptvars
-  - classes/container
   - logging
   - debugging
   - resources
