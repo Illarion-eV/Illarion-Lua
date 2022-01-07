@@ -51,6 +51,7 @@ includes:
   - classes/position
   - classes/random
   - classes/scriptvars
+  - classes/container
   - logging
   - debugging
   - resources
