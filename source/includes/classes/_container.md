@@ -8,7 +8,7 @@ local M = {}
 
 ### Functions
 
-#### `Boolean, Item, Container viewItemNr(number itempos)`
+#### `boolean, Item, Container viewItemNr(number itempos)`
 
 ```lua
 
