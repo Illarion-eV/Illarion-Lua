@@ -402,6 +402,9 @@
                     <a href="#colour" class="toc-h2 toc-link" data-title="colour">colour</a>
                   </li>
                   <li>
+                    <a href="#container" class="toc-h2 toc-link" data-title="Container">Container</a>
+                  </li>
+                  <li>
                     <a href="#dialogs" class="toc-h2 toc-link" data-title="Dialogs">Dialogs</a>
                   </li>
                   <li>
@@ -1831,7 +1834,178 @@ as defined by the map.</p>
 <h3 id='functions'>Functions</h3><h4 id='colour-number-red-number-green-number-blue-number-alpha-255'><code>colour(number red, number green, number blue [, number alpha = 255])</code></h4><div class="highlight"><pre class="highlight lua tab-lua"><code><span class="kd">local</span> <span class="n">black</span> <span class="o">=</span> <span class="n">colour</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
 </code></pre></div>
 <p>Creates colour for given RGBA values.</p>
-<h2 id='dialogs'>Dialogs</h2>
+<h2 id='container'>Container</h2>
+<p>Containers are items that can contain other items. Examples of these are a character&#39;s backpack and depot. </p>
+<div class="highlight"><pre class="highlight lua tab-lua"><code><span class="kd">local</span> <span class="n">M</span> <span class="o">=</span> <span class="p">{}</span>
+</code></pre></div><h3 id='functions'>Functions</h3><h4 id='boolean-item-container-viewitemnr-number-itempos'><code>boolean, Item, Container viewItemNr(number itempos)</code></h4><div class="highlight"><pre class="highlight lua tab-lua"><code>
+<span class="kd">local</span> <span class="k">function</span> <span class="nf">viewItemNr</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="n">theDepot</span><span class="p">)</span>
+
+    <span class="kd">local</span> <span class="n">success</span><span class="p">,</span> <span class="n">theItem</span><span class="p">,</span> <span class="n">theContainer</span> <span class="o">=</span> <span class="n">theDepot</span><span class="p">:</span><span class="n">viewItemNr</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="kd">local</span> <span class="n">text</span>
+
+    <span class="k">if</span> <span class="n">success</span> <span class="k">then</span>
+        <span class="k">if</span> <span class="n">theContainer</span> <span class="k">then</span>
+            <span class="n">text</span> <span class="o">=</span> <span class="s2">"The item is a container with an item-ID of "</span><span class="o">..</span><span class="n">theItem</span><span class="p">.</span><span class="n">id</span>
+        <span class="k">else</span>
+            <span class="n">text</span> <span class="o">=</span> <span class="s2">"The item is not a container. Its item-ID is "</span><span class="o">..</span><span class="n">theItem</span><span class="p">.</span><span class="n">id</span>
+        <span class="k">end</span>
+        <span class="n">user</span><span class="p">:</span><span class="n">inform</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+    <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div>
+<p>Returns a boolean for success, the item found at the given position if any, as well as the container if the item found is a container item.
+The &quot;itempos&quot; can be anything from 0-99, signifying the corresponding slot in the container from left to right, top to bottom.
+Most containers have 100 slots in total, however some cases such as the &quot;basket&quot; item have less.</p>
+<h4 id='boolean-item-container-takeitemnr-number-itempos-number-count'><code>boolean, Item, Container takeItemNr(number itempos, number count)</code></h4><div class="highlight"><pre class="highlight lua tab-lua"><code><span class="kd">local</span> <span class="k">function</span> <span class="nf">takeItemNr</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="n">theDepot</span><span class="p">)</span>
+
+    <span class="kd">local</span> <span class="n">success</span><span class="p">,</span> <span class="n">theItem</span><span class="p">,</span> <span class="n">theContainer</span> <span class="o">=</span> <span class="n">theDepot</span><span class="p">:</span><span class="n">takeItemNr</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+    <span class="kd">local</span> <span class="n">text</span>
+
+    <span class="k">if</span> <span class="n">success</span> <span class="k">then</span>
+        <span class="k">if</span> <span class="n">theContainer</span> <span class="k">then</span>
+            <span class="n">text</span> <span class="o">=</span> <span class="s2">"A container with an item-ID of "</span><span class="o">..</span><span class="n">theItem</span><span class="p">.</span><span class="n">id</span><span class="o">..</span><span class="s2">" was removed from the container."</span>
+        <span class="k">else</span>
+            <span class="n">text</span> <span class="o">=</span> <span class="s2">"An item with an ID of "</span><span class="o">..</span><span class="n">theItem</span><span class="p">.</span><span class="n">id</span><span class="o">..</span><span class="s2">" was removed from the container."</span>
+        <span class="k">end</span>
+    <span class="k">end</span>
+
+    <span class="n">user</span><span class="p">:</span><span class="n">inform</span><span class="p">(</span><span class="n">text</span><span class="p">)</span>
+<span class="k">end</span>
+</code></pre></div>
+<p>Returns the same values as the above viewItemNr function, but it also deletes an amount of the item. How many it deletes is determined by the count integer.</p>
+<h4 id='changequalityat-number-itempos-number-amount'><code>changeQualityAt(number itempos, number amount)</code></h4><div class="highlight"><pre class="highlight lua tab-lua"><code><span class="kd">local</span> <span class="k">function</span> <span class="nf">changeQualityAt</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="n">theDepot</span><span class="p">)</span>
+
+    <span class="kd">local</span> <span class="n">success</span><span class="p">,</span> <span class="n">theItem</span> <span class="o">=</span> <span class="n">theDepot</span><span class="p">:</span><span class="n">viewItemNr</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">success</span> <span class="k">then</span>
+        <span class="kd">local</span> <span class="n">oldQuality</span> <span class="o">=</span> <span class="n">theItem</span><span class="p">.</span><span class="n">quality</span>
+        <span class="kd">local</span> <span class="n">qualityChanged</span> <span class="o">=</span> <span class="n">theDepot</span><span class="p">:</span><span class="n">changeQualityAt</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">333</span><span class="p">)</span>
+        <span class="n">success</span><span class="p">,</span> <span class="n">theItem</span> <span class="o">=</span> <span class="n">theDepot</span><span class="p">:</span><span class="n">viewItemNr</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">qualityChanged</span> <span class="ow">and</span> <span class="n">success</span> <span class="k">then</span>
+            <span class="kd">local</span> <span class="n">newQuality</span> <span class="o">=</span> <span class="n">theItem</span><span class="p">.</span><span class="n">quality</span>
+            <span class="n">user</span><span class="p">:</span><span class="n">inform</span><span class="p">(</span><span class="s2">"An item with an ID of "</span><span class="o">..</span><span class="n">theItem</span><span class="p">.</span><span class="n">id</span><span class="o">..</span><span class="s2">" had it's quality changed from "</span><span class="o">..</span><span class="n">oldQuality</span><span class="o">..</span> <span class="s2">" to "</span><span class="o">..</span><span class="n">newQuality</span><span class="o">..</span><span class="s2">"."</span><span class="p">)</span>
+        <span class="k">end</span>
+    <span class="k">end</span>
+
+<span class="k">end</span>
+</code></pre></div>
+<p>This function is supposed to change the quality of the item at the given position inside the container to whatever the amount integer is set to. It returns as true if it worked.
+The quality value of an item is a three digit  integer, where the first digit corresponds to quality (0-9) and the latter digits correspond to durability (00-99).
+<a href="https://github.com/Illarion-eV/Illarion-Server/issues/81">For some reason, this function does not work currently.</a></p>
+<h4 id='boolean-insertcontainer-item-item-container-container-number-itempos'><code>boolean insertContainer(Item item, Container container, number itempos)</code></h4><div class="highlight"><pre class="highlight lua tab-lua"><code><span class="kd">local</span> <span class="k">function</span> <span class="nf">insertContainer</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="n">theDepot</span><span class="p">)</span>
+    <span class="kd">local</span> <span class="n">success</span><span class="p">,</span> <span class="n">theItem</span><span class="p">,</span> <span class="n">theContainer</span> <span class="o">=</span> <span class="n">theDepot</span><span class="p">:</span><span class="n">viewItemNr</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">success</span> <span class="k">then</span>
+        <span class="k">if</span> <span class="n">theContainer</span> <span class="ow">and</span> <span class="n">theItem</span> <span class="k">then</span>
+            <span class="n">success</span><span class="p">,</span> <span class="n">theItem</span><span class="p">,</span> <span class="n">theContainer</span> <span class="o">=</span> <span class="n">theDepot</span><span class="p">:</span><span class="n">takeItemNr</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">success</span> <span class="k">then</span>
+                <span class="kd">local</span> <span class="n">containerInserted</span> <span class="o">=</span> <span class="n">theDepot</span><span class="p">:</span><span class="n">insertContainer</span><span class="p">(</span><span class="n">theItem</span><span class="p">,</span> <span class="n">theContainer</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">containerInserted</span> <span class="k">then</span>
+                    <span class="n">user</span><span class="p">:</span><span class="n">inform</span><span class="p">(</span><span class="s2">"Container has been inserted into the slot."</span><span class="p">)</span>
+                <span class="k">end</span>
+            <span class="k">end</span>
+        <span class="k">end</span>
+    <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div>
+<p>If itempos has been provided, tries to insert a container at that position. If not, or if that position is not free, inserst the container at the first free position. Returns true if successful.</p>
+<h4 id='insertitem-item-item-boolean-merge'><code>insertItem(Item item, boolean merge)</code></h4><div class="highlight"><pre class="highlight lua tab-lua"><code><span class="kd">local</span> <span class="k">function</span> <span class="nf">insertItem</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="n">theDepot</span><span class="p">)</span>
+
+    <span class="kd">local</span> <span class="n">success</span><span class="p">,</span> <span class="n">theItem</span> <span class="o">=</span> <span class="n">theDepot</span><span class="p">:</span><span class="n">viewItemNr</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">success</span> <span class="k">then</span>
+        <span class="n">theDepot</span><span class="p">:</span><span class="n">insertItem</span><span class="p">(</span><span class="n">theItem</span><span class="p">,</span> <span class="kc">true</span><span class="p">)</span>
+    <span class="k">end</span>
+
+<span class="k">end</span>
+</code></pre></div>
+<p>Inserts an item into the container. 
+If merge is false, it inserts the item in the first available slot of that container.
+If merge is true, it will insert into an existing stack of said item if it exists.</p>
+<h4 id='number-countitem-number-itemid-table-data'><code>number countItem(number itemid, Table data)</code></h4><div class="highlight"><pre class="highlight lua tab-lua"><code><span class="kd">local</span> <span class="k">function</span> <span class="nf">countItem</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="n">theDepot</span><span class="p">)</span>
+
+    <span class="kd">local</span> <span class="n">numberOfRegularScissors</span> <span class="o">=</span> <span class="n">theDepot</span><span class="p">:</span><span class="n">countItem</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span>
+    <span class="kd">local</span> <span class="n">numberOfSpecialScissors</span> <span class="o">=</span> <span class="n">theDepot</span><span class="p">:</span><span class="n">countItem</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="p">{</span><span class="n">nameEn</span> <span class="o">=</span> <span class="s2">"Special Scissor"</span><span class="p">})</span>
+
+    <span class="n">user</span><span class="p">:</span><span class="n">inform</span><span class="p">(</span><span class="s2">"There are "</span><span class="o">..</span><span class="n">numberOfRegularScissors</span><span class="o">..</span><span class="s2">" regular scissors and "</span><span class="o">..</span><span class="n">numberOfSpecialScissors</span><span class="o">..</span> <span class="s2">" special scissors in the container."</span><span class="p">)</span>
+
+<span class="k">end</span>
+</code></pre></div>
+<p>Counts the number of items in a container of the given itemid, including items that may be inside containers inside said container.
+The data parameter is optional. If the data parameter is set, only items that include these data values are counted. If the data table is empty, only items without data are counted.</p>
+<h4 id='number-eraseitem-number-itemid-number-count-table-data'><code>number eraseItem(number itemid, number count, Table data)</code></h4><div class="highlight"><pre class="highlight lua tab-lua"><code><span class="kd">local</span> <span class="k">function</span> <span class="nf">eraseItems</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="n">theDepot</span><span class="p">)</span>
+
+    <span class="kd">local</span> <span class="n">amountToDelete</span> <span class="o">=</span> <span class="mi">10</span>
+
+    <span class="kd">local</span> <span class="n">amountFailedToDelete</span> <span class="o">=</span> <span class="n">theDepot</span><span class="p">:</span><span class="n">eraseItem</span><span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="n">amountToDelete</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">amountFailedToDelete</span> <span class="o">==</span> <span class="mi">0</span> <span class="k">then</span>
+        <span class="n">user</span><span class="p">:</span><span class="n">inform</span><span class="p">(</span><span class="s2">"All "</span><span class="o">..</span><span class="n">amountToDelete</span><span class="o">..</span><span class="s2">" scissors were erased from the container."</span><span class="p">)</span>
+    <span class="k">else</span>
+        <span class="kd">local</span> <span class="n">deletedScissors</span> <span class="o">=</span> <span class="n">amountToDelete</span><span class="o">-</span><span class="n">amountFailedToDelete</span>
+        <span class="k">if</span> <span class="n">deletedScissors</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">then</span>
+            <span class="n">user</span><span class="p">:</span><span class="n">inform</span><span class="p">(</span><span class="s2">"Only "</span><span class="o">..</span><span class="n">deletedScissors</span><span class="o">..</span><span class="s2">" scissors were erased from the container."</span><span class="p">)</span>
+        <span class="k">else</span>
+            <span class="n">user</span><span class="p">:</span><span class="n">inform</span><span class="p">(</span><span class="s2">"No scissors were erased from the container."</span><span class="p">)</span>
+        <span class="k">end</span>
+    <span class="k">end</span>
+
+<span class="k">end</span>
+</code></pre></div>
+<p>Erases an amount of the specified itemid that is the same as the count integer from the container. If a Table is specified, it will only erase items with data that matches that. If no Table is specified, it will only erase items with no special data. The returned integer is how many items could not be deleted.</p>
+<h4 id='increaseatpos-number-itempos-number-value'><code>increaseAtPos(number itempos, number value)</code></h4><div class="highlight"><pre class="highlight lua tab-lua"><code><span class="kd">local</span> <span class="k">function</span> <span class="nf">increaseAtPos</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="n">theDepot</span><span class="p">)</span>
+
+    <span class="n">theDepot</span><span class="p">:</span><span class="n">increaseAtPos</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">40</span><span class="p">)</span>
+
+<span class="k">end</span>
+</code></pre></div>
+<p>Increase the number of items at the given itempos by value.
+It should return the number of items increase, <a href="https://github.com/Illarion-eV/Illarion-Server/issues/82">but currently it does not.</a></p>
+<h4 id='boolean-swapatpos-number-itempos-number-newid-number-newquality'><code>boolean swapAtPos(number itempos, number newId, number newQuality)</code></h4><div class="highlight"><pre class="highlight lua tab-lua"><code><span class="kd">local</span> <span class="k">function</span> <span class="nf">swapAtPos</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="n">theDepot</span><span class="p">)</span>
+
+    <span class="kd">local</span> <span class="n">success</span><span class="p">,</span> <span class="n">theItem</span> <span class="o">=</span> <span class="n">theDepot</span><span class="p">:</span><span class="n">viewItemNr</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">success</span> <span class="k">then</span>
+        <span class="k">if</span> <span class="n">theItem</span><span class="p">.</span><span class="n">number</span> <span class="o">==</span> <span class="mi">1</span> <span class="k">then</span>
+            <span class="kd">local</span> <span class="n">swapItem</span> <span class="o">=</span> <span class="n">theDepot</span><span class="p">:</span><span class="n">swapAtPos</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">999</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">swapItem</span> <span class="k">then</span>
+                <span class="n">user</span><span class="p">:</span><span class="n">inform</span><span class="p">(</span><span class="s2">"The item in slot 0 was replaced with a saw and the quality was set to 999"</span><span class="p">)</span>
+            <span class="k">end</span>
+        <span class="k">end</span>
+    <span class="k">end</span>
+<span class="k">end</span>
+</code></pre></div>
+<p>Changes the ID of the item at itempos to newId and quality of the item to newQuality.
+Returns true on success.
+Here it&#39;s also important to make sure the item stack number is correct. You don&#39;t want to suddenly have a stack of normally unstackable items.</p>
+<h4 id='number-weight'><code>number weight()</code></h4><div class="highlight"><pre class="highlight lua tab-lua"><code><span class="kd">local</span> <span class="k">function</span> <span class="nf">getWeight</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="n">theDepot</span><span class="p">)</span>
+
+    <span class="kd">local</span> <span class="n">weight</span> <span class="o">=</span> <span class="n">theDepot</span><span class="p">:</span><span class="n">weight</span><span class="p">()</span>
+
+    <span class="n">user</span><span class="p">:</span><span class="n">inform</span><span class="p">(</span><span class="s2">"The container weighs a total of "</span><span class="o">..</span><span class="n">weight</span><span class="o">..</span> <span class="s2">" weight units."</span><span class="p">)</span>
+
+<span class="k">end</span>
+
+</code></pre></div>
+<p>Returns the total weight of that container.</p>
+<div class="highlight"><pre class="highlight lua tab-lua"><code><span class="k">function</span> <span class="nc">M</span><span class="p">.</span><span class="nf">mainFunction</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="n">sourceItem</span><span class="p">,</span> <span class="n">ltstate</span><span class="p">)</span>
+
+    <span class="kd">local</span> <span class="n">theDepot</span> <span class="o">=</span> <span class="n">user</span><span class="p">:</span><span class="n">getDepot</span><span class="p">(</span><span class="mi">101</span><span class="p">)</span> <span class="c1">--Runewick's depot</span>
+
+    <span class="k">if</span> <span class="n">theDepot</span> <span class="k">then</span>
+
+        <span class="cm">--[[It's important to check if the container exists. 
+        For instance, a depot that has never been accessed does not exist for that character.]]</span>
+
+        <span class="n">myFunction</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="n">theDepot</span><span class="p">)</span>
+
+    <span class="k">end</span>
+<span class="k">end</span>
+
+<span class="k">return</span> <span class="n">M</span>
+</code></pre></div><h2 id='dialogs'>Dialogs</h2>
 <p>Dialogs are a more sophisticated approach to aquire user input than e.g. <code>user.lastSpokenText</code>. Each dialog serves a
 specific purpose like displaying bulk text, interfacing with a merchant or with the crafting system. Dialogs should be
 the preferred method for handling user input. If necessary new types should be implemented rather than abusing old
