@@ -8,7 +8,7 @@ local M = {}
 
 ### Functions
 
-#### `Boolean, Item, Container viewItemNr(Number itempos)`
+#### `Boolean, Item, Container viewItemNr(number itempos)`
 
 ```lua
 
@@ -33,7 +33,7 @@ Returns a boolean for success, the item found at the given position if any, as w
 The "itempos" can be anything from 0-99, signifying the corresponding slot in the container from left to right, top to bottom.
 Most containers have 100 slots in total, however some cases such as the "basket" item have less.
 
-#### `boolean, Item, Container takeItemNr(Number itempos, Number count)`
+#### `boolean, Item, Container takeItemNr(number itempos, number count)`
 
 ```lua
 local function takeItemNr(user, theDepot)
@@ -56,7 +56,7 @@ end
 
 Returns the same values as the above viewItemNr function, but it also deletes an amount of the item. How many it deletes is determined by the count integer.
 
-#### `changeQualityAt(Number itempos, Number amount)`
+#### `changeQualityAt(number itempos, number amount)`
 
 ```lua
 local function changeQualityAt(user, theDepot)
@@ -80,7 +80,7 @@ This function is supposed to change the quality of the item at the given positio
 The quality value of an item is a three digit  integer, where the first digit corresponds to quality (0-9) and the latter digits correspond to durability (00-99).
 [For some reason, this function does not work currently.](https://github.com/Illarion-eV/Illarion-Server/issues/81)
 
-#### `boolean insertContainer(Item item, Container container, Number itempos)`
+#### `boolean insertContainer(Item item, Container container, number itempos)`
 
 ```lua
 local function insertContainer(user, theDepot)
@@ -119,7 +119,7 @@ Inserts an item into the container.
 If merge is false, it inserts the item in the first available slot of that container.
 If merge is true, it will insert into an existing stack of said item if it exists.
 
-#### `Number countItem(Number itemid, Table data)`
+#### `number countItem(number itemid, Table data)`
 
 ```lua
 local function countItem(user, theDepot)
@@ -135,7 +135,7 @@ end
 Counts the number of items in a container of the given itemid, including items that may be inside containers inside said container.
 The data parameter is optional. If the data parameter is set, only items that include these data values are counted. If the data table is empty, only items without data are counted.
 
-#### `Number eraseItem(Number itemid, Number count, Table data)`
+#### `number eraseItem(number itemid, number count, Table data)`
 
 ```lua
 local function eraseItems(user, theDepot)
@@ -160,7 +160,7 @@ end
 
 Erases an amount of the specified itemid that is the same as the count integer from the container. If a Table is specified, it will only erase items with data that matches that. If no Table is specified, it will only erase items with no special data. The returned integer is how many items could not be deleted.
 
-#### `increaseAtPos(Number itempos, Number value)`
+#### `increaseAtPos(number itempos, number value)`
 
 ```lua
 local function increaseAtPos(user, theDepot)
@@ -172,7 +172,7 @@ end
 Increase the number of items at the given itempos by value.
 It should return the number of items increase, [but currently it does not.](https://github.com/Illarion-eV/Illarion-Server/issues/82)
 
-#### `boolean swapAtPos(Number itempos, Number newId, Number newQuality)`
+#### `boolean swapAtPos(number itempos, number newId, number newQuality)`
 
 ```lua
 local function swapAtPos(user, theDepot)
@@ -194,7 +194,7 @@ Changes the ID of the item at itempos to newId and quality of the item to newQua
 Returns true on success.
 Here it's also important to make sure the item stack number is correct. You don't want to suddenly have a stack of normally unstackable items.
 
-#### `Number weight()`
+#### `number weight()`
 
 ```lua
 local function getWeight(user, theDepot)
