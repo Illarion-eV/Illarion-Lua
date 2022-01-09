@@ -46,7 +46,8 @@ end
 return M
 ```
 
-All Use* entry points (e.g. UseItem) which have an `actionState` parameter, allow for starting actions. An action can be
+All Use* entry points (e.g. UseItem) which have an `actionState` parameter and the [talk entry point](#talk), allow for
+starting actions. An action can be
 seen as a state of concentration of the user, which lasts for a specified time. After that time or when the action is
 interrupted, the entry point is called again with the same parameters, but with actionState set to `Action.abort` or
 `Action.success` accordingly. Usually actions are aborted by the user doing something else, like using something,

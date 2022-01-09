@@ -26,11 +26,8 @@ Terminates the current action.
 Disturbes the current character from an action.
 ### `changeSource(item sourceItem)`
 ### `changeSource(position sourcePosition)`
+### `changeSource(string text)`
 ### `changeSource(character sourceChar)`
 Changes the source variable of the entrypoint used for subsequent calls of the current action. This has to be called explicitly to propagate changes of a source object to the action.
-### `changeTarget(item targetItem)`
-### `changeTarget(position targetPosition)`
-### `changeTarget(character targetChar)`
 
-Changes the target variable of the entrypoint used for subsequent calls of the current action.
 <!-- TODO: -->
