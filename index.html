@@ -1313,11 +1313,26 @@ the given text to all players.</p>
 <span class="k">return</span> <span class="n">M</span>
 </code></pre></div>
 <p><strong>Script file:</strong> <code>server/playertalk.lua</code></p>
-<h3 id='string-talk-character-user-number-talktype-string-text'><code>string talk(Character user, number talkType, string text)</code></h3>
+<h3 id='boolean-actiondisturbed-character-user-character-attacker'><code>boolean actionDisturbed(Character user, Character attacker)</code></h3>
+<p>Is called when <code>user</code> is attacked while an action is running. This action had to be started by <code>user:startAction(...)</code>
+in <code>talk</code>. If this entry point does not exist or returns <code>false</code> the action is not aborted. If it returns <code>true</code> the
+action is aborted. See section Actions in <a href="#character">Character</a> for more details on starting actions.</p>
+<h3 id='string-talk-character-user-number-talktype-string-text-number-actionstate'><code>string talk(Character user, number talkType, string text, number actionState)</code></h3>
 <p>Is called when player <code>user</code> tries to speak <code>text</code>. <code>talkType</code> is one of <code>Character.say</code>, <code>Character.whisper</code>
 and <code>Character.yell</code>. Needs to return the text the player will actually speak.</p>
 
 <p>This can be used for speaking passwords, reciting spells, making players sound drunk, etc.</p>
+
+<p><code>actionState</code> is one of</p>
+
+<ul>
+<li><code>Action.none</code>: no action is running.</li>
+<li><code>Action.success</code>: an action was running and has been completed.</li>
+<li><code>Action.abort</code>: an action was running and has been interrupted by the user being attacked or the user doing something
+else like using an item, moving, etc.</li>
+</ul>
+
+<p>See section Actions in <a href="#character">Character</a> for more details on starting actions.</p>
 <h1 id='classes'>Classes</h1><h2 id='character'>Character</h2>
 <p>Players, NPCs and monsters are the three types of characters in Illarion.</p>
 
@@ -1405,7 +1420,8 @@ and <code>Character.yell</code>. Needs to return the text the player will actual
 
 <span class="k">return</span> <span class="n">M</span>
 </code></pre></div>
-<p>All Use* entry points (e.g. UseItem) which have an <code>actionState</code> parameter, allow for starting actions. An action can be
+<p>All Use* entry points (e.g. UseItem) which have an <code>actionState</code> parameter and the <a href="#talk">talk entry point</a>, allow for
+starting actions. An action can be
 seen as a state of concentration of the user, which lasts for a specified time. After that time or when the action is
 interrupted, the entry point is called again with the same parameters, but with actionState set to <code>Action.abort</code> or
 <code>Action.success</code> accordingly. Usually actions are aborted by the user doing something else, like using something,
