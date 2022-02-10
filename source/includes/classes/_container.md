@@ -65,7 +65,9 @@ local function changeQualityAt(user, theDepot)
 
     if success then
         local oldQuality = theItem.quality
-        local qualityChanged = theDepot:changeQualityAt(1, 333)
+        local wantedQuality = 999
+        local changeNeeded = wantedQuality - oldQuality
+        local qualityChanged = theDepot:changeQualityAt(1, changeNeeded)
         success, theItem = theDepot:viewItemNr(1)
         if qualityChanged and success then
             local newQuality = theItem.quality
@@ -76,9 +78,9 @@ local function changeQualityAt(user, theDepot)
 end
 ```
 
-This function is supposed to change the quality of the item at the given position inside the container to whatever the amount integer is set to. It returns as true if it worked.
+This function changes the quality of the item at the given position inside the container by whatever the amount integer is set to. It returns as true if it worked.
 The quality value of an item is a three digit  integer, where the first digit corresponds to quality (0-9) and the latter digits correspond to durability (00-99).
-[For some reason, this function does not work currently.](https://github.com/Illarion-eV/Illarion-Server/issues/81)
+If the amount integer + the quality the item already is equals to higher than the maximum quality of 999 then the quality will not be changed while the durability will be set to the maximum of 99.
 
 #### `boolean insertContainer(Item item, Container container, number itempos)`
 
