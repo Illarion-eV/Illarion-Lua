@@ -167,12 +167,29 @@ Erases an amount of the specified itemid that is the same as the count integer f
 ```lua
 local function increaseAtPos(user, theDepot)
 
-    theDepot:increaseAtPos(1, 40)
+    local itemPosition = 37
 
+    local success, theItem = theDepot:viewItemNr(itemPosition)
+    
+    local oldAmount
+    local itemId
+
+    if success then
+        oldAmount = theItem.number
+        itemName = theItem.id
+    else
+        return --no item was found
+    end
+
+    local amountToAdd = 40
+    local newTotalAmount = theDepot:increaseAtPos(itemPosition, amountToAdd)
+
+    user:inform("You've added "..newTotalAmount-oldAmount.." out of the set "..amountToAdd.." requested additions to the item in slot "..itemPosition.." with the id of "..itemId.." making for a total of "..newTotalAmount.." from the previous "..oldAmount)
 end
 ```
-Increase the number of items at the given itempos by value.
-It should return the number of items increase, [but currently it does not.](https://github.com/Illarion-eV/Illarion-Server/issues/82)
+Increase the number of items at the given itempos by value, returning the new amount if upon success.
+If the total number exceeds the stack limit of the items, only enough to reach the stack limit will be added.
+This function also works with negative numbers to subtract item amounts instead.
 
 #### `boolean swapAtPos(number itempos, number newId, number newQuality)`
 
