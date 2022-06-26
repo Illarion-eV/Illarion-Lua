@@ -1853,7 +1853,10 @@ as defined by the map.</p>
 <h2 id='container'>Container</h2>
 <p>Containers are items that can contain other items. Examples of these are a character&#39;s backpack and depot. </p>
 <div class="highlight"><pre class="highlight lua tab-lua"><code><span class="kd">local</span> <span class="n">M</span> <span class="o">=</span> <span class="p">{}</span>
-</code></pre></div><h3 id='functions'>Functions</h3><h4 id='boolean-item-container-viewitemnr-number-itempos'><code>boolean, Item, Container viewItemNr(number itempos)</code></h4><div class="highlight"><pre class="highlight lua tab-lua"><code>
+</code></pre></div><h3 id='functions'>Functions</h3><h4 id='number-getslotcount'><code>number getSlotCount()</code></h4><div class="highlight"><pre class="highlight lua tab-lua"><code><span class="kd">local</span> <span class="n">slots</span> <span class="o">=</span> <span class="n">myContainer</span><span class="p">:</span><span class="n">getSlotCount</span><span class="p">()</span>
+</code></pre></div>
+<p>Returns the number of slots available in the given container.</p>
+<h4 id='boolean-item-container-viewitemnr-number-itempos'><code>boolean, Item, Container viewItemNr(number itempos)</code></h4><div class="highlight"><pre class="highlight lua tab-lua"><code>
 <span class="kd">local</span> <span class="k">function</span> <span class="nf">viewItemNr</span><span class="p">(</span><span class="n">user</span><span class="p">,</span> <span class="n">theDepot</span><span class="p">)</span>
 
     <span class="kd">local</span> <span class="n">success</span><span class="p">,</span> <span class="n">theItem</span><span class="p">,</span> <span class="n">theContainer</span> <span class="o">=</span> <span class="n">theDepot</span><span class="p">:</span><span class="n">viewItemNr</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
