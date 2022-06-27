@@ -8,6 +8,12 @@ local M = {}
 
 ### Functions
 
+#### `number getSlotCount()`
+```lua
+local slots = myContainer:getSlotCount()
+```
+Returns the number of slots available in the given container.
+
 #### `boolean, Item, Container viewItemNr(number itempos)`
 
 ```lua
