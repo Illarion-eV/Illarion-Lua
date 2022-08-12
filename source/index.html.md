@@ -55,6 +55,7 @@ includes:
   - logging
   - debugging
   - resources
+  - gmcommands
   - bugs
   - changelog
 
